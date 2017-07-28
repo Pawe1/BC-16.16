@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MessengerButton">
+        <item>true</item>
+    </style>
+    <style name="MessengerButton.Blue">
+        <item>@drawable/messenger_button_blue_bg_selector</item>
+    </style>
+    <style name="MessengerButton.Blue.Large">
+        <item>-1</item>
+        <item>44dp</item>
+        <item>16dp</item>
+        <item>16dp</item>
+    </style>
+    <style name="MessengerButton.Blue.Small">
+        <item>158dp</item>
+        <item>36dp</item>
+    </style>
+    <style name="MessengerButton.White">
+        <item>@drawable/messenger_button_white_bg_selector</item>
+    </style>
+    <style name="MessengerButton.White.Large">
+        <item>-1</item>
+        <item>44dp</item>
+        <item>16dp</item>
+        <item>16dp</item>
+    </style>
+    <style name="MessengerButton.White.Small">
+        <item>158dp</item>
+        <item>36dp</item>
+    </style>
+    <style name="MessengerButtonText">
+        <item>14sp</item>
+        <item>1</item>
+        <item>11</item>
+        <item>11</item>
+        <item>-2</item>
+        <item>-2</item>
+        <item>4dp</item>
+        <item>true</item>
+    </style>
+    <style name="MessengerButtonText.Blue">
+        <item>#ffffff</item>
+    </style>
+    <style name="MessengerButtonText.Blue.Large">
+        <item>@drawable/messenger_bubble_large_white</item>
+    </style>
+    <style name="MessengerButtonText.Blue.Small">
+        <item>@drawable/messenger_bubble_small_white</item>
+    </style>
+    <style name="MessengerButtonText.White">
+        <item>#0084ff</item>
+    </style>
+    <style name="MessengerButtonText.White.Large">
+        <item>@drawable/messenger_bubble_large_blue</item>
+    </style>
+    <style name="MessengerButtonText.White.Small">
+        <item>@drawable/messenger_bubble_small_blue</item>
+    </style>
+    <style name="tooltip_bubble_text">
+        <item>12sp</item>
+        <item>?unknown_ref: 106000b</item>
+        <item>3</item>
+        <item>#40000000</item>
+        <item>-1.0</item>
+        <item>0.25</item>
+    </style>
+    <style name="com_facebook_button">
+        <item>14dp</item>
+        <item>#ffffff</item>
+        <item>11</item>
+        <item>@drawable/com_facebook_button_background</item>
+        <item>8dp</item>
+        <item>5dp</item>
+        <item>8dp</item>
+        <item>5dp</item>
+        <item>6dp</item>
+    </style>
+    <style name="com_facebook_button_like">
+        <item>@drawable/com_facebook_button_like_background</item>
+    </style>
+    <style name="com_facebook_loginview_default_style">
+        <item>@drawable/com_facebook_button_icon</item>
+    </style>
+    <style name="com_facebook_loginview_silver_style">
+        <item>#4b5164</item>
+        <item>@drawable/com_facebook_button_login_silver_background</item>
+        <item>?unknown_ref: 0</item>
+    </style>
+    <style name="com_facebook_button_send">
+        <item>@drawable/com_facebook_button_send_background</item>
+        <item>@string/com_facebook_send_button_text</item>
+        <item>@drawable/com_facebook_button_send_icon</item>
+    </style>
+    <style name="com_facebook_button_share">
+        <item>@string/com_facebook_share_button_text</item>
+        <item>@drawable/com_facebook_button_icon</item>
+    </style>
+    <style name="Theme.NoShadow">
+        <item>?unknown_ref: 0</item>
+    </style>
+</resources>

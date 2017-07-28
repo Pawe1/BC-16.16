@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="com_facebook_confirm_logout">
+        <item>8</item>
+    </attr>
+    <attr name="com_facebook_login_text">
+        <item>2</item>
+    </attr>
+    <attr name="com_facebook_logout_text">
+        <item>2</item>
+    </attr>
+    <attr name="com_facebook_tooltip_mode">
+        <item>65536</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </attr>
+    <attr name="com_facebook_preset_size">
+        <item>65536</item>
+        <item>-4</item>
+        <item>-3</item>
+        <item>-2</item>
+    </attr>
+    <attr name="com_facebook_is_cropped">
+        <item>8</item>
+    </attr>
+    <attr name="com_facebook_foreground_color">
+        <item>16</item>
+    </attr>
+    <attr name="com_facebook_object_id">
+        <item>2</item>
+    </attr>
+    <attr name="com_facebook_object_type">
+        <item>65536</item>
+        <item>1</item>
+        <item>2</item>
+        <item>0</item>
+    </attr>
+    <attr name="com_facebook_style">
+        <item>65536</item>
+        <item>2</item>
+        <item>1</item>
+        <item>0</item>
+    </attr>
+    <attr name="com_facebook_auxiliary_view_position">
+        <item>65536</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </attr>
+    <attr name="com_facebook_horizontal_alignment">
+        <item>65536</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </attr>
+</resources>

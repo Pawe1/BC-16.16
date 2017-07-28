@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:8e9c474c29a1e759781005859198e747:98b4b1bd88012e9155e04ad355660f69:30f5d2fe31709095df2e3d4e16389e50$ -->
+<TextureAtlas imagePath="loaderAnimation.png" width="1002" height="64">
+    <SubTexture name="frame_00" x="955" y="49" width="11" height="10" frameX="-22" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_01" x="929" y="49" width="24" height="14" frameX="-22" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_02" x="968" y="38" width="33" height="23" frameX="-22" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_03" x="968" y="38" width="33" height="23" frameX="-22" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_04" x="965" y="1" width="34" height="35" frameX="-22" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_05" x="929" y="1" width="34" height="46" frameX="-22" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_06" x="893" y="1" width="34" height="55" frameX="-22" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_07" x="857" y="1" width="34" height="58" frameX="-22" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_08" x="809" y="1" width="46" height="58" frameX="-10" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_09" x="695" y="1" width="54" height="58" frameX="-2" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_10" x="695" y="1" width="54" height="58" frameX="-2" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_11" x="1" y="1" width="56" height="58"/>
+    <SubTexture name="frame_12" x="59" y="1" width="56" height="58"/>
+    <SubTexture name="frame_13" x="637" y="1" width="56" height="56" frameX="0" frameY="-2" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_14" x="117" y="1" width="56" height="58"/>
+    <SubTexture name="frame_15" x="175" y="1" width="56" height="58"/>
+    <SubTexture name="frame_16" x="523" y="1" width="55" height="58" frameX="0" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_17" x="233" y="1" width="56" height="58"/>
+    <SubTexture name="frame_18" x="233" y="1" width="56" height="58"/>
+    <SubTexture name="frame_19" x="291" y="1" width="56" height="58"/>
+    <SubTexture name="frame_20" x="751" y="1" width="56" height="55" frameX="0" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_21" x="349" y="1" width="56" height="58"/>
+    <SubTexture name="frame_22" x="407" y="1" width="56" height="58"/>
+    <SubTexture name="frame_23" x="580" y="1" width="55" height="58" frameX="-1" frameY="0" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_24" x="465" y="1" width="56" height="58"/>
+    <SubTexture name="frame_25" x="465" y="1" width="56" height="58"/>
+    <SubTexture name="frame_26" x="59" y="1" width="56" height="58"/>
+    <SubTexture name="frame_27" x="59" y="1" width="56" height="58"/>
+    <SubTexture name="frame_28" x="637" y="1" width="56" height="56" frameX="0" frameY="-2" frameWidth="56" frameHeight="58"/>
+    <SubTexture name="frame_29" x="117" y="1" width="56" height="58"/>
+</TextureAtlas>
+

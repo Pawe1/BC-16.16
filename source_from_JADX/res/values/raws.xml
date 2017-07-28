@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <raw name="adobelogo">res/raw/adobelogo.gif</raw>
+    <raw name="debugger">res/raw/debugger.info</raw>
+    <raw name="debuginfo">res/raw/debuginfo</raw>
+    <raw name="icon">res/raw/icon.jpg</raw>
+    <raw name="mms_cfg">res/raw/mms_cfg.png</raw>
+    <raw name="rgba8888">res/raw/rgba8888</raw>
+    <raw name="ss_cfg">res/raw/ss_cfg.png</raw>
+    <raw name="ss_sgn">res/raw/ss_sgn.png</raw>
+    <raw name="startga">res/raw/startga.html</raw>
+</resources>

@@ -1,0 +1,31 @@
+!!brut.androlib.meta.MetaInfo
+apkFileName: SIGMA-LINK.1.1.0.apk
+compressionType: false
+doNotCompress:
+- assets/META-INF/AIR/extensions/de.pagecon.bleane/library.swf
+- assets/META-INF/AIR/extensions/de.pagecon.bleane/META-INF/ANE/Android-ARM/library.swf
+- assets/META-INF/AIR/extensions/de.pagecon.usb/library.swf
+- assets/META-INF/AIR/extensions/de.pagecon.usb/META-INF/ANE/Android-ARM/library.swf
+- assets/META-INF/AIR/extensions/de.pagecon.ane.notificationlistenerservice/library.swf
+- assets/META-INF/AIR/extensions/de.pagecon.ane.notificationlistenerservice/META-INF/ANE/Android-ARM/library.swf
+- assets/META-INF/AIR/extensions/de.pagecon.ane.nfc/library.swf
+- assets/META-INF/AIR/extensions/de.pagecon.ane.nfc/META-INF/ANE/Android-ARM/library.swf
+- assets/META-INF/AIR/extensions/de.pagecon.ane.networkInfo/library.swf
+- assets/META-INF/AIR/extensions/de.pagecon.ane.networkInfo/META-INF/ANE/Android-ARM/library.swf
+isFrameworkApk: false
+packageInfo:
+  forcedPackageId: '127'
+  renameManifestPackage: null
+sdkInfo:
+  minSdkVersion: '14'
+  targetSdkVersion: '21'
+sharedLibrary: false
+unknownFiles: {}
+usesFramework:
+  ids:
+  - 1
+  tag: null
+version: 2.2.3
+versionInfo:
+  versionCode: '1001010'
+  versionName: 1.1.0

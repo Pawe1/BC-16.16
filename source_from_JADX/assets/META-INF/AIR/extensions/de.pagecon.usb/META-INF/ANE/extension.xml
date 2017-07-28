@@ -1,0 +1,35 @@
+<extension 
+	xmlns="http://ns.adobe.com/air/extension/21.0">
+	<id>de.pagecon.usb</id>
+	<versionNumber>1</versionNumber>
+	<platforms>
+		<platform 
+			name="Android-ARM">
+			<applicationDeployment>
+				<nativeLibrary>UsbLibAndroid.jar</nativeLibrary>
+				<initializer>de.pagecon.usb.UsbExtension</initializer>
+			</applicationDeployment>
+		</platform>
+		<platform 
+			name="Windows-x86">
+			<applicationDeployment>
+				<nativeLibrary>winUsbLib.dll</nativeLibrary>
+				<initializer>ExtInitializer</initializer>
+				<finalizer>ExtFinalizer</finalizer>
+			</applicationDeployment>
+		</platform>
+		<platform 
+			name="MacOS-x86-64">
+			<applicationDeployment>
+				<nativeLibrary>macUsbLib.framework</nativeLibrary>
+				<initializer>ExtInitializer</initializer>
+				<finalizer>ExtFinalizer</finalizer>
+			</applicationDeployment>
+		</platform>
+		<platform 
+			name="default">
+			<applicationDeployment />
+		</platform>
+	</platforms>
+</extension>
+

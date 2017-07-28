@@ -1,0 +1,32 @@
+<extension 
+	xmlns="http://ns.adobe.com/air/extension/21.0">
+	<id>de.pagecon.ane.networkInfo</id>
+	<versionNumber>1</versionNumber>
+	<platforms>
+		<platform 
+			name="iPhone-ARM">
+			<applicationDeployment>
+				<nativeLibrary>libAirNetworkInfo.a</nativeLibrary>
+				<initializer>NetworkInfoExtInitializer</initializer>
+				<finalizer>NetworkInfoExtFinalizer</finalizer>
+			</applicationDeployment>
+		</platform>
+		<platform 
+			name="iPhone-x86">
+			<applicationDeployment>
+				<nativeLibrary>libAirNetworkInfo.a</nativeLibrary>
+				<initializer>NetworkInfoExtInitializer</initializer>
+				<finalizer>NetworkInfoExtFinalizer</finalizer>
+			</applicationDeployment>
+		</platform>
+		<platform 
+			name="Android-ARM">
+			<applicationDeployment />
+		</platform>
+		<platform 
+			name="default">
+			<applicationDeployment />
+		</platform>
+	</platforms>
+</extension>
+

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:3e893820f31819242d5ff561f4abc47c:bc0e85a116f7f221fdedcb640cf59b84:236ff6bd325811adc95ed101e83abd06$ -->
+<TextureAtlas imagePath="backgrounds.png" width="2132" height="2132">
+    <SubTexture name="bgAppstart" x="1" y="1" width="766" height="1362"/>
+    <SubTexture name="bgCloud" x="1" y="1365" rotated="true" width="1362" height="766"/>
+    <SubTexture name="bgDashboard" x="769" y="1" width="766" height="1362"/>
+</TextureAtlas>
+

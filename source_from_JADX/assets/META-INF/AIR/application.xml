@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/23.0">
+
+	<id>com.sigmasport.SIGMALink</id>
+	<filename>SIGMALink</filename>
+	<name>SIGMA LINK</name>
+
+	<!--  Muss mit jedem Release hochzählen (5.1.0, 5.1.1, 5.1.2, etc.) Wird im DC als Build ausgegeben-->
+	<versionNumber>1.1.10</versionNumber>
+
+	<!--  Nur die Hauptversion hochzählen (5.1.0, 5.2.0, etc.) wird im DC nicht ausgegeben / Wichtig für iOS  -->
+	<versionLabel>1.1.0</versionLabel>
+
+	<!--  Label, das im DC für die Anzeige der Version genutzt wird -->
+	<description>1.1</description>
+
+	<initialWindow>
+		<content>SIGMALink.swf</content>
+		<visible>true</visible>
+		<aspectRatio>portrait</aspectRatio>
+		<autoOrients>false</autoOrients> 
+		<fullScreen>false</fullScreen>
+		<renderMode>direct</renderMode>
+		<requestedDisplayResolution>high</requestedDisplayResolution>
+		<depthAndStencil>true</depthAndStencil>
+	</initialWindow>
+
+	<supportedProfiles>mobileDevice extendedMobileDevice</supportedProfiles>
+	<!-- <supportedLanguages>en de es fr it nl pl</supportedLanguages>-->
+
+	<icon>
+		<image16x16>frontend/icons/16_16.png</image16x16>
+		<image29x29>frontend/icons/29_29.png</image29x29>
+		<image32x32>frontend/icons/32_32.png</image32x32>
+		<image36x36>frontend/icons/36_36.png</image36x36>
+		<image40x40>frontend/icons/40_40.png</image40x40>
+		<image48x48>frontend/icons/48_48.png</image48x48>
+		<image50x50>frontend/icons/50_50.png</image50x50>
+		<image57x57>frontend/icons/57_57.png</image57x57>
+		<image58x58>frontend/icons/58_58.png</image58x58>
+		<image60x60>frontend/icons/60_60.png</image60x60>
+		<image72x72>frontend/icons/72_72.png</image72x72>
+		<image76x76>frontend/icons/76_76.png</image76x76>
+		<image80x80>frontend/icons/80_80.png</image80x80>
+		<image96x96>frontend/icons/96_96.png</image96x96>
+		<image100x100>frontend/icons/100_100.png</image100x100>
+		<image114x114>frontend/icons/114_114.png</image114x114>
+		<image120x120>frontend/icons/120_120.png</image120x120>
+		<image128x128>frontend/icons/128_128.png</image128x128>
+		<image144x144>frontend/icons/144_144.png</image144x144>
+		<image152x152>frontend/icons/152_152.png</image152x152>
+		<image192x192>frontend/icons/192_192.png</image192x192>
+		<image512x512>frontend/icons/512_512.png</image512x512>
+		<image732x412>frontend/icons/732_412.png</image732x412>
+		<image1024x1024>frontend/icons/1024_1024.png</image1024x1024>
+	</icon>
+
+	<!--  android  -->
+	<android>
+		<colorDepth>16bit</colorDepth>
+		<!-- 		<webContentsDebuggingEnabled>true</webContentsDebuggingEnabled> -->
+		<manifestAdditions>
+			<![CDATA[
+			<manifest android:installLocation="auto">
+				
+				<!-- 18 = Android 4.3 erst ab da wird BLE unterstützt -->
+				<!-- 14 = Android 4.0 unterstützt bereits NFC -->
+				<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="21" />
+			
+				 <!-- Internet Permission -->
+				<uses-permission android:name="android.permission.INTERNET"/>
+				<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+				<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+				<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+				<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+				<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+	     		<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	     		
+	     		 <!-- NFC Permission -->
+	     		<uses-permission android:name="android.permission.NFC" />
+				<uses-feature android:name="android.hardware.nfc" android:required="false"/>
+				
+				 <!-- Bluetooth Permission -->
+				<uses-permission android:name="android.permission.BLUETOOTH"/>
+ 				<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+ 				<uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"/>
+ 				<uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
+		
+			    <application android:enabled="true">
+				    <activity android:launchMode="standard">
+				    	<intent-filter>
+							<action android:name="android.intent.action.MAIN"/>
+							<category android:name="android.intent.category.LAUNCHER"/>
+						</intent-filter>
+						<intent-filter>
+							<action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+						</intent-filter>
+						<meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/device_filter" />
+						<intent-filter>
+							<action android:name="android.intent.action.VIEW" />
+							<category android:name="android.intent.category.DEFAULT" />
+							<category android:name="android.intent.category.BROWSABLE" />
+							<!-- Accepts URIs sigmalinkapp://" -->
+  							<data android:scheme="sigmalinkapp" />
+						</intent-filter>
+					</activity>
+					<activity
+          				android:name="de.pagecon.bleane.extension.HelperActivity"
+          				android:theme="@android:style/Theme.NoDisplay" >
+      				</activity>
+      				<service android:name="de.pagecon.ane.services.MyNLNotificationService" android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+			            <intent-filter>
+			                <action android:name="android.service.notification.NotificationListenerService" />
+			            </intent-filter>
+			        </service>
+					<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="fb1625696504406291"/>
+					<meta-data android:name="com.facebook.sdk.ApplicationName" android:value="SIGMA LINK" />
+					<activity android:name="com.facebook.FacebookActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:label="SIGMA LINK" />
+					<provider android:authorities="com.facebook.app.FacebookContentProvider1625696504406291" android:name="com.facebook.FacebookContentProvider" android:exported="true" />
+			    </application>
+			    
+			</manifest>
+		]]>
+		</manifestAdditions>
+
+
+
+	</android>
+
+	<!-- iOS -->
+	<iPhone>
+		<InfoAdditions>
+			<![CDATA[
+			<key>UIDeviceFamily</key>
+			<array>
+				<string>1</string>
+				<string>2</string>
+			</array>
+			
+            <key>MinimumOSVersion</key>
+        	<string>8.0.0</string>
+        	
+        	<key>UIFileSharingEnabled</key>
+   			<true/>
+   			
+			<key>NSLocationAlwaysUsageDescription</key> 
+	        <string>Allow SIGMA Link usage of GPS always</string> 
+	        
+	        <key>NSLocationWhenInUseUsageDescription</key>
+			<string>Allow SIGMA Link usage of GPS when application is in foreground</string>
+	       
+	       <key>NSAppTransportSecurity</key>
+			<dict>
+			    <key>NSExceptionDomains</key>
+			    <dict>
+			        <key>sigma-dc-control.com</key>
+			        <dict>
+			            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+			            <true/>
+			            <key>NSIncludesSubdomains</key>
+			            <true/>
+			            <key>NSExceptionRequiresForwardSecrecy</key>
+			            <true/>
+			        </dict>
+			        <key>facebook.com</key>
+					<dict>
+						<key>NSIncludesSubdomains</key>
+						<true/>
+						<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+						<false/>
+					</dict>
+					<key>fbcdn.net</key>
+					<dict>
+						<key>NSIncludesSubdomains</key>
+						<true/>
+						<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+						<false/>
+					</dict>
+					<key>akamaihd.net</key>
+					<dict>
+						<key>NSIncludesSubdomains</key>
+						<true/>
+						<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+						<false/>
+					</dict>
+			    </dict>
+			</dict>
+			<key>LSApplicationQueriesSchemes</key>
+			<array>
+				<string>fbapi</string>
+				<string>fb-messenger-api</string>
+				<string>fbauth2</string>
+				<string>fbshareextension</string>
+			</array>
+			<key>UIApplicationExitsOnSuspend</key>
+			<false/>
+            <key>FacebookAppID</key>
+			<string>1625696504406291</string>
+			<key>FacebookDisplayName</key>
+			<string>SIGMA LINK</string>
+   			<key>CFBundleURLTypes</key>
+			<array>
+				<dict>
+					<key>CFBundleURLSchemes</key>
+					<array>
+						<string>fb1625696504406291</string>
+						<string>sigmalinkapp</string>
+					</array>
+				</dict>
+			</array>
+
+			]]>
+		</InfoAdditions>
+		<requestedDisplayResolution>high</requestedDisplayResolution>
+
+		<Entitlements>
+			<![CDATA[
+				<key>get-task-allow</key>
+				<false/>
+				<key>beta-reports-active</key>
+				<true/>
+			]]>
+		</Entitlements>
+
+	</iPhone>
+
+	<extensions>
+		<extensionID>de.pagecon.ane.networkInfo</extensionID>
+		<extensionID>de.pagecon.ane.nfc</extensionID>
+		<extensionID>de.pagecon.bleane</extensionID>
+		<extensionID>de.pagecon.usb</extensionID>
+		<extensionID>de.pagecon.ane.notificationlistenerservice</extensionID>
+		<extensionID>com.milkmangames.extensions.GoViral</extensionID>
+	</extensions>
+
+</application>
+

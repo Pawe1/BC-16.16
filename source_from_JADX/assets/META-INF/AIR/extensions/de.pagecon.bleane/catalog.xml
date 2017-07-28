@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding ="utf-8"?>
+<swc xmlns="http://www.adobe.com/flash/swccatalog/9">
+  <versions>
+    <swc version="1.2" />
+    <flex version="4.15.0" build="20160104" minimumSupportedVersion="3.0.0" />
+  </versions>
+  <features>
+    <feature-script-deps />
+    <feature-files />
+  </features>
+  <libraries>
+    <library path="library.swf">
+      <script name="de/pagecon/bleane/BleEvent" mod="1466508219000" signatureChecksum="2262295119" >
+        <def id="de.pagecon.bleane:BleEvent" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="flash.events:Event" type="i" /> 
+      </script>
+      <script name="de/pagecon/bleane/BleController" mod="1481618878000" signatureChecksum="4120555259" >
+        <def id="de.pagecon.bleane:BleController" /> 
+        <dep id="de.pagecon.bleane:BleEvent" type="e" /> 
+        <dep id="JSON" type="e" /> 
+        <dep id="trace" type="e" /> 
+        <dep id="flash.events:StatusEvent" type="e" /> 
+        <dep id="flash.external:ExtensionContext" type="e" /> 
+        <dep id="flash.events:IEventDispatcher" type="s" /> 
+        <dep id="de.pagecon.bleane:BleEvent" type="s" /> 
+        <dep id="flash.events:StatusEvent" type="s" /> 
+        <dep id="flash.external:ExtensionContext" type="s" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="flash.events:EventDispatcher" type="i" /> 
+      </script>
+      <script name="_9e03c4d3a6d8428bcd3df146fd6b5a55cb0ed902fd030605be93f817bdcb0999_flash_display_Sprite" mod="1481620570821" signatureChecksum="1661565873" >
+        <def id="_9e03c4d3a6d8428bcd3df146fd6b5a55cb0ed902fd030605be93f817bdcb0999_flash_display_Sprite" /> 
+        <dep id="flash.system:Security" type="e" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="flash.display:Sprite" type="i" /> 
+      </script>
+      <digests>
+        <digest type="SHA-256" signed="false" value="8961b41d8900b94b92534645a21d35a00719f9364691e3256c501af5ee0aeb83"   />
+      </digests>
+    </library>
+  </libraries>
+  <files>
+  </files>
+</swc>
+

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:b6f5001ab6d8e19c5f1a1be584e5ad99:0da1396c4c4183c46a896556699cf369:38a6aae36f59634e00f6d5e3cbab5be5$ -->
+<TextureAtlas imagePath="devicPictures.png" width="1014" height="186">
+    <SubTexture name="bc509" x="945" y="1" rotated="true" width="63" height="60" frameX="0" frameY="-9" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc512" x="224" y="63" rotated="true" width="67" height="60" frameX="0" frameY="-5" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc516" x="293" y="63" rotated="true" width="72" height="60" frameX="0" frameY="-1" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc716" x="367" y="63" rotated="true" width="72" height="60" frameX="0" frameY="-1" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc716ats" x="441" y="63" rotated="true" width="73" height="60"/>
+    <SubTexture name="bc812" x="516" y="63" rotated="true" width="67" height="60" frameX="0" frameY="-5" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc812ats" x="585" y="63" rotated="true" width="72" height="60" frameX="0" frameY="0" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc916" x="659" y="63" rotated="true" width="72" height="60" frameX="0" frameY="-1" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc916ats" x="733" y="63" rotated="true" width="73" height="60"/>
+    <SubTexture name="bc1009" x="1" y="1" rotated="true" width="66" height="60" frameX="0" frameY="-6" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc1009sts" x="69" y="1" rotated="true" width="72" height="60" frameX="0" frameY="0" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc1212" x="143" y="1" rotated="true" width="69" height="60" frameX="0" frameY="-3" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc1212sts" x="214" y="1" rotated="true" width="72" height="60" frameX="0" frameY="0" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc1412" x="288" y="1" rotated="true" width="70" height="60" frameX="0" frameY="-2" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc1416" x="360" y="1" rotated="true" width="72" height="60" frameX="0" frameY="-1" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc1416sts" x="434" y="1" rotated="true" width="73" height="60"/>
+    <SubTexture name="bc1609" x="509" y="1" rotated="true" width="67" height="60" frameX="0" frameY="-5" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc1609sts" x="578" y="1" rotated="true" width="72" height="60" frameX="0" frameY="0" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc1612" x="652" y="1" rotated="true" width="68" height="60" frameX="0" frameY="-4" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc1612sts" x="722" y="1" rotated="true" width="72" height="60" frameX="0" frameY="0" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc1616" x="796" y="1" rotated="true" width="72" height="60" frameX="0" frameY="-1" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc1616sts" x="870" y="1" rotated="true" width="73" height="60"/>
+    <SubTexture name="bc1909hr" x="1" y="63" rotated="true" width="72" height="60" frameX="0" frameY="0" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc2209mhr" x="75" y="63" rotated="true" width="72" height="60" frameX="0" frameY="0" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="bc2316sts" x="149" y="63" rotated="true" width="73" height="60"/>
+    <SubTexture name="pure1" x="808" y="63" rotated="true" width="72" height="60" frameX="0" frameY="0" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="pure1ats" x="882" y="63" rotated="true" width="72" height="60" frameX="0" frameY="0" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="rc1209" x="1" y="125" rotated="true" width="72" height="60" frameX="0" frameY="0" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="rc1411" x="75" y="125" rotated="true" width="73" height="60"/>
+    <SubTexture name="rcmove" x="150" y="125" rotated="true" width="71" height="60" frameX="0" frameY="-1" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="rox8" x="436" y="125" rotated="true" width="70" height="60" frameX="0" frameY="-2" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="rox9" x="577" y="125" rotated="true" width="71" height="60" frameX="0" frameY="-1" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="rox50" x="297" y="125" rotated="true" width="66" height="60" frameX="0" frameY="-6" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="rox60" x="365" y="125" rotated="true" width="69" height="60" frameX="0" frameY="-3" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="rox80" x="436" y="125" rotated="true" width="70" height="60" frameX="0" frameY="-2" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="rox81" x="508" y="125" rotated="true" width="67" height="60" frameX="0" frameY="-5" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="rox90" x="650" y="125" rotated="true" width="71" height="60" frameX="0" frameY="-1" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="rox91" x="723" y="125" rotated="true" width="67" height="60" frameX="0" frameY="-5" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="rox100gps" x="223" y="125" rotated="true" width="72" height="60" frameX="0" frameY="-1" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="roxgps70" x="867" y="125" rotated="true" width="72" height="60" frameX="0" frameY="-1" frameWidth="60" frameHeight="73"/>
+    <SubTexture name="roxgps110" x="792" y="125" rotated="true" width="73" height="60"/>
+    <SubTexture name="unknown" x="941" y="125" rotated="true" width="72" height="60" frameX="0" frameY="0" frameWidth="60" frameHeight="73"/>
+</TextureAtlas>
+

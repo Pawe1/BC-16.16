@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:ab6a9f51487d255cca0016484b820d4e:bd54b2fec080380fa58e3eca22d23d3c:28c50367e0fc860e2c75433e9c63b3af$ -->
+<TextureAtlas imagePath="sportIcons.png" width="259" height="259">
+    <SubTexture name="sportTypeAct" x="194" y="160" width="42" height="22" frameX="-4" frameY="-1" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeBigAct" x="193" y="1" width="58" height="30" frameX="-6" frameY="-2" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigBmx" x="191" y="33" width="58" height="30" frameX="-6" frameY="-2" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigCyc" x="65" y="34" width="62" height="29" frameX="-1" frameY="-3" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigCyx" x="1" y="1" width="63" height="31" frameX="-1" frameY="-1" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigEbi" x="129" y="32" width="60" height="30" frameX="-3" frameY="-2" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigEdo" x="1" y="197" rotated="true" width="27" height="61" frameX="-2" frameY="-5" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigFit" x="93" y="131" rotated="true" width="29" height="56" frameX="-8" frameY="-3" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigGlf" x="127" y="65" width="53" height="31" frameX="-10" frameY="-1" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigHik" x="65" y="98" width="57" height="31" frameX="-7" frameY="-1" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigIcy" x="66" y="1" width="61" height="31" frameX="-3" frameY="-1" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigIls" x="1" y="131" width="58" height="31" frameX="-5" frameY="-1" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigMtb" x="1" y="67" width="62" height="30" frameX="-1" frameY="-2" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigOth" x="1" y="164" width="58" height="31" frameX="-6" frameY="-1" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigRcb" x="129" y="1" width="62" height="29" frameX="-1" frameY="-3" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigRun" x="61" y="131" rotated="true" width="30" height="58" frameX="-5" frameY="-2" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigSki" x="30" y="197" rotated="true" width="27" height="61" frameX="-2" frameY="-5" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigSnb" x="1" y="99" width="61" height="30" frameX="-2" frameY="-2" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigSwm" x="124" y="98" rotated="true" width="27" height="58" frameX="-5" frameY="-5" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigTri" x="1" y="34" width="62" height="31" frameX="-1" frameY="-1" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigTrm" x="65" y="65" width="60" height="31" frameX="-3" frameY="-1" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBigWlk" x="153" y="98" rotated="true" width="31" height="56" frameX="-8" frameY="-1" frameWidth="66" frameHeight="36"/>
+    <SubTexture name="sportTypeBmx" x="167" y="208" width="42" height="22" frameX="-4" frameY="-1" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeCyc" x="210" y="90" rotated="true" width="21" height="45" frameX="-1" frameY="-2" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeCyx" x="182" y="65" width="45" height="23" frameX="-1" frameY="-1" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeEbi" x="149" y="160" width="43" height="22" frameX="-2" frameY="-1" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeEdo" x="83" y="191" rotated="true" width="20" height="44" frameX="-2" frameY="-3" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeFit" x="83" y="237" width="40" height="21" frameX="-6" frameY="-2" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeGlf" x="124" y="158" rotated="true" width="23" height="39" frameX="-7" frameY="0" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeHik" x="195" y="184" width="41" height="22" frameX="-5" frameY="-1" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeIcy" x="105" y="199" width="43" height="23" frameX="-3" frameY="0" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeIls" x="167" y="232" width="42" height="22" frameX="-4" frameY="-1" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeMtb" x="186" y="90" rotated="true" width="22" height="45" frameX="-1" frameY="-1" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeOth" x="211" y="208" rotated="true" width="22" height="42" frameX="-4" frameY="-1" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeRcb" x="186" y="137" width="45" height="21" frameX="-1" frameY="-2" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeRun" x="235" y="208" rotated="true" width="22" height="42" frameX="-3" frameY="-1" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeSki" x="233" y="65" rotated="true" width="20" height="44" frameX="-1" frameY="-3" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeSnb" x="59" y="197" rotated="true" width="22" height="45" frameX="-1" frameY="-1" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeSwm" x="238" y="157" rotated="true" width="20" height="41" frameX="-4" frameY="-3" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeTri" x="233" y="111" rotated="true" width="23" height="44" frameX="-1" frameY="-1" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeTrm" x="150" y="184" width="43" height="22" frameX="-2" frameY="-1" frameWidth="47" frameHeight="26"/>
+    <SubTexture name="sportTypeWlk" x="125" y="224" width="40" height="23" frameX="-6" frameY="-1" frameWidth="47" frameHeight="26"/>
+</TextureAtlas>
+

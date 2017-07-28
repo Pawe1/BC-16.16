@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<extension 
+	xmlns="http://ns.adobe.com/air/extension/23.0">
+	<id>de.pagecon.ane.notificationlistenerservice</id>
+	<versionNumber>1</versionNumber>
+	<platforms>
+		<platform 
+			name="Android-ARM">
+			<applicationDeployment>
+				<nativeLibrary>NotificationListenerServiceAneLibAndroid.jar</nativeLibrary>
+				<initializer>de.pagecon.ane.notificationlistenerservice.Extension</initializer>
+				<finalizer>de.pagecon.ane.notificationlistenerservice.Extension</finalizer>
+			</applicationDeployment>
+		</platform>
+		<platform 
+			name="default">
+			<applicationDeployment />
+		</platform>
+
+	</platforms>
+</extension>
+

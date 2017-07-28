@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:37b8af3bc10e8038a8ed17ac7493a3cb:510880ac1ba06677c7d2199c7670155b:a33b95e80c70ce23d554a31ad2536a1b$ -->
+<TextureAtlas imagePath="cloudAnimation.png" width="1530" height="249">
+    <SubTexture name="frame_00" x="1" y="1" width="151" height="81"/>
+    <SubTexture name="frame_01" x="1" y="84" width="151" height="81"/>
+    <SubTexture name="frame_02" x="1" y="167" width="151" height="81"/>
+    <SubTexture name="frame_03" x="154" y="1" width="151" height="81"/>
+    <SubTexture name="frame_04" x="154" y="84" width="151" height="81"/>
+    <SubTexture name="frame_05" x="154" y="167" width="151" height="81"/>
+    <SubTexture name="frame_06" x="307" y="1" width="151" height="81"/>
+    <SubTexture name="frame_07" x="307" y="84" width="151" height="81"/>
+    <SubTexture name="frame_08" x="307" y="167" width="151" height="81"/>
+    <SubTexture name="frame_09" x="460" y="1" width="151" height="81"/>
+    <SubTexture name="frame_10" x="460" y="84" width="151" height="81"/>
+    <SubTexture name="frame_11" x="460" y="167" width="151" height="81"/>
+    <SubTexture name="frame_12" x="613" y="1" width="151" height="81"/>
+    <SubTexture name="frame_13" x="613" y="84" width="151" height="81"/>
+    <SubTexture name="frame_14" x="613" y="167" width="151" height="81"/>
+    <SubTexture name="frame_15" x="766" y="1" width="151" height="81"/>
+    <SubTexture name="frame_16" x="766" y="84" width="151" height="81"/>
+    <SubTexture name="frame_17" x="766" y="167" width="151" height="81"/>
+    <SubTexture name="frame_18" x="919" y="1" width="151" height="81"/>
+    <SubTexture name="frame_19" x="919" y="84" width="151" height="81"/>
+    <SubTexture name="frame_20" x="919" y="167" width="151" height="81"/>
+    <SubTexture name="frame_21" x="1072" y="1" width="151" height="81"/>
+    <SubTexture name="frame_22" x="1072" y="84" width="151" height="81"/>
+    <SubTexture name="frame_23" x="1072" y="167" width="151" height="81"/>
+    <SubTexture name="frame_24" x="1225" y="1" width="151" height="81"/>
+    <SubTexture name="frame_25" x="1378" y="1" width="151" height="81"/>
+    <SubTexture name="frame_26" x="1225" y="84" width="151" height="81"/>
+    <SubTexture name="frame_27" x="1378" y="84" width="151" height="81"/>
+    <SubTexture name="frame_28" x="1225" y="167" width="151" height="81"/>
+    <SubTexture name="frame_29" x="1" y="1" width="151" height="81"/>
+</TextureAtlas>
+
