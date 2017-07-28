@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:e708411e0e370dc977e9417c5784cf63:6827788225be5c0024d3195de972e20c:ae9880001d85fe8b9f79d39ff644ebbd$ -->
+<TextureAtlas imagePath="sigma_mobile.png" width="717" height="717">
+    <SubTexture name="background-dark-border-skin" x="574" y="704" width="10" height="10"/>
+    <SubTexture name="background-disabled-skin" x="291" y="600" width="32" height="32"/>
+    <SubTexture name="background-down-skin - Kopie" x="658" y="622" width="32" height="32"/>
+    <SubTexture name="background-down-skin" x="658" y="658" width="32" height="32"/>
+    <SubTexture name="background-focused-skin - Kopie" x="296" y="680" width="32" height="32"/>
+    <SubTexture name="background-focused-skin" x="373" y="628" width="32" height="32"/>
+    <SubTexture name="background-inset-disabled-skin" x="332" y="672" width="32" height="32"/>
+    <SubTexture name="background-inset-skin - Kopie" x="409" y="634" width="32" height="32"/>
+    <SubTexture name="background-inset-skin" x="658" y="658" width="32" height="32"/>
+    <SubTexture name="background-light-border-skin" x="588" y="704" width="10" height="10"/>
+    <SubTexture name="background-list-skin" x="445" y="634" width="32" height="32"/>
+    <SubTexture name="background-popup-skin" x="373" y="664" width="32" height="32"/>
+    <SubTexture name="background-skin - Kopie" x="409" y="670" width="32" height="32"/>
+    <SubTexture name="background-skin" x="658" y="658" width="32" height="32"/>
+    <SubTexture name="button-back-disabled-skin" x="546" y="278" width="36" height="60"/>
+    <SubTexture name="button-back-down-skin" x="567" y="410" rotated="true" width="60" height="36"/>
+    <SubTexture name="button-back-up-skin" x="503" y="434" rotated="true" width="60" height="36"/>
+    <SubTexture name="button-call-to-action-down-skin" x="363" y="359" width="60" height="60"/>
+    <SubTexture name="button-call-to-action-up-skin" x="493" y="150" width="60" height="60"/>
+    <SubTexture name="button-danger-down-skin" x="227" y="508" width="60" height="60"/>
+    <SubTexture name="button-danger-up-skin" x="493" y="214" width="60" height="60"/>
+    <SubTexture name="button-disabled-skin" x="227" y="572" width="60" height="60"/>
+    <SubTexture name="button-down-skin" x="482" y="278" width="60" height="60"/>
+    <SubTexture name="button-forward-disabled-skin" x="567" y="450" rotated="true" width="60" height="36"/>
+    <SubTexture name="button-forward-down-skin" x="631" y="462" rotated="true" width="60" height="36"/>
+    <SubTexture name="button-forward-up-skin" x="427" y="455" rotated="true" width="60" height="36"/>
+    <SubTexture name="button-selected-disabled-skin" x="591" y="159" width="60" height="60"/>
+    <SubTexture name="button-selected-up-skin" x="591" y="223" width="60" height="60"/>
+    <SubTexture name="button-up-skin" x="363" y="423" width="60" height="60"/>
+    <SubTexture name="calendaricon" x="607" y="622" rotated="true" width="47" height="42"/>
+    <SubTexture name="call-to-action-button-down-skin" x="695" y="436" width="18" height="56"/>
+    <SubTexture name="call-to-action-button-up-skin" x="154" y="693" rotated="true" width="56" height="18"/>
+    <SubTexture name="callout-arrow-bottom-skin" x="698" y="538" rotated="true" width="16" height="40"/>
+    <SubTexture name="callout-arrow-left-skin" x="698" y="348" width="16" height="40"/>
+    <SubTexture name="callout-arrow-right-skin" x="698" y="392" width="16" height="40"/>
+    <SubTexture name="callout-arrow-top-skin" x="698" y="582" rotated="true" width="16" height="40"/>
+    <SubTexture name="check-down-icon" x="557" y="242" width="28" height="28"/>
+    <SubTexture name="check-selected-disabled-icon" x="325" y="558" width="28" height="28"/>
+    <SubTexture name="check-selected-down-icon" x="327" y="590" width="28" height="28"/>
+    <SubTexture name="check-selected-up-icon" x="327" y="590" width="28" height="28"/>
+    <SubTexture name="check-up-icon" x="557" y="242" width="28" height="28"/>
+    <SubTexture name="closeicon" x="285" y="636" width="40" height="40"/>
+    <SubTexture name="closeiconred" x="329" y="628" width="40" height="40"/>
+    <SubTexture name="customBusyIndicator" x="497" y="3" width="106" height="105"/>
+    <SubTexture name="customProgress" x="359" y="487" width="60" height="60"/>
+    <SubTexture name="danger-button-down-skin" x="214" y="695" rotated="true" width="56" height="18"/>
+    <SubTexture name="danger-button-up-skin" x="676" y="560" width="18" height="56"/>
+    <SubTexture name="first-inset-item-renderer-selected-up-skin" x="135" y="595" rotated="true" width="88" height="30"/>
+    <SubTexture name="first-inset-item-renderer-up-skin" x="356" y="325" rotated="true" width="88" height="30"/>
+    <SubTexture name="full-screen-toggle-button-enter-down-icon" x="655" y="159" width="59" height="59"/>
+    <SubTexture name="full-screen-toggle-button-enter-up-icon" x="655" y="222" width="59" height="59"/>
+    <SubTexture name="full-screen-toggle-button-exit-down-icon" x="614" y="560" width="58" height="58"/>
+    <SubTexture name="full-screen-toggle-button-exit-up-icon" x="487" y="591" width="58" height="58"/>
+    <SubTexture name="header-background-skin" x="233" y="139" width="256" height="128"/>
+    <SubTexture name="header-popup-background-skin" x="233" y="3" width="260" height="132"/>
+    <SubTexture name="horizontal-scroll-bar-thumb-skin" x="516" y="704" width="26" height="10"/>
+    <SubTexture name="horizontal-simple-scroll-bar-thumb-skin" x="546" y="704" width="24" height="10"/>
+    <SubTexture name="inset-item-renderer-selected-up-skin" x="3" y="688" rotated="true" width="88" height="10"/>
+    <SubTexture name="inset-item-renderer-up-skin" x="3" y="688" rotated="true" width="88" height="10"/>
+    <SubTexture name="item-renderer-selected-up-skin" x="3" y="702" rotated="true" width="88" height="6"/>
+    <SubTexture name="item-renderer-up-skin" x="3" y="702" rotated="true" width="88" height="6"/>
+    <SubTexture name="kleinerpfeil" x="681" y="538" width="13" height="15"/>
+    <SubTexture name="last-inset-item-renderer-selected-up-skin" x="448" y="271" width="30" height="88"/>
+    <SubTexture name="last-inset-item-renderer-up-skin" x="557" y="150" width="30" height="88"/>
+    <SubTexture name="list-accessory-drill-down-icon" x="517" y="653" width="18" height="26"/>
+    <SubTexture name="list-accessory-drill-down-selected-icon" x="481" y="689" width="17" height="25"/>
+    <SubTexture name="list-inset-item-first-selected-skin" x="607" y="95" rotated="true" width="88" height="28"/>
+    <SubTexture name="list-inset-item-first-up-skin" x="601" y="127" rotated="true" width="88" height="28"/>
+    <SubTexture name="list-inset-item-last-selected-skin" x="439" y="363" width="28" height="88"/>
+    <SubTexture name="list-inset-item-last-up-skin" x="471" y="363" width="28" height="88"/>
+    <SubTexture name="list-inset-item-selected-skin" x="427" y="359" width="8" height="88"/>
+    <SubTexture name="list-inset-item-single-selected-skin" x="503" y="342" width="28" height="88"/>
+    <SubTexture name="list-inset-item-single-up-skin" x="535" y="342" width="28" height="88"/>
+    <SubTexture name="list-inset-item-up-skin" x="427" y="359" width="8" height="88"/>
+    <SubTexture name="list-item-selected-skin" x="427" y="359" width="8" height="88"/>
+    <SubTexture name="list-item-up-skin" x="427" y="359" width="8" height="88"/>
+    <SubTexture name="mute-toggle-button-loud-down-icon" x="95" y="634" rotated="true" width="55" height="63"/>
+    <SubTexture name="mute-toggle-button-loud-up-icon" x="218" y="636" width="63" height="55"/>
+    <SubTexture name="mute-toggle-button-muted-down-icon" x="631" y="407" width="60" height="51" frameX="0" frameY="-2" frameWidth="63" frameHeight="55"/>
+    <SubTexture name="mute-toggle-button-muted-up-icon" x="359" y="551" width="60" height="51" frameX="0" frameY="-2" frameWidth="63" frameHeight="55"/>
+    <SubTexture name="overlay-play-pause-toggle-button-play-down-icon" x="3" y="3" width="226" height="246"/>
+    <SubTexture name="overlay-play-pause-toggle-button-play-up-icon" x="3" y="253" width="226" height="246"/>
+    <SubTexture name="page-indicator-normal-skin" x="482" y="342" width="16" height="16"/>
+    <SubTexture name="page-indicator-selected-skin" x="633" y="668" width="16" height="16"/>
+    <SubTexture name="Pfeil-rechts-rot" x="681" y="538" width="13" height="15"/>
+    <SubTexture name="Pfeil-rot" x="681" y="538" width="13" height="15"/>
+    <SubTexture name="pfeilmitbg" x="549" y="611" width="54" height="53"/>
+    <SubTexture name="picker-list-icon-disabled" x="694" y="626" width="20" height="22"/>
+    <SubTexture name="picker-list-icon" x="694" y="652" width="20" height="22"/>
+    <SubTexture name="picker-list-item-selected-icon" x="681" y="502" rotated="true" width="33" height="32"/>
+    <SubTexture name="play-pause-toggle-button-pause-down-icon" x="655" y="285" width="59" height="59"/>
+    <SubTexture name="play-pause-toggle-button-pause-up-icon" x="555" y="490" width="59" height="59"/>
+    <SubTexture name="play-pause-toggle-button-play-down-icon" x="618" y="502" rotated="true" width="59" height="54"/>
+    <SubTexture name="play-pause-toggle-button-play-up-icon" x="551" y="553" rotated="true" width="59" height="54"/>
+    <SubTexture name="playbutton" x="3" y="503" width="128" height="127"/>
+    <SubTexture name="radio-icon" x="445" y="670" width="32" height="32"/>
+    <SubTexture name="radio-selected-disabled-icon" x="481" y="653" width="32" height="32"/>
+    <SubTexture name="radio-selected-down-icon" x="539" y="668" width="32" height="32"/>
+    <SubTexture name="radio-selected-up-icon" x="539" y="668" width="32" height="32"/>
+    <SubTexture name="red-button-down-skin" x="154" y="629" width="60" height="60"/>
+    <SubTexture name="red-button-up-skin" x="567" y="346" width="60" height="60"/>
+    <SubTexture name="search-icon-disabled" x="274" y="695" width="18" height="19"/>
+    <SubTexture name="search-icon" x="611" y="668" width="18" height="19"/>
+    <SubTexture name="seek-slider-progress-skin" x="575" y="668" width="32" height="32"/>
+    <SubTexture name="single-inset-item-renderer-selected-up-skin" x="291" y="508" width="30" height="88"/>
+    <SubTexture name="single-inset-item-renderer-up-skin" x="325" y="466" width="30" height="88"/>
+    <SubTexture name="spinner-list-background-skin" x="699" y="3" width="8" height="88"/>
+    <SubTexture name="spinner-list-selection-overlay-skin" x="3" y="688" rotated="true" width="88" height="10" frameX="-7" frameY="0" frameWidth="24" frameHeight="88"/>
+    <SubTexture name="tab-disabled-skin" x="3" y="634" rotated="true" width="88" height="50"/>
+    <SubTexture name="tab-down-skin" x="135" y="503" width="88" height="88"/>
+    <SubTexture name="tab-selected-disabled-skin" x="607" y="3" width="88" height="88"/>
+    <SubTexture name="tab-selected-skin" x="233" y="362" width="88" height="88"/>
+    <SubTexture name="tab-selected-up-skin" x="356" y="271" rotated="true" width="88" height="50"/>
+    <SubTexture name="tab-up-skin" x="233" y="454" rotated="true" width="88" height="50"/>
+    <SubTexture name="toggle-button-selected-disabled-skin" x="359" y="606" rotated="true" width="56" height="18"/>
+    <SubTexture name="toggle-button-selected-up-skin" x="419" y="612" rotated="true" width="56" height="18"/>
+    <SubTexture name="vertical-scroll-bar-thumb-skin" x="699" y="95" width="10" height="26"/>
+    <SubTexture name="vertical-simple-scroll-bar-thumb-skin" x="502" y="689" width="10" height="24"/>
+    <SubTexture name="videoicon" x="233" y="271" width="119" height="87"/>
+    <SubTexture name="volume-slider-maximum-track-skin" x="325" y="362" rotated="true" width="34" height="100"/>
+    <SubTexture name="volume-slider-minimum-track-skin" x="497" y="112" width="100" height="34"/>
+    <SubTexture name="volume-toggle-button-loud-down-icon" x="586" y="287" width="63" height="55"/>
+    <SubTexture name="volume-toggle-button-loud-up-icon" x="631" y="348" width="63" height="55"/>
+    <SubTexture name="volume-toggle-button-muted-down-icon" x="423" y="559" width="60" height="49" frameX="-1" frameY="-3" frameWidth="63" frameHeight="55"/>
+    <SubTexture name="volume-toggle-button-muted-up-icon" x="491" y="474" width="60" height="49" frameX="-1" frameY="-3" frameWidth="63" frameHeight="55"/>
+    <SubTexture name="white-button-down-skin" x="423" y="495" width="60" height="60"/>
+    <SubTexture name="white-button-up-skin" x="487" y="527" width="60" height="60"/>
+</TextureAtlas>
