@@ -53,24 +53,24 @@ public class GestureListener implements OnGestureListener, OnDoubleTapListener, 
 
     private class TouchPoint {
         private int pid;
-        private float f308x;
-        private float f309y;
+        private float f320x;
+        private float f321y;
 
         TouchPoint() {
-            this.f308x = 0.0f;
-            this.f309y = 0.0f;
+            this.f320x = 0.0f;
+            this.f321y = 0.0f;
             this.pid = 0;
         }
 
         TouchPoint(float f, float f2, int i) {
-            this.f308x = f;
-            this.f309y = f2;
+            this.f320x = f;
+            this.f321y = f2;
             this.pid = i;
         }
 
         private void assign(float f, float f2, int i) {
-            this.f308x = f;
-            this.f309y = f2;
+            this.f320x = f;
+            this.f321y = f2;
             this.pid = i;
         }
     }
@@ -259,8 +259,8 @@ public class GestureListener implements OnGestureListener, OnDoubleTapListener, 
                         this.mCompanionView.onGestureListener(i, 1, true, x, y, 1.0f, 1.0f, f3, f4, f5);
                     } else if (this.mInPanTransformGesture) {
                         endPanGesture();
-                        setDownTouchPoint(touchPointArr[0].f308x, touchPointArr[0].f309y, touchPointArr[0].pid);
-                        setDownTouchPoint(touchPointArr[1].f308x, touchPointArr[1].f309y, touchPointArr[1].pid);
+                        setDownTouchPoint(touchPointArr[0].f320x, touchPointArr[0].f321y, touchPointArr[0].pid);
+                        setDownTouchPoint(touchPointArr[1].f320x, touchPointArr[1].f321y, touchPointArr[1].pid);
                     }
                 }
             }
@@ -268,8 +268,8 @@ public class GestureListener implements OnGestureListener, OnDoubleTapListener, 
             multitouchMode = motionEvent2.getPointerId(0);
             if (multitouchMode >= 0 && multitouchMode < 2 && this.mCheckForSwipe && motionEvent.getPointerCount() == 1) {
                 Object obj;
-                float x2 = motionEvent2.getX(0) - this.mDownTouchPoints[multitouchMode].f308x;
-                rotation = motionEvent2.getY(0) - this.mDownTouchPoints[multitouchMode].f309y;
+                float x2 = motionEvent2.getX(0) - this.mDownTouchPoints[multitouchMode].f320x;
+                rotation = motionEvent2.getY(0) - this.mDownTouchPoints[multitouchMode].f321y;
                 if ((Math.abs(x2) * MM_PER_INCH) / ((float) screenPPI) >= _FP_GESTURE_SWIPE_PRIMARY_AXIS_MIN_MM && (Math.abs(rotation) * MM_PER_INCH) / ((float) screenPPI) <= _FP_GESTURE_SWIPE_SECONDARY_AXIS_MAX_MM) {
                     f5 = 0.0f;
                     f4 = x2 > 0.0f ? 1.0f : -1.0f;
@@ -299,7 +299,7 @@ public class GestureListener implements OnGestureListener, OnDoubleTapListener, 
         if (multitouchMode != 2) {
             return true;
         }
-        this.mCompanionView.onGestureListener(8, 3, false, (this.mSecondaryPointOfTwoFingerTap.f308x + this.mPrimaryPointOfTwoFingerTap.f308x) / 2.0f, (this.mSecondaryPointOfTwoFingerTap.f309y + this.mPrimaryPointOfTwoFingerTap.f309y) / 2.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+        this.mCompanionView.onGestureListener(8, 3, false, (this.mSecondaryPointOfTwoFingerTap.f320x + this.mPrimaryPointOfTwoFingerTap.f320x) / 2.0f, (this.mSecondaryPointOfTwoFingerTap.f321y + this.mPrimaryPointOfTwoFingerTap.f321y) / 2.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f);
         this.mCouldBeTwoFingerTap = 0;
         return true;
     }
@@ -389,14 +389,14 @@ public class GestureListener implements OnGestureListener, OnDoubleTapListener, 
         if (touchPoint.pid != touchPoint3.pid || touchPoint2.pid != touchPoint4.pid) {
             return 0.0f;
         }
-        return (float) (((Math.atan2((double) (touchPoint4.f309y - touchPoint3.f309y), (double) (touchPoint4.f308x - touchPoint3.f308x)) * 180.0d) / 3.141592653589793d) - ((Math.atan2((double) (touchPoint2.f309y - touchPoint.f309y), (double) (touchPoint2.f308x - touchPoint.f308x)) * 180.0d) / 3.141592653589793d));
+        return (float) (((Math.atan2((double) (touchPoint4.f321y - touchPoint3.f321y), (double) (touchPoint4.f320x - touchPoint3.f320x)) * 180.0d) / 3.141592653589793d) - ((Math.atan2((double) (touchPoint2.f321y - touchPoint.f321y), (double) (touchPoint2.f320x - touchPoint.f320x)) * 180.0d) / 3.141592653589793d));
     }
 
     private boolean isPanGesture(TouchPoint touchPoint, TouchPoint touchPoint2, TouchPoint touchPoint3, TouchPoint touchPoint4) {
-        float access$200 = touchPoint3.f308x - touchPoint.f308x;
-        float access$300 = touchPoint3.f309y - touchPoint.f309y;
-        float access$2002 = touchPoint4.f308x - touchPoint2.f308x;
-        float access$3002 = touchPoint4.f309y - touchPoint2.f309y;
+        float access$200 = touchPoint3.f320x - touchPoint.f320x;
+        float access$300 = touchPoint3.f321y - touchPoint.f321y;
+        float access$2002 = touchPoint4.f320x - touchPoint2.f320x;
+        float access$3002 = touchPoint4.f321y - touchPoint2.f321y;
         float min = Math.min(Math.abs(access$200), Math.abs(access$2002));
         float min2 = Math.min(Math.abs(access$300), Math.abs(access$3002));
         double sqrt = Math.sqrt((double) ((min * min) + (min2 * min2)));

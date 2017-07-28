@@ -26,8 +26,8 @@ public class AndroidMediaManager {
     private ActivityResultCallback mActivityResultCB = null;
     private boolean mCallbacksRegistered = false;
 
-    class C01011 implements ActivityResultCallback {
-        C01011() {
+    class C01091 implements ActivityResultCallback {
+        C01091() {
         }
 
         public void onActivityResult(int i, int i2, Intent intent) {
@@ -58,7 +58,7 @@ public class AndroidMediaManager {
         this.mCallbacksRegistered = z;
         if (z) {
             if (this.mActivityResultCB == null) {
-                this.mActivityResultCB = new C01011();
+                this.mActivityResultCB = new C01091();
             }
             AndroidActivityWrapper.GetAndroidActivityWrapper().addActivityResultListener(this.mActivityResultCB);
         } else if (this.mActivityResultCB != null) {
@@ -146,12 +146,12 @@ public class AndroidMediaManager {
     }
 
     private static final Bitmap SaveThumbnail(String str, ContentResolver contentResolver, Bitmap bitmap, long j, float f, float f2, int i) {
-        Uri insert;
         if (bitmap == null) {
             return null;
         }
         Matrix matrix = new Matrix();
         try {
+            Uri insert;
             matrix.setScale(f / ((float) bitmap.getWidth()), f2 / ((float) bitmap.getHeight()));
             Bitmap createBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
             ContentValues contentValues = new ContentValues(4);

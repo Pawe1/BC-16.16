@@ -59,7 +59,7 @@ public class GraphResponse {
         int size = list.size();
         List<GraphResponse> arrayList = new ArrayList(size);
         for (int i = 0; i < size; i++) {
-            arrayList.add(new GraphResponse((GraphRequest) list.get(i), httpURLConnection, new FacebookRequestError(httpURLConnection, facebookException)));
+            arrayList.add(new GraphResponse((GraphRequest) list.get(i), httpURLConnection, new FacebookRequestError(httpURLConnection, (Exception) facebookException)));
         }
         return arrayList;
     }
@@ -153,12 +153,6 @@ public class GraphResponse {
         } catch (Throwable e2) {
             Logger.log(LoggingBehavior.REQUESTS, RESPONSE_LOG_TAG, "Response <Error>: %s", e2);
             createResponsesFromStream = constructErrorResponses(graphRequestBatch, httpURLConnection, new FacebookException(e2));
-        } catch (Throwable e22) {
-            Logger.log(LoggingBehavior.REQUESTS, RESPONSE_LOG_TAG, "Response <Error>: %s", e22);
-            createResponsesFromStream = constructErrorResponses(graphRequestBatch, httpURLConnection, new FacebookException(e22));
-        } catch (Throwable e222) {
-            Logger.log(LoggingBehavior.REQUESTS, RESPONSE_LOG_TAG, "Response <Error>: %s", e222);
-            createResponsesFromStream = constructErrorResponses(graphRequestBatch, httpURLConnection, new FacebookException(e222));
         } finally {
             Utility.closeQuietly(closeable);
         }

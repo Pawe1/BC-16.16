@@ -1,12 +1,27 @@
 package com.facebook.share.internal;
 
 import android.os.Parcel;
+import android.os.Parcelable.Creator;
 import com.facebook.share.model.ShareModel;
 import com.facebook.share.model.ShareModelBuilder;
 
 public class LikeContent implements ShareModel {
+    public static final Creator<LikeContent> CREATOR = new C03261();
     private final String objectId;
     private final String objectType;
+
+    final class C03261 implements Creator<LikeContent> {
+        C03261() {
+        }
+
+        public final LikeContent createFromParcel(Parcel parcel) {
+            return new LikeContent(parcel);
+        }
+
+        public final LikeContent[] newArray(int i) {
+            return new LikeContent[i];
+        }
+    }
 
     public static class Builder implements ShareModelBuilder<LikeContent, Builder> {
         private String objectId;
@@ -14,10 +29,6 @@ public class LikeContent implements ShareModel {
 
         public LikeContent build() {
             return new LikeContent();
-        }
-
-        public Builder readFrom(Parcel parcel) {
-            return readFrom((LikeContent) parcel.readParcelable(LikeContent.class.getClassLoader()));
         }
 
         public Builder readFrom(LikeContent likeContent) {

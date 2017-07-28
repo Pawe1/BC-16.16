@@ -1,17 +1,34 @@
 package com.facebook.share.model;
 
 import android.os.Parcel;
-import java.util.ArrayList;
+import android.os.Parcelable.Creator;
+import android.text.TextUtils;
+import java.util.Arrays;
+import java.util.List;
 
 public final class GameRequestContent implements ShareModel {
+    public static final Creator<GameRequestContent> CREATOR = new C03491();
     private final ActionType actionType;
     private final String data;
     private final Filters filters;
     private final String message;
     private final String objectId;
-    private final ArrayList<String> suggestions;
+    private final List<String> recipients;
+    private final List<String> suggestions;
     private final String title;
-    private final String to;
+
+    final class C03491 implements Creator<GameRequestContent> {
+        C03491() {
+        }
+
+        public final GameRequestContent createFromParcel(Parcel parcel) {
+            return new GameRequestContent(parcel);
+        }
+
+        public final GameRequestContent[] newArray(int i) {
+            return new GameRequestContent[i];
+        }
+    }
 
     public enum ActionType {
         SEND,
@@ -25,20 +42,20 @@ public final class GameRequestContent implements ShareModel {
         private Filters filters;
         private String message;
         private String objectId;
-        private ArrayList<String> suggestions;
+        private List<String> recipients;
+        private List<String> suggestions;
         private String title;
-        private String to;
 
         public GameRequestContent build() {
             return new GameRequestContent();
         }
 
-        public Builder readFrom(Parcel parcel) {
+        Builder readFrom(Parcel parcel) {
             return readFrom((GameRequestContent) parcel.readParcelable(GameRequestContent.class.getClassLoader()));
         }
 
         public Builder readFrom(GameRequestContent gameRequestContent) {
-            return gameRequestContent == null ? this : setMessage(gameRequestContent.getMessage()).setTo(gameRequestContent.getTo()).setTitle(gameRequestContent.getTitle()).setData(gameRequestContent.getData()).setActionType(gameRequestContent.getActionType()).setObjectId(gameRequestContent.getObjectId()).setFilters(gameRequestContent.getFilters()).setSuggestions(gameRequestContent.getSuggestions());
+            return gameRequestContent == null ? this : setMessage(gameRequestContent.getMessage()).setRecipients(gameRequestContent.getRecipients()).setTitle(gameRequestContent.getTitle()).setData(gameRequestContent.getData()).setActionType(gameRequestContent.getActionType()).setObjectId(gameRequestContent.getObjectId()).setFilters(gameRequestContent.getFilters()).setSuggestions(gameRequestContent.getSuggestions());
         }
 
         public Builder setActionType(ActionType actionType) {
@@ -66,8 +83,13 @@ public final class GameRequestContent implements ShareModel {
             return this;
         }
 
-        public Builder setSuggestions(ArrayList<String> arrayList) {
-            this.suggestions = arrayList;
+        public Builder setRecipients(List<String> list) {
+            this.recipients = list;
+            return this;
+        }
+
+        public Builder setSuggestions(List<String> list) {
+            this.suggestions = list;
             return this;
         }
 
@@ -77,7 +99,9 @@ public final class GameRequestContent implements ShareModel {
         }
 
         public Builder setTo(String str) {
-            this.to = str;
+            if (str != null) {
+                this.recipients = Arrays.asList(str.split(","));
+            }
             return this;
         }
     }
@@ -89,19 +113,19 @@ public final class GameRequestContent implements ShareModel {
 
     GameRequestContent(Parcel parcel) {
         this.message = parcel.readString();
-        this.to = parcel.readString();
+        this.recipients = parcel.createStringArrayList();
         this.title = parcel.readString();
         this.data = parcel.readString();
-        this.actionType = ActionType.valueOf(parcel.readString());
+        this.actionType = (ActionType) parcel.readSerializable();
         this.objectId = parcel.readString();
-        this.filters = Filters.valueOf(parcel.readString());
-        this.suggestions = new ArrayList();
+        this.filters = (Filters) parcel.readSerializable();
+        this.suggestions = parcel.createStringArrayList();
         parcel.readStringList(this.suggestions);
     }
 
     private GameRequestContent(Builder builder) {
         this.message = builder.message;
-        this.to = builder.to;
+        this.recipients = builder.recipients;
         this.title = builder.title;
         this.data = builder.data;
         this.actionType = builder.actionType;
@@ -134,7 +158,11 @@ public final class GameRequestContent implements ShareModel {
         return this.objectId;
     }
 
-    public final ArrayList<String> getSuggestions() {
+    public final List<String> getRecipients() {
+        return this.recipients;
+    }
+
+    public final List<String> getSuggestions() {
         return this.suggestions;
     }
 
@@ -143,17 +171,17 @@ public final class GameRequestContent implements ShareModel {
     }
 
     public final String getTo() {
-        return this.to;
+        return getRecipients() != null ? TextUtils.join(",", getRecipients()) : null;
     }
 
     public final void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(this.message);
-        parcel.writeString(this.to);
+        parcel.writeStringList(this.recipients);
         parcel.writeString(this.title);
         parcel.writeString(this.data);
-        parcel.writeString(getActionType().toString());
-        parcel.writeString(getObjectId());
-        parcel.writeString(getFilters().toString());
-        parcel.writeStringList(getSuggestions());
+        parcel.writeSerializable(this.actionType);
+        parcel.writeString(this.objectId);
+        parcel.writeSerializable(this.filters);
+        parcel.writeStringList(this.suggestions);
     }
 }

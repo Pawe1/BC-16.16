@@ -1,6 +1,8 @@
 package com.facebook.internal;
 
 public class AnalyticsEvents {
+    public static final String EVENT_DEVICE_SHARE_BUTTON_CREATE = "fb_device_share_button_create";
+    public static final String EVENT_DEVICE_SHARE_BUTTON_DID_TAP = "fb_device_share_button_did_tap";
     public static final String EVENT_FRIEND_PICKER_USAGE = "fb_friend_picker_usage";
     public static final String EVENT_LIKE_BUTTON_CREATE = "fb_like_button_create";
     public static final String EVENT_LIKE_BUTTON_DID_TAP = "fb_like_button_did_tap";
@@ -34,6 +36,7 @@ public class AnalyticsEvents {
     public static final String EVENT_SHARE_BUTTON_DID_TAP = "fb_share_button_did_tap";
     public static final String EVENT_SHARE_DIALOG_SHOW = "fb_share_dialog_show";
     public static final String EVENT_SHARE_RESULT = "fb_share_dialog_result";
+    public static final String EVENT_SMART_LOGIN_SERVICE = "fb_smart_login_service";
     public static final String EVENT_USER_SETTINGS_USAGE = "fb_user_settings_vc_usage";
     public static final String EVENT_WEB_LOGIN_COMPLETE = "fb_dialogs_web_login_dialog_complete";
     public static final String PARAMETER_ACTION_ID = "action_id";

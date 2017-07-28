@@ -1,6 +1,7 @@
 package com.facebook.share.widget;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -15,9 +16,10 @@ import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.facebook.C0253R;
+import com.facebook.C0196R;
 import com.facebook.FacebookException;
 import com.facebook.internal.AnalyticsEvents;
+import com.facebook.internal.FragmentWrapper;
 import com.facebook.internal.NativeProtocol;
 import com.facebook.internal.Utility;
 import com.facebook.share.internal.LikeActionController;
@@ -25,8 +27,8 @@ import com.facebook.share.internal.LikeActionController.CreationCallback;
 import com.facebook.share.internal.LikeBoxCountView;
 import com.facebook.share.internal.LikeBoxCountView.LikeBoxCountViewCaretPosition;
 import com.facebook.share.internal.LikeButton;
-import p000c.p001m.p002x.p003a.gv.C0058n;
-import p000c.p001m.p002x.p003a.gv.at;
+import p000c.p001m.p002x.p003a.gv.C0073r;
+import p000c.p001m.p002x.p003a.gv.ax;
 
 public class LikeView extends FrameLayout {
     private static final int NO_FOREGROUND_COLOR = -1;
@@ -46,11 +48,11 @@ public class LikeView extends FrameLayout {
     private String objectId;
     private ObjectType objectType;
     private OnErrorListener onErrorListener;
-    private C0058n parentFragment;
+    private FragmentWrapper parentFragment;
     private TextView socialSentenceView;
 
-    class C03171 implements OnClickListener {
-        C03171() {
+    class C03701 implements OnClickListener {
+        C03701() {
         }
 
         public void onClick(View view) {
@@ -276,12 +278,12 @@ public class LikeView extends FrameLayout {
     private void associateWithLikeActionController(LikeActionController likeActionController) {
         this.likeActionController = likeActionController;
         this.broadcastReceiver = new LikeControllerBroadcastReceiver();
-        at a = at.m70a(getContext());
+        ax a = ax.m123a(getContext());
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(LikeActionController.ACTION_LIKE_ACTION_CONTROLLER_UPDATED);
         intentFilter.addAction(LikeActionController.ACTION_LIKE_ACTION_CONTROLLER_DID_ERROR);
         intentFilter.addAction(LikeActionController.ACTION_LIKE_ACTION_CONTROLLER_DID_RESET);
-        a.m73a(this.broadcastReceiver, intentFilter);
+        a.m126a(this.broadcastReceiver, intentFilter);
     }
 
     private Activity getActivity() {
@@ -306,10 +308,10 @@ public class LikeView extends FrameLayout {
     }
 
     private void initialize(Context context) {
-        this.edgePadding = getResources().getDimensionPixelSize(C0253R.dimen.com_facebook_likeview_edge_padding);
-        this.internalPadding = getResources().getDimensionPixelSize(C0253R.dimen.com_facebook_likeview_internal_padding);
+        this.edgePadding = getResources().getDimensionPixelSize(C0196R.dimen.com_facebook_likeview_edge_padding);
+        this.internalPadding = getResources().getDimensionPixelSize(C0196R.dimen.com_facebook_likeview_internal_padding);
         if (this.foregroundColor == -1) {
-            this.foregroundColor = getResources().getColor(C0253R.color.com_facebook_likeview_text_color);
+            this.foregroundColor = getResources().getColor(C0196R.color.com_facebook_likeview_text_color);
         }
         setBackgroundColor(0);
         this.containerView = new LinearLayout(context);
@@ -328,7 +330,7 @@ public class LikeView extends FrameLayout {
     private void initializeLikeButton(Context context) {
         boolean z = this.likeActionController != null && this.likeActionController.isObjectLiked();
         this.likeButton = new LikeButton(context, z);
-        this.likeButton.setOnClickListener(new C03171());
+        this.likeButton.setOnClickListener(new C03701());
         this.likeButton.setLayoutParams(new LinearLayout.LayoutParams(-2, -2));
     }
 
@@ -339,7 +341,7 @@ public class LikeView extends FrameLayout {
 
     private void initializeSocialSentenceView(Context context) {
         this.socialSentenceView = new TextView(context);
-        this.socialSentenceView.setTextSize(0, getResources().getDimension(C0253R.dimen.com_facebook_likeview_text_size));
+        this.socialSentenceView.setTextSize(0, getResources().getDimension(C0196R.dimen.com_facebook_likeview_text_size));
         this.socialSentenceView.setMaxLines(2);
         this.socialSentenceView.setTextColor(this.foregroundColor);
         this.socialSentenceView.setGravity(17);
@@ -348,23 +350,23 @@ public class LikeView extends FrameLayout {
 
     private void parseAttributes(AttributeSet attributeSet) {
         if (attributeSet != null && getContext() != null) {
-            TypedArray obtainStyledAttributes = getContext().obtainStyledAttributes(attributeSet, C0253R.styleable.com_facebook_like_view);
+            TypedArray obtainStyledAttributes = getContext().obtainStyledAttributes(attributeSet, C0196R.styleable.com_facebook_like_view);
             if (obtainStyledAttributes != null) {
-                this.objectId = Utility.coerceValueIfNullOrEmpty(obtainStyledAttributes.getString(C0253R.styleable.com_facebook_like_view_com_facebook_object_id), null);
-                this.objectType = ObjectType.fromInt(obtainStyledAttributes.getInt(C0253R.styleable.com_facebook_like_view_com_facebook_object_type, ObjectType.DEFAULT.getValue()));
-                this.likeViewStyle = Style.fromInt(obtainStyledAttributes.getInt(C0253R.styleable.com_facebook_like_view_com_facebook_style, Style.DEFAULT.getValue()));
+                this.objectId = Utility.coerceValueIfNullOrEmpty(obtainStyledAttributes.getString(C0196R.styleable.com_facebook_like_view_com_facebook_object_id), null);
+                this.objectType = ObjectType.fromInt(obtainStyledAttributes.getInt(C0196R.styleable.com_facebook_like_view_com_facebook_object_type, ObjectType.DEFAULT.getValue()));
+                this.likeViewStyle = Style.fromInt(obtainStyledAttributes.getInt(C0196R.styleable.com_facebook_like_view_com_facebook_style, Style.DEFAULT.getValue()));
                 if (this.likeViewStyle == null) {
                     throw new IllegalArgumentException("Unsupported value for LikeView 'style'");
                 }
-                this.auxiliaryViewPosition = AuxiliaryViewPosition.fromInt(obtainStyledAttributes.getInt(C0253R.styleable.com_facebook_like_view_com_facebook_auxiliary_view_position, AuxiliaryViewPosition.DEFAULT.getValue()));
+                this.auxiliaryViewPosition = AuxiliaryViewPosition.fromInt(obtainStyledAttributes.getInt(C0196R.styleable.com_facebook_like_view_com_facebook_auxiliary_view_position, AuxiliaryViewPosition.DEFAULT.getValue()));
                 if (this.auxiliaryViewPosition == null) {
                     throw new IllegalArgumentException("Unsupported value for LikeView 'auxiliary_view_position'");
                 }
-                this.horizontalAlignment = HorizontalAlignment.fromInt(obtainStyledAttributes.getInt(C0253R.styleable.com_facebook_like_view_com_facebook_horizontal_alignment, HorizontalAlignment.DEFAULT.getValue()));
+                this.horizontalAlignment = HorizontalAlignment.fromInt(obtainStyledAttributes.getInt(C0196R.styleable.com_facebook_like_view_com_facebook_horizontal_alignment, HorizontalAlignment.DEFAULT.getValue()));
                 if (this.horizontalAlignment == null) {
                     throw new IllegalArgumentException("Unsupported value for LikeView 'horizontal_alignment'");
                 }
-                this.foregroundColor = obtainStyledAttributes.getColor(C0253R.styleable.com_facebook_like_view_com_facebook_foreground_color, -1);
+                this.foregroundColor = obtainStyledAttributes.getColor(C0196R.styleable.com_facebook_like_view_com_facebook_foreground_color, -1);
                 obtainStyledAttributes.recycle();
             }
         }
@@ -384,7 +386,7 @@ public class LikeView extends FrameLayout {
 
     private void tearDownObjectAssociations() {
         if (this.broadcastReceiver != null) {
-            at.m70a(getContext()).m72a(this.broadcastReceiver);
+            ax.m123a(getContext()).m125a(this.broadcastReceiver);
             this.broadcastReceiver = null;
         }
         if (this.creationCallback != null) {
@@ -530,8 +532,12 @@ public class LikeView extends FrameLayout {
         }
     }
 
-    public void setFragment(C0058n c0058n) {
-        this.parentFragment = c0058n;
+    public void setFragment(Fragment fragment) {
+        this.parentFragment = new FragmentWrapper(fragment);
+    }
+
+    public void setFragment(C0073r c0073r) {
+        this.parentFragment = new FragmentWrapper(c0073r);
     }
 
     public void setHorizontalAlignment(HorizontalAlignment horizontalAlignment) {

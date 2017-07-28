@@ -9,19 +9,28 @@ import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
 import android.nfc.Tag;
+import android.os.Environment;
 import android.util.Log;
+import com.nxp.NxpNtag;
 import com.sigmasport.RecordsBase;
 import com.sigmasport.nfctag.NfcTag;
 import com.sigmasport.protocol.SigmaProtocolMsgNtagHandler;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class Manager {
-    public static boolean DEBUG_MODE = true;
+    public static boolean DEBUG_FILE = false;
+    public static boolean DEBUG_MODE = false;
     public static final int SUCCESS = 0;
-    public static final String TAG = "NFC ANE Android Layer";
+    private static String debugFileName = "NfcAneLog.txt";
     public static Manager instance = null;
     public static Boolean keepTagOpen = Boolean.valueOf(false);
+    private static File logFile;
     public static NfcTag mNfcTag;
     public static SigmaProtocolMsgNtagHandler mNtagHandler;
+    public static NxpNtag mNxpTag;
     public static Tag mTag;
     public Activity activity;
     public Intent intent;
@@ -29,14 +38,15 @@ public class Manager {
     public IntentFilter[] mFilters;
     public PendingIntent mPendingIntent;
     public int mReadSettingDataDelay;
-    private final BroadcastReceiver mReceiver = new C03781();
+    private final BroadcastReceiver mReceiver = new C04301();
     public String[][] mTechLists;
+    public int mWriteSleepTime;
     public ManagerListener managerListener;
     public NfcAdapter nfcAdapter;
     public NfcManager nfcManager;
 
-    class C03781 extends BroadcastReceiver {
-        C03781() {
+    class C04301 extends BroadcastReceiver {
+        C04301() {
         }
 
         public void onReceive(Context context, Intent intent) {
@@ -57,13 +67,38 @@ public class Manager {
 
     public static final void cLog(String msg) {
         if (DEBUG_MODE) {
-            Log.i(TAG, msg);
+            Log.i(BaseConfig.TAG, msg);
+            writeToFile(msg);
+        }
+    }
+
+    private static void writeToFile(String data) {
+        if (DEBUG_FILE) {
+            File folder = new File(Environment.getExternalStorageDirectory() + File.separator + "SIGMALink");
+            folder.mkdirs();
+            if (logFile == null) {
+                logFile = new File(folder, debugFileName);
+            }
+            try {
+                if (!logFile.exists()) {
+                    logFile.createNewFile();
+                }
+                FileOutputStream fOut = new FileOutputStream(logFile, true);
+                OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+                myOutWriter.append(new StringBuilder(String.valueOf(data)).append("\n").toString());
+                myOutWriter.close();
+                fOut.flush();
+                fOut.close();
+            } catch (IOException e) {
+                Log.i(BaseConfig.TAG, "Log-File write failed: " + e.toString());
+            }
         }
     }
 
     public static void dispose() {
         cLog("dispose");
         mTag = null;
+        mNxpTag = null;
         mNfcTag = null;
         mNtagHandler = null;
     }
@@ -80,8 +115,7 @@ public class Manager {
         this.activity = activity;
         this.managerListener = managerListener;
         this.nfcAdapter = NfcAdapter.getDefaultAdapter(activity);
-        this.mReadSettingDataDelay = BaseConfig.READ_SETTING_DATA_DELAY_TIMEOUT;
-        this.mEnterFifoModeDelay = BaseConfig.ENTER_FIFO_MODE_DELAY_TIMEOUT;
+        setDefaults();
         try {
             this.activity.registerReceiver(this.mReceiver, new IntentFilter("android.nfc.action.ADAPTER_STATE_CHANGED"));
         } catch (RuntimeException e) {
@@ -90,8 +124,18 @@ public class Manager {
         }
     }
 
+    public void setDefaults() {
+        this.mReadSettingDataDelay = BaseConfig.READ_SETTING_DATA_DELAY_TIMEOUT;
+        this.mEnterFifoModeDelay = BaseConfig.ENTER_FIFO_MODE_DELAY_TIMEOUT;
+        this.mWriteSleepTime = 10;
+    }
+
     public static void dispatchNfcStepResult(RecordsBase nfcRecord) {
         instance.managerListener.dispatchNfcResult(nfcRecord.toJson(), ExtensionContext.EVENT_NFC_STEP_RESULT_READY);
+    }
+
+    public static void dispatchNfcReset(RecordsBase nfcRecord) {
+        instance.managerListener.dispatchNfcResult(nfcRecord.toJson(), ExtensionContext.EVENT_NFC_STEP_RESULT_RESET);
     }
 
     public static void dispatchNfcError(RecordsBase nfcRecord) {
@@ -109,9 +153,9 @@ public class Manager {
         instance.managerListener.dispatchNfcResult(nfcRecord.toJson(), eventType);
     }
 
-    public void enableNfcForegroundDispatch() {
+    public void enableNfcForegroundDispatch(Activity a) {
         if (this.nfcAdapter != null) {
-            this.nfcAdapter.enableForegroundDispatch(this.activity, this.mPendingIntent, this.mFilters, this.mTechLists);
+            this.nfcAdapter.enableForegroundDispatch(a, this.mPendingIntent, this.mFilters, this.mTechLists);
         }
     }
 

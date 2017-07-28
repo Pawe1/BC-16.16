@@ -1,25 +1,39 @@
 package p000c.p001m.p002x.p003a.gv;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.LayoutInflater.Factory;
-import android.view.View;
+import android.util.Log;
+import java.io.Writer;
 
-final class be {
+public final class be extends Writer {
+    private final String f145a;
+    private StringBuilder f146b = new StringBuilder(128);
 
-    static class C0027a implements Factory {
-        final bg f122a;
+    public be(String str) {
+        this.f145a = str;
+    }
 
-        C0027a(bg bgVar) {
-            this.f122a = bgVar;
+    private void m169a() {
+        if (this.f146b.length() > 0) {
+            Log.d(this.f145a, this.f146b.toString());
+            this.f146b.delete(0, this.f146b.length());
         }
+    }
 
-        public View onCreateView(String str, Context context, AttributeSet attributeSet) {
-            return this.f122a.mo57a(null, str, context, attributeSet);
-        }
+    public final void close() {
+        m169a();
+    }
 
-        public final String toString() {
-            return getClass().getName() + "{" + this.f122a + "}";
+    public final void flush() {
+        m169a();
+    }
+
+    public final void write(char[] cArr, int i, int i2) {
+        for (int i3 = 0; i3 < i2; i3++) {
+            char c = cArr[i + i3];
+            if (c == '\n') {
+                m169a();
+            } else {
+                this.f146b.append(c);
+            }
         }
     }
 }

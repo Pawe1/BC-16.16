@@ -217,7 +217,6 @@ public class AndroidGcmRegistrationService extends IntentService {
     }
 
     private String getCustomData() {
-        String str;
         try {
             Object countryName;
             JSONObject jSONObject = new JSONObject();
@@ -227,6 +226,7 @@ public class AndroidGcmRegistrationService extends IntentService {
             Locale locale = Locale.getDefault();
             jSONObject.put("locale", locale.toString());
             String displayCountry = locale.getDisplayCountry(Locale.ENGLISH);
+            String str;
             try {
                 LocationManager locationManager = (LocationManager) getSystemService("location");
                 if (locationManager.isProviderEnabled("network")) {

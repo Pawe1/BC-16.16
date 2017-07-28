@@ -10,12 +10,12 @@ import android.view.View.OnSystemUiVisibilityChangeListener;
 public class SystemUiHiderHoneycomb extends SystemUiHiderBase {
     private int mHideFlags = 1;
     private int mShowFlags = 0;
-    private OnSystemUiVisibilityChangeListener mSystemUiVisibilityChangeListener = new C04401();
+    private OnSystemUiVisibilityChangeListener mSystemUiVisibilityChangeListener = new C04811();
     private int mTestFlags = 1;
     private boolean mVisible = true;
 
-    class C04401 implements OnSystemUiVisibilityChangeListener {
-        C04401() {
+    class C04811 implements OnSystemUiVisibilityChangeListener {
+        C04811() {
         }
 
         public void onSystemUiVisibilityChange(int vis) {

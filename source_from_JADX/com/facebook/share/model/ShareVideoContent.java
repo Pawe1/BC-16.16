@@ -4,14 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable.Creator;
 
 public final class ShareVideoContent extends ShareContent<ShareVideoContent, Builder> implements ShareModel {
-    public static final Creator<ShareVideoContent> CREATOR = new C02971();
+    public static final Creator<ShareVideoContent> CREATOR = new C03591();
     private final String contentDescription;
     private final String contentTitle;
     private final SharePhoto previewPhoto;
     private final ShareVideo video;
 
-    final class C02971 implements Creator<ShareVideoContent> {
-        C02971() {
+    final class C03591 implements Creator<ShareVideoContent> {
+        C03591() {
         }
 
         public final ShareVideoContent createFromParcel(Parcel parcel) {
@@ -31,10 +31,6 @@ public final class ShareVideoContent extends ShareContent<ShareVideoContent, Bui
 
         public final ShareVideoContent build() {
             return new ShareVideoContent();
-        }
-
-        public final Builder readFrom(Parcel parcel) {
-            return readFrom((ShareVideoContent) parcel.readParcelable(ShareVideoContent.class.getClassLoader()));
         }
 
         public final Builder readFrom(ShareVideoContent shareVideoContent) {

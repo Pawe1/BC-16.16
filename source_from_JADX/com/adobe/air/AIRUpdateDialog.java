@@ -18,8 +18,8 @@ public class AIRUpdateDialog extends Activity {
     private AndroidActivityWrapper actWrapper;
     private AlertDialog alertDialog = null;
 
-    class C00881 implements OnClickListener {
-        C00881() {
+    class C00931 implements OnClickListener {
+        C00931() {
         }
 
         public void onClick(DialogInterface dialogInterface, int i) {
@@ -28,8 +28,8 @@ public class AIRUpdateDialog extends Activity {
         }
     }
 
-    class C00892 implements OnKeyListener {
-        C00892() {
+    class C00942 implements OnKeyListener {
+        C00942() {
         }
 
         public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
@@ -47,8 +47,8 @@ public class AIRUpdateDialog extends Activity {
         sThis = this;
         this.actWrapper = AndroidActivityWrapper.CreateAndroidActivityWrapper(this, Boolean.valueOf(false));
         this.alertDialog = new Builder(this).setTitle(AndroidConstants.ADOBE_AIR).setMessage(AndroidLocale.GetLocalizedString(STRING_ID.IDA_RUNTIME_UPDATE_MESSAGE)).create();
-        this.alertDialog.setButton(-1, AndroidLocale.GetLocalizedString(STRING_ID.IDA_UPDATE), new C00881());
-        this.alertDialog.setOnKeyListener(new C00892());
+        this.alertDialog.setButton(-1, AndroidLocale.GetLocalizedString(STRING_ID.IDA_UPDATE), new C00931());
+        this.alertDialog.setOnKeyListener(new C00942());
         this.alertDialog.setCancelable(true);
         this.alertDialog.show();
     }

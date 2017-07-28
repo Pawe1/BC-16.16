@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat.Builder;
-import android.support.v7.appcompat.C0004R;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -85,7 +84,7 @@ public class AndroidGcmIntentService extends IntentService {
         sUniqueId = i;
         PendingIntent activity = PendingIntent.getActivity(this, i, intent, 1073741824);
         Builder builder = new Builder(this);
-        builder.setSmallIcon(C0004R.drawable.icon);
+        builder.setSmallIcon(2130837795);
         builder.setContentTitle(this.mGameTitle);
         builder.setContentText(this.mGameDesc);
         builder.setContentIntent(activity);

@@ -10,7 +10,7 @@ public class GetNativeAneVersion implements FREFunction {
         Manager.cLog("+++ GetNativeAneVersion +++");
         FREObject result = null;
         try {
-            result = FREObject.newObject(5);
+            result = FREObject.newObject(6);
         } catch (Exception e) {
             Manager.cLog("Error in GetNativeAneVersion: " + e.getMessage());
             e.printStackTrace();

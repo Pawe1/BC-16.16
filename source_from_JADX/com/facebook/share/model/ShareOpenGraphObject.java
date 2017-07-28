@@ -5,10 +5,10 @@ import android.os.Parcelable.Creator;
 import com.facebook.internal.NativeProtocol;
 
 public final class ShareOpenGraphObject extends ShareOpenGraphValueContainer<ShareOpenGraphObject, Builder> {
-    public static final Creator<ShareOpenGraphObject> CREATOR = new C02931();
+    public static final Creator<ShareOpenGraphObject> CREATOR = new C03551();
 
-    final class C02931 implements Creator<ShareOpenGraphObject> {
-        C02931() {
+    final class C03551 implements Creator<ShareOpenGraphObject> {
+        C03551() {
         }
 
         public final ShareOpenGraphObject createFromParcel(Parcel parcel) {
@@ -29,7 +29,7 @@ public final class ShareOpenGraphObject extends ShareOpenGraphValueContainer<Sha
             return new ShareOpenGraphObject();
         }
 
-        public final Builder readFrom(Parcel parcel) {
+        final Builder readFrom(Parcel parcel) {
             return (Builder) readFrom((ShareOpenGraphValueContainer) (ShareOpenGraphObject) parcel.readParcelable(ShareOpenGraphObject.class.getClassLoader()));
         }
     }

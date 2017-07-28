@@ -21,8 +21,8 @@ public class AndroidIdleState {
     private BroadcastReceiver sReceiver = null;
     private boolean sScreenOn = true;
 
-    class C01001 extends BroadcastReceiver {
-        C01001() {
+    class C01081 extends BroadcastReceiver {
+        C01081() {
         }
 
         public void onReceive(Context context, Intent intent) {
@@ -48,7 +48,7 @@ public class AndroidIdleState {
     private AndroidIdleState(Context context) {
         if (this.sReceiver == null) {
             try {
-                this.sReceiver = new C01001();
+                this.sReceiver = new C01081();
                 IntentFilter intentFilter = new IntentFilter("android.intent.action.SCREEN_ON");
                 intentFilter.addAction("android.intent.action.SCREEN_OFF");
                 context.registerReceiver(this.sReceiver, intentFilter);

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.support.v7.appcompat.C0004R;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,14 +27,14 @@ public class WandViewFlipper extends ViewFlipper implements WandView {
     private Listener mListener = null;
     private TouchSensor mTouchSensor = null;
 
-    class C01522 implements Runnable {
-        C01522() {
+    class C01622 implements Runnable {
+        C01622() {
         }
 
         public void run() {
             CharSequence access$300;
             boolean z;
-            ((ImageView) WandViewFlipper.this.mCompanionViewHolder.findViewById(C0004R.id.skin)).setImageResource(C0004R.color.transparent);
+            ((ImageView) WandViewFlipper.this.mCompanionViewHolder.findViewById(2131558927)).setImageResource(2131427386);
             WandViewFlipper.this.mCurrentViewIndex = 0;
             String str = "";
             if (WandViewFlipper.this.mListener != null) {
@@ -46,8 +45,8 @@ public class WandViewFlipper extends ViewFlipper implements WandView {
             } else {
                 access$300 = WandViewFlipper.getTokenString(str);
             }
-            ((TextView) WandViewFlipper.this.mDefaultView.findViewById(C0004R.id.token_string)).setText(access$300);
-            TextView textView = (TextView) WandViewFlipper.this.mDefaultView.findViewById(C0004R.id.token_desc);
+            ((TextView) WandViewFlipper.this.mDefaultView.findViewById(2131558931)).setText(access$300);
+            TextView textView = (TextView) WandViewFlipper.this.mDefaultView.findViewById(2131558932);
             if (WandViewFlipper.this.mListener.getConnectionToken().equals("")) {
                 z = false;
             } else {
@@ -58,8 +57,8 @@ public class WandViewFlipper extends ViewFlipper implements WandView {
         }
     }
 
-    class C01533 implements Runnable {
-        C01533() {
+    class C01633 implements Runnable {
+        C01633() {
         }
 
         public void run() {
@@ -88,20 +87,20 @@ public class WandViewFlipper extends ViewFlipper implements WandView {
         try {
             setKeepScreenOn(true);
             LayoutInflater from = LayoutInflater.from(context);
-            this.mDefaultView = from.inflate(C0004R.layout.wand_default, null);
-            this.mCompanionViewHolder = from.inflate(C0004R.layout.wand_companion, null);
+            this.mDefaultView = from.inflate(2130903234, null);
+            this.mCompanionViewHolder = from.inflate(2130903233, null);
             this.mDefaultView.getBackground().setDither(true);
-            TextView textView = (TextView) this.mDefaultView.findViewById(C0004R.id.title_string);
+            TextView textView = (TextView) this.mDefaultView.findViewById(2131558928);
             Typeface createFromAsset = Typeface.createFromAsset(context.getAssets(), DEFAULT_VIEW_FONT_ASSET);
             textView.setTypeface(createFromAsset);
-            ((TextView) this.mDefaultView.findViewById(C0004R.id.token_string)).setTypeface(createFromAsset);
-            ((TextView) this.mDefaultView.findViewById(C0004R.id.token_desc)).setTypeface(createFromAsset);
-            textView = (TextView) this.mDefaultView.findViewById(C0004R.id.title_desc);
+            ((TextView) this.mDefaultView.findViewById(2131558931)).setTypeface(createFromAsset);
+            ((TextView) this.mDefaultView.findViewById(2131558932)).setTypeface(createFromAsset);
+            textView = (TextView) this.mDefaultView.findViewById(2131558929);
             textView.setTypeface(createFromAsset);
             textView.setText(TITLE_DESCRIPTION_STRING);
             addView(this.mDefaultView, 0);
             addView(this.mCompanionViewHolder, 1);
-            this.mCompanionView = (CompanionView) this.mCompanionViewHolder.findViewById(C0004R.id.companion_view);
+            this.mCompanionView = (CompanionView) this.mCompanionViewHolder.findViewById(2131558925);
             this.mTouchSensor = this.mCompanionView.getTouchSensor();
             this.mCurrentViewIndex = 0;
         } catch (Exception e) {
@@ -138,7 +137,7 @@ public class WandViewFlipper extends ViewFlipper implements WandView {
         if (this.mCurrentViewIndex == 0) {
             throw new Exception("Companion view is not yet loaded.");
         }
-        final ImageView imageView = (ImageView) this.mCompanionViewHolder.findViewById(C0004R.id.skin);
+        final ImageView imageView = (ImageView) this.mCompanionViewHolder.findViewById(2131558927);
         Bitmap createScaledBitmap = Bitmap.createScaledBitmap(bitmap, imageView.getWidth(), (bitmap.getHeight() * imageView.getWidth()) / bitmap.getWidth(), true);
         if (createScaledBitmap != bitmap) {
             bitmap.recycle();
@@ -171,13 +170,13 @@ public class WandViewFlipper extends ViewFlipper implements WandView {
     }
 
     public void loadDefaultView() throws Exception {
-        ((Activity) getContext()).runOnUiThread(new C01522());
+        ((Activity) getContext()).runOnUiThread(new C01622());
     }
 
     public void loadCompanionView() throws Exception {
         if (this.mCurrentViewIndex != 1) {
             this.mCurrentViewIndex = 1;
-            ((Activity) getContext()).runOnUiThread(new C01533());
+            ((Activity) getContext()).runOnUiThread(new C01633());
         }
     }
 
@@ -206,8 +205,8 @@ public class WandViewFlipper extends ViewFlipper implements WandView {
                     } else {
                         access$300 = WandViewFlipper.getTokenString(str);
                     }
-                    ((TextView) WandViewFlipper.this.mDefaultView.findViewById(C0004R.id.token_string)).setText(access$300);
-                    ((TextView) WandViewFlipper.this.mDefaultView.findViewById(C0004R.id.token_desc)).setText(WandViewFlipper.getTokenDesc(!str.equals("")));
+                    ((TextView) WandViewFlipper.this.mDefaultView.findViewById(2131558931)).setText(access$300);
+                    ((TextView) WandViewFlipper.this.mDefaultView.findViewById(2131558932)).setText(WandViewFlipper.getTokenDesc(!str.equals("")));
                 }
             });
         }

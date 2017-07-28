@@ -54,8 +54,8 @@ public class AdobeAIRMainActivity extends Activity implements Receiver {
     private AndroidGcmResultReceiver mReceiver = null;
     private Tracker mTracker = null;
 
-    class C00781 implements Runnable {
-        C00781() {
+    class C01001 implements Runnable {
+        C01001() {
         }
 
         public void run() {
@@ -110,11 +110,11 @@ public class AdobeAIRMainActivity extends Activity implements Receiver {
             this.mNewUIThreshold = defaultSharedPreferences.getInt(PROPERTY_NEW_UI_PERCENTAGE, this.mNewUIThreshold);
             this.mEnableMyGamesThreshold = defaultSharedPreferences.getInt(PROPERTY_ENABLE_MY_GAMES_PERCENTAGE, this.mEnableMyGamesThreshold);
         }
-        onNewIntent(getIntent());
         Tracker tracker = getTracker();
         tracker.setScreenName(TAG);
         tracker.send(new AppViewBuilder().build());
         startService(new Intent(this, ShakeListenerService.class));
+        startActivity(new Intent(this, StaticPageActivity.class));
     }
 
     private void copyActivityLevelPrefsToApplicationLevel() {
@@ -249,7 +249,7 @@ public class AdobeAIRMainActivity extends Activity implements Receiver {
     private void decideDefaultActivityForNextLaunch() {
         if (this.mIsNewUISupported && Utils.isNetworkAvailable(getApplicationContext())) {
             configureTestEnv();
-            new Thread(new C00781()).start();
+            new Thread(new C01001()).start();
         }
     }
 

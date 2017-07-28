@@ -2,17 +2,17 @@
 <swc xmlns="http://www.adobe.com/flash/swccatalog/9">
     <versions>
         <swc version="1.2"/>
-        <flex version="4.7.0" build="354194" minimumSupportedVersion="3.0.0"/>
-        <compiler name="ActionScript Compiler" version="2.0.0" build="354194"/>
+        <flex version="4.7.0" build="354200" minimumSupportedVersion="3.0.0"/>
+        <compiler name="ActionScript Compiler" version="2.0.0" build="354200"/>
     </versions>
     <features>
         <feature-script-deps/>
     </features>
     <libraries>
         <library path="library.swf">
-            <script name="de/pagecon/ane/nfc/NfcController" mod="1481646403000">
+            <script name="de/pagecon/ane/nfc/NfcController" mod="1496231533000">
                 <def id="de.pagecon.ane.nfc:NfcController"/>
-                <dep id="Array" type="e"/>
+                <dep id="Array" type="s"/>
                 <dep id="Boolean" type="s"/>
                 <dep id="Error" type="e"/>
                 <dep id="Function" type="s"/>
@@ -23,6 +23,7 @@
                 <dep id="__AS3__.vec:Vector" type="e"/>
                 <dep id="de.pagecon.ane.nfc.debug:Debug" type="e"/>
                 <dep id="de.pagecon.ane.nfc.events:NfcEvent" type="e"/>
+                <dep id="de.pagecon.ane.nxptag:NxpTag" type="s"/>
                 <dep id="flash.desktop:NativeApplication" type="e"/>
                 <dep id="flash.events:Event" type="s"/>
                 <dep id="flash.events:EventDispatcher" type="i"/>
@@ -31,12 +32,7 @@
                 <dep id="flash.events:StatusEvent" type="s"/>
                 <dep id="flash.external:ExtensionContext" type="s"/>
                 <dep id="int" type="s"/>
-                <dep id="uint" type="e"/>
-            </script>
-            <script name="de/pagecon/ane/nfc/NfcProprietaryCmd" mod="1466516799000">
-                <def id="de.pagecon.ane.nfc:NfcProprietaryCmd"/>
-                <dep id="Object" type="i"/>
-                <dep id="int" type="s"/>
+                <dep id="uint" type="s"/>
             </script>
             <script name="de/pagecon/ane/nfc/data/EepromRecords" mod="1466516826000">
                 <def id="de.pagecon.ane.nfc.data:EepromRecords"/>
@@ -58,7 +54,7 @@
                 <dep id="trace" type="e"/>
                 <dep id="uint" type="e"/>
             </script>
-            <script name="de/pagecon/ane/nfc/events/NfcEvent" mod="1474019202000">
+            <script name="de/pagecon/ane/nfc/events/NfcEvent" mod="1494855329000">
                 <def id="de.pagecon.ane.nfc.events:NfcEvent"/>
                 <dep id="Array" type="s"/>
                 <dep id="Boolean" type="s"/>
@@ -68,8 +64,20 @@
                 <dep id="flash.events:Event" type="i"/>
                 <dep id="uint" type="s"/>
             </script>
+            <script name="de/pagecon/ane/nxptag/NxpHandler" mod="1489144776000">
+                <def id="de.pagecon.ane.nxptag:NxpHandler"/>
+                <dep id="Object" type="i"/>
+                <dep id="de.pagecon.ane.nfc:NfcController" type="e"/>
+            </script>
+            <script name="de/pagecon/ane/nxptag/NxpTag" mod="1489144950000">
+                <def id="de.pagecon.ane.nxptag:NxpTag"/>
+                <dep id="Boolean" type="s"/>
+                <dep id="de.pagecon.ane.nfc:NfcController" type="s"/>
+                <dep id="flash.events:EventDispatcher" type="i"/>
+                <dep id="uint" type="s"/>
+            </script>
             <digests>
-                <digest type="SHA-256" signed="false" value="e3deabae2bf6f39a4e8b0afbd12d6028b7da35bc65868eb213c1eb435c4d4d9b"/>
+                <digest type="SHA-256" signed="false" value="3ac785082543f7bae7ffe2a6ab85ec971d5bf5680a8173f01a0a06fe9a1feddc"/>
             </digests>
         </library>
     </libraries>

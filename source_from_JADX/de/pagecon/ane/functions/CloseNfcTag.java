@@ -6,11 +6,12 @@ import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import com.sigmasport.FlashRecords;
+import de.pagecon.ane.ErrorCodes;
 import de.pagecon.ane.nfc.Manager;
 
 @TargetApi(10)
 public class CloseNfcTag implements FREFunction {
-    FlashRecords flashRecord = new FlashRecords(0, 0, "");
+    FlashRecords flashRecord = new FlashRecords(0, 0, "", Boolean.valueOf(true));
 
     private class CloseNfcTagTask extends AsyncTask<Void, Void, Void> {
         private CloseNfcTagTask() {
@@ -29,6 +30,7 @@ public class CloseNfcTag implements FREFunction {
                 Manager.dispatchNfcCloseTagReady();
             } catch (Exception e) {
                 CloseNfcTag.this.flashRecord.errorMessage = e.getMessage();
+                CloseNfcTag.this.flashRecord.errorCode = ErrorCodes.ERR_CLOSE_NFC_TAG_FAILED;
                 Manager.dispatchNfcError(CloseNfcTag.this.flashRecord);
                 e.printStackTrace();
             }
@@ -42,6 +44,7 @@ public class CloseNfcTag implements FREFunction {
             new CloseNfcTagTask().execute(new Void[0]);
         } catch (IllegalStateException e) {
             this.flashRecord.errorMessage = e.getMessage();
+            this.flashRecord.errorCode = ErrorCodes.ERR_ASYNC_TASK_FAILED;
             Manager.dispatchNfcError(this.flashRecord);
             e.printStackTrace();
         }

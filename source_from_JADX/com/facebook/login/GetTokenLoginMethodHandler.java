@@ -19,11 +19,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 class GetTokenLoginMethodHandler extends LoginMethodHandler {
-    public static final Creator<GetTokenLoginMethodHandler> CREATOR = new C02283();
+    public static final Creator<GetTokenLoginMethodHandler> CREATOR = new C02763();
     private GetTokenClient getTokenClient;
 
-    final class C02283 implements Creator {
-        C02283() {
+    final class C02763 implements Creator {
+        C02763() {
         }
 
         public final GetTokenLoginMethodHandler createFromParcel(Parcel parcel) {

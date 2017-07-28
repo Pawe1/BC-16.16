@@ -13,7 +13,7 @@ public class GameRequestValidation {
         if ((i2 ^ i3) != 0) {
             throw new IllegalArgumentException("Object id should be provided if and only if action type is send or askfor");
         }
-        if (gameRequestContent.getTo() != null) {
+        if (gameRequestContent.getRecipients() != null) {
             i = 1;
         }
         if (gameRequestContent.getSuggestions() != null) {

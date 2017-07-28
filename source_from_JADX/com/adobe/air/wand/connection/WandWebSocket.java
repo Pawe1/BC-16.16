@@ -147,8 +147,8 @@ public class WandWebSocket implements Connection {
     private class WandSocketServer extends WebSocketServer {
         private boolean mHasStartedServer = false;
 
-        class C01431 extends TimerTask {
-            C01431() {
+        class C01581 extends TimerTask {
+            C01581() {
             }
 
             public void run() {
@@ -234,7 +234,7 @@ public class WandWebSocket implements Connection {
 
         private void scheduleHandshakeTimer() {
             try {
-                WandWebSocket.this.mHandshakeTimer.schedule(new C01431(), 30000);
+                WandWebSocket.this.mHandshakeTimer.schedule(new C01581(), 30000);
             } catch (Exception e) {
             }
         }

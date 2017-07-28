@@ -12,8 +12,8 @@ public class AndroidNetworkDetector {
     private long objReference;
     private boolean registered = false;
 
-    class C01021 extends BroadcastReceiver {
-        C01021() {
+    class C01101 extends BroadcastReceiver {
+        C01101() {
         }
 
         public void onReceive(Context context, Intent intent) {
@@ -32,7 +32,7 @@ public class AndroidNetworkDetector {
     public void RegisterForNetworkChange(Context context, long j) {
         if (!this.registered) {
             try {
-                this.mReceiver = new C01021();
+                this.mReceiver = new C01101();
                 this.objReference = j;
                 IntentFilter intentFilter = new IntentFilter();
                 intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");

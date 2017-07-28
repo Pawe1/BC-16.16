@@ -12,6 +12,7 @@ public class PauseFunction implements FREFunction {
         Manager.cLog("+++ PauseFunction +++");
         try {
             if (Manager.instance.nfcAdapter != null) {
+                Manager.cLog("disableForegroundDispatch");
                 Manager.instance.nfcAdapter.disableForegroundDispatch(freContext.getActivity());
             }
         } catch (Exception e) {

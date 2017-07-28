@@ -30,6 +30,19 @@ public class HDMIUtils {
     private boolean mHdmiOnOff = false;
     private boolean mHdmiStatusKnown = false;
 
+    private enum HDMIState {
+        UNKNOWN(0),
+        OFF(1),
+        ON(2),
+        HDCPON(3);
+        
+        public final int value;
+
+        private HDMIState(int i) {
+            this.value = i;
+        }
+    }
+
     class HdmiBroadcastReceiver extends BroadcastReceiver {
         HdmiBroadcastReceiver() {
         }
@@ -76,19 +89,6 @@ public class HDMIUtils {
 
         public void onServiceDisconnected(ComponentName componentName) {
             HDMIUtils.this.mHdmiStatusKnown = false;
-        }
-    }
-
-    private enum HDMIState {
-        UNKNOWN(0),
-        OFF(1),
-        ON(2),
-        HDCPON(3);
-        
-        public final int value;
-
-        private HDMIState(int i) {
-            this.value = i;
         }
     }
 

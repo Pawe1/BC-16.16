@@ -54,29 +54,29 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
 
     private class TouchPoint {
         private int pid;
-        private float f306x;
-        private float f307y;
+        private float f318x;
+        private float f319y;
 
         TouchPoint() {
-            this.f306x = 0.0f;
-            this.f307y = 0.0f;
+            this.f318x = 0.0f;
+            this.f319y = 0.0f;
             this.pid = 0;
         }
 
         TouchPoint(float f, float f2, int i) {
-            this.f306x = f;
-            this.f307y = f2;
+            this.f318x = f;
+            this.f319y = f2;
             this.pid = i;
         }
 
         private void assign(float f, float f2, int i) {
-            this.f306x = f;
-            this.f307y = f2;
+            this.f318x = f;
+            this.f319y = f2;
             this.pid = i;
         }
     }
 
-    private native boolean nativeOnGestureListener(int i, int i2, boolean z, float f, float f2, float f3, float f4, float f5, float f6, float f7);
+    private native boolean nativeOnGestureListener(int i, int i2, boolean z, float f, float f2, float f3, float f4, float f5, float f6, float f7, float f8);
 
     public AIRGestureListener(Context context, AIRWindowSurfaceView aIRWindowSurfaceView) {
         int i = 0;
@@ -157,7 +157,7 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
         int multitouchMode = this.mSurfaceView.getMultitouchMode();
         this.mSurfaceView.getClass();
         if (multitouchMode == 2 && this.mInRotateTransformGesture) {
-            nativeOnGestureListener(4, 2, true, this.mPreviousRotateLocX, this.mPreviousRotateLocY, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+            nativeOnGestureListener(4, 2, true, this.mPreviousRotateLocX, this.mPreviousRotateLocY, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
             this.mInRotateTransformGesture = false;
         }
     }
@@ -166,7 +166,7 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
         int multitouchMode = this.mSurfaceView.getMultitouchMode();
         this.mSurfaceView.getClass();
         if (multitouchMode == 2 && this.mInZoomTransformGesture) {
-            nativeOnGestureListener(4, 0, true, this.mPreviousZoomLocX, this.mPreviousZoomLocY, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+            nativeOnGestureListener(4, 0, true, this.mPreviousZoomLocX, this.mPreviousZoomLocY, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
             this.mInZoomTransformGesture = false;
             this.mInZoomTransformGestureX = false;
             this.mInZoomTransformGestureY = false;
@@ -177,7 +177,7 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
         int multitouchMode = this.mSurfaceView.getMultitouchMode();
         this.mSurfaceView.getClass();
         if (multitouchMode == 2 && this.mInPanTransformGesture) {
-            nativeOnGestureListener(4, 1, true, this.mPreviousPanLocX, this.mPreviousPanLocY, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+            nativeOnGestureListener(4, 1, true, this.mPreviousPanLocX, this.mPreviousPanLocY, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
             this.mInPanTransformGesture = false;
         }
     }
@@ -202,11 +202,13 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
         float f3 = 0.0f;
         float f4 = 0.0f;
         float f5 = 0.0f;
+        float x;
+        float y;
         float rotation;
         if (motionEvent2.getPointerCount() == 2) {
             int i = 1;
-            float x = (motionEvent2.getX(0) + motionEvent2.getX(1)) / 2.0f;
-            float y = (motionEvent2.getY(0) + motionEvent2.getY(1)) / 2.0f;
+            x = (motionEvent2.getX(0) + motionEvent2.getX(1)) / 2.0f;
+            y = (motionEvent2.getY(0) + motionEvent2.getY(1)) / 2.0f;
             TouchPoint[] touchPointArr = new TouchPoint[2];
             for (multitouchMode = 0; multitouchMode < 2; multitouchMode++) {
                 touchPointArr[multitouchMode] = new TouchPoint(motionEvent2.getX(multitouchMode), motionEvent2.getY(multitouchMode), motionEvent2.getPointerId(multitouchMode));
@@ -243,7 +245,7 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
                         this.mPreviousAbsoluteRotation = rotation;
                         this.mPreviousRotateLocX = x;
                         this.mPreviousRotateLocY = y;
-                        nativeOnGestureListener(i, 2, true, x, y, 1.0f, 1.0f, f3, 0.0f, 0.0f);
+                        nativeOnGestureListener(i, 2, true, x, y, 1.0f, 1.0f, f3, 0.0f, 0.0f, 0.0f);
                         f3 = 0.0f;
                     }
                 }
@@ -258,11 +260,11 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
                         f5 = -1.0f * f2;
                         this.mPreviousPanLocX = x;
                         this.mPreviousPanLocY = y;
-                        nativeOnGestureListener(i, 1, true, x, y, 1.0f, 1.0f, f3, f4, f5);
+                        nativeOnGestureListener(i, 1, true, x, y, 1.0f, 1.0f, f3, f4, f5, 0.0f);
                     } else if (this.mInPanTransformGesture) {
                         endPanGesture();
-                        setDownTouchPoint(touchPointArr[0].f306x, touchPointArr[0].f307y, touchPointArr[0].pid);
-                        setDownTouchPoint(touchPointArr[1].f306x, touchPointArr[1].f307y, touchPointArr[1].pid);
+                        setDownTouchPoint(touchPointArr[0].f318x, touchPointArr[0].f319y, touchPointArr[0].pid);
+                        setDownTouchPoint(touchPointArr[1].f318x, touchPointArr[1].f319y, touchPointArr[1].pid);
                     }
                 }
             }
@@ -270,21 +272,29 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
             multitouchMode = motionEvent2.getPointerId(0);
             if (multitouchMode >= 0 && multitouchMode < 2 && this.mCheckForSwipe && motionEvent.getPointerCount() == 1) {
                 Object obj;
-                float x2 = motionEvent2.getX(0) - this.mDownTouchPoints[multitouchMode].f306x;
-                rotation = motionEvent2.getY(0) - this.mDownTouchPoints[multitouchMode].f307y;
+                float f7 = 0.0f;
+                float x2 = motionEvent2.getX(0) - this.mDownTouchPoints[multitouchMode].f318x;
+                rotation = motionEvent2.getY(0) - this.mDownTouchPoints[multitouchMode].f319y;
                 if ((Math.abs(x2) * MM_PER_INCH) / ((float) screenPPI) >= _FP_GESTURE_SWIPE_PRIMARY_AXIS_MIN_MM && (Math.abs(rotation) * MM_PER_INCH) / ((float) screenPPI) <= _FP_GESTURE_SWIPE_SECONDARY_AXIS_MAX_MM) {
                     f5 = 0.0f;
+                    f7 = ((motionEvent2.getX(0) - motionEvent.getX(0)) / ((float) (motionEvent2.getEventTime() - motionEvent.getEventTime()))) * 1000.0f;
                     f4 = x2 > 0.0f ? 1.0f : -1.0f;
                     obj = 1;
                 } else if ((Math.abs(rotation) * MM_PER_INCH) / ((float) screenPPI) < _FP_GESTURE_SWIPE_PRIMARY_AXIS_MIN_MM || (Math.abs(x2) * MM_PER_INCH) / ((float) screenPPI) > _FP_GESTURE_SWIPE_SECONDARY_AXIS_MAX_MM) {
                     obj = null;
                 } else {
                     f4 = 0.0f;
+                    f7 = ((motionEvent2.getY(0) - motionEvent.getY(0)) / ((float) (motionEvent2.getEventTime() - motionEvent.getEventTime()))) * 1000.0f;
                     f5 = rotation > 0.0f ? 1.0f : -1.0f;
                     multitouchMode = 1;
                 }
                 if (obj != null) {
-                    nativeOnGestureListener(8, 5, true, motionEvent.getX(0), motionEvent2.getY(0), 1.0f, 1.0f, 0.0f, f4, f5);
+                    x = motionEvent.getX(0);
+                    y = motionEvent2.getY(0);
+                    if (f7 < 0.0f) {
+                        f7 *= -1.0f;
+                    }
+                    nativeOnGestureListener(8, 5, true, x, y, 1.0f, 1.0f, 0.0f, f4, f5, f7);
                     this.mCheckForSwipe = false;
                 }
             }
@@ -301,7 +311,7 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
         if (multitouchMode != 2) {
             return true;
         }
-        boolean z = nativeOnGestureListener(8, 3, false, (this.mSecondaryPointOfTwoFingerTap.f306x + this.mPrimaryPointOfTwoFingerTap.f306x) / 2.0f, (this.mSecondaryPointOfTwoFingerTap.f307y + this.mPrimaryPointOfTwoFingerTap.f307y) / 2.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+        boolean z = nativeOnGestureListener(8, 3, false, (this.mSecondaryPointOfTwoFingerTap.f318x + this.mPrimaryPointOfTwoFingerTap.f318x) / 2.0f, (this.mSecondaryPointOfTwoFingerTap.f319y + this.mPrimaryPointOfTwoFingerTap.f319y) / 2.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         this.mCouldBeTwoFingerTap = 0;
         return z;
     }
@@ -381,7 +391,7 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
         }
         this.mPreviousZoomLocX = focusX;
         this.mPreviousZoomLocY = focusY;
-        nativeOnGestureListener(i, 0, true, focusX, focusY, f3, f2, 0.0f, 0.0f, 0.0f);
+        nativeOnGestureListener(i, 0, true, focusX, focusY, f3, f2, 0.0f, 0.0f, 0.0f, 0.0f);
         return true;
     }
 
@@ -390,7 +400,7 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
         this.mSurfaceView.getClass();
         if (multitouchMode == 2 && this.mInZoomTransformGesture) {
             float scaleFactor = scaleGestureDetector.getScaleFactor();
-            nativeOnGestureListener(4, 0, true, this.mPreviousZoomLocX, this.mPreviousZoomLocY, scaleFactor, scaleFactor, 0.0f, 0.0f, 0.0f);
+            nativeOnGestureListener(4, 0, true, this.mPreviousZoomLocX, this.mPreviousZoomLocY, scaleFactor, scaleFactor, 0.0f, 0.0f, 0.0f, 0.0f);
         }
     }
 
@@ -398,14 +408,14 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
         if (touchPoint.pid != touchPoint3.pid || touchPoint2.pid != touchPoint4.pid) {
             return 0.0f;
         }
-        return (float) (((Math.atan2((double) (touchPoint4.f307y - touchPoint3.f307y), (double) (touchPoint4.f306x - touchPoint3.f306x)) * 180.0d) / 3.141592653589793d) - ((Math.atan2((double) (touchPoint2.f307y - touchPoint.f307y), (double) (touchPoint2.f306x - touchPoint.f306x)) * 180.0d) / 3.141592653589793d));
+        return (float) (((Math.atan2((double) (touchPoint4.f319y - touchPoint3.f319y), (double) (touchPoint4.f318x - touchPoint3.f318x)) * 180.0d) / 3.141592653589793d) - ((Math.atan2((double) (touchPoint2.f319y - touchPoint.f319y), (double) (touchPoint2.f318x - touchPoint.f318x)) * 180.0d) / 3.141592653589793d));
     }
 
     private boolean isPanGesture(TouchPoint touchPoint, TouchPoint touchPoint2, TouchPoint touchPoint3, TouchPoint touchPoint4) {
-        float access$200 = touchPoint3.f306x - touchPoint.f306x;
-        float access$300 = touchPoint3.f307y - touchPoint.f307y;
-        float access$2002 = touchPoint4.f306x - touchPoint2.f306x;
-        float access$3002 = touchPoint4.f307y - touchPoint2.f307y;
+        float access$200 = touchPoint3.f318x - touchPoint.f318x;
+        float access$300 = touchPoint3.f319y - touchPoint.f319y;
+        float access$2002 = touchPoint4.f318x - touchPoint2.f318x;
+        float access$3002 = touchPoint4.f319y - touchPoint2.f319y;
         float min = Math.min(Math.abs(access$200), Math.abs(access$2002));
         float min2 = Math.min(Math.abs(access$300), Math.abs(access$3002));
         double sqrt = Math.sqrt((double) ((min * min) + (min2 * min2)));
@@ -416,6 +426,6 @@ public class AIRGestureListener implements OnGestureListener, OnDoubleTapListene
     }
 
     private double distanceBetweenPoints(TouchPoint touchPoint, TouchPoint touchPoint2) {
-        return Math.sqrt(Math.pow((double) (touchPoint2.f306x - touchPoint.f306x), 2.0d) + Math.pow((double) (touchPoint2.f307y - touchPoint.f307y), 2.0d));
+        return Math.sqrt(Math.pow((double) (touchPoint2.f318x - touchPoint.f318x), 2.0d) + Math.pow((double) (touchPoint2.f319y - touchPoint.f319y), 2.0d));
     }
 }

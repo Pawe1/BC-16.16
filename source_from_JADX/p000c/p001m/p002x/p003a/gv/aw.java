@@ -1,47 +1,106 @@
 package p000c.p001m.p002x.p003a.gv;
 
-import java.util.Map;
+import java.io.PrintWriter;
 
-final class aw extends ba<K, V> {
-    final /* synthetic */ av f95a;
+public final class aw<D> {
+    int f108a;
+    C0018b<D> f109b;
+    C0017a<D> f110c;
+    boolean f111d;
+    boolean f112e;
+    boolean f113f;
+    boolean f114g;
+    boolean f115h;
 
-    aw(av avVar) {
-        this.f95a = avVar;
+    public interface C0017a<D> {
     }
 
-    protected final int mo8a() {
-        return this.f95a.h;
+    public interface C0018b<D> {
     }
 
-    protected final int mo9a(Object obj) {
-        return this.f95a.m79a(obj);
+    public final void m115a() {
+        this.f111d = true;
+        this.f113f = false;
+        this.f112e = false;
     }
 
-    protected final Object mo10a(int i, int i2) {
-        return this.f95a.g[(i << 1) + i2];
+    public final void m116a(int i, C0018b<D> c0018b) {
+        if (this.f109b != null) {
+            throw new IllegalStateException("There is already a listener registered");
+        }
+        this.f109b = c0018b;
+        this.f108a = i;
     }
 
-    protected final V mo11a(int i, V v) {
-        return this.f95a.m80a(i, (Object) v);
+    public final void m117a(C0017a<D> c0017a) {
+        if (this.f110c != null) {
+            throw new IllegalStateException("There is already a listener registered");
+        }
+        this.f110c = c0017a;
     }
 
-    protected final void mo12a(int i) {
-        this.f95a.m85d(i);
+    public final void m118a(C0018b<D> c0018b) {
+        if (this.f109b == null) {
+            throw new IllegalStateException("No listener register");
+        } else if (this.f109b != c0018b) {
+            throw new IllegalArgumentException("Attempting to unregister the wrong listener");
+        } else {
+            this.f109b = null;
+        }
     }
 
-    protected final void mo13a(K k, V v) {
-        this.f95a.put(k, v);
+    public final void m119a(String str, PrintWriter printWriter) {
+        printWriter.print(str);
+        printWriter.print("mId=");
+        printWriter.print(this.f108a);
+        printWriter.print(" mListener=");
+        printWriter.println(this.f109b);
+        if (this.f111d || this.f114g || this.f115h) {
+            printWriter.print(str);
+            printWriter.print("mStarted=");
+            printWriter.print(this.f111d);
+            printWriter.print(" mContentChanged=");
+            printWriter.print(this.f114g);
+            printWriter.print(" mProcessingChange=");
+            printWriter.println(this.f115h);
+        }
+        if (this.f112e || this.f113f) {
+            printWriter.print(str);
+            printWriter.print("mAbandoned=");
+            printWriter.print(this.f112e);
+            printWriter.print(" mReset=");
+            printWriter.println(this.f113f);
+        }
     }
 
-    protected final int mo14b(Object obj) {
-        return this.f95a.m82b(obj);
+    public final void m120b() {
+        this.f111d = false;
     }
 
-    protected final Map<K, V> mo15b() {
-        return this.f95a;
+    public final void m121b(C0017a<D> c0017a) {
+        if (this.f110c == null) {
+            throw new IllegalStateException("No listener register");
+        } else if (this.f110c != c0017a) {
+            throw new IllegalArgumentException("Attempting to unregister the wrong listener");
+        } else {
+            this.f110c = null;
+        }
     }
 
-    protected final void mo16c() {
-        this.f95a.clear();
+    public final void m122c() {
+        this.f113f = true;
+        this.f111d = false;
+        this.f112e = false;
+        this.f114g = false;
+        this.f115h = false;
+    }
+
+    public final String toString() {
+        StringBuilder stringBuilder = new StringBuilder(64);
+        bd.m168a(this, stringBuilder);
+        stringBuilder.append(" id=");
+        stringBuilder.append(this.f108a);
+        stringBuilder.append("}");
+        return stringBuilder.toString();
     }
 }

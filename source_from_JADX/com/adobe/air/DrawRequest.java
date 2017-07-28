@@ -15,12 +15,12 @@ class DrawRequest {
     public int ht;
     public boolean scale = false;
     public int wd;
-    public int f304x;
-    public int f305y;
+    public int f316x;
+    public int f317y;
 
     public DrawRequest(int i, int i2, int i3, int i4, Bitmap bitmap) {
-        this.f304x = i;
-        this.f305y = i2;
+        this.f316x = i;
+        this.f317y = i2;
         this.wd = i3;
         this.ht = i4;
         this.bm = bitmap;
@@ -28,8 +28,8 @@ class DrawRequest {
     }
 
     public DrawRequest(int i, int i2, int i3, int i4, Bitmap bitmap, int i5, int i6, int i7, int i8, boolean z, int i9) {
-        this.f304x = i;
-        this.f305y = i2;
+        this.f316x = i;
+        this.f317y = i2;
         this.wd = i3;
         this.ht = i4;
         this.bm = bitmap;

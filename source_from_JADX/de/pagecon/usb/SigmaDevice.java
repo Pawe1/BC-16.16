@@ -34,8 +34,8 @@ public class SigmaDevice {
     private List<WriterTask> writeOperations = new ArrayList();
     private Boolean writerStopped = Boolean.valueOf(false);
 
-    class C04471 implements Runnable {
-        C04471() {
+    class C04871 implements Runnable {
+        C04871() {
         }
 
         public void run() {
@@ -58,8 +58,8 @@ public class SigmaDevice {
     private class ReaderThread extends Thread {
         public boolean mStopReader;
 
-        class C04481 implements Runnable {
-            C04481() {
+        class C04881 implements Runnable {
+            C04881() {
             }
 
             public void run() {
@@ -147,8 +147,8 @@ public class SigmaDevice {
     private class WriterTask extends AsyncTask<Void, Void, Boolean> {
         private byte[] data;
 
-        class C04511 implements Runnable {
-            C04511() {
+        class C04911 implements Runnable {
+            C04911() {
             }
 
             public void run() {
@@ -156,8 +156,8 @@ public class SigmaDevice {
             }
         }
 
-        class C04522 implements Runnable {
-            C04522() {
+        class C04922 implements Runnable {
+            C04922() {
             }
 
             public void run() {
@@ -171,10 +171,10 @@ public class SigmaDevice {
 
         protected Boolean doInBackground(Void... params) {
             Log.i("USB-ANE Android Layer", "attempting to write Data");
-            new Handler(Looper.getMainLooper()).post(new C04511());
+            new Handler(Looper.getMainLooper()).post(new C04911());
             if (SigmaDevice.this.mDeviceConnection == null || SigmaDevice.this.mEndpointOut == null) {
                 Log.e("USB-ANE Android Layer", "Sending data not possible as there is no Connection or no Endpoint");
-                new Handler(Looper.getMainLooper()).post(new C04522());
+                new Handler(Looper.getMainLooper()).post(new C04922());
                 return Boolean.valueOf(false);
             }
             final int writeCount = SigmaDevice.this.mDeviceConnection.bulkTransfer(SigmaDevice.this.mEndpointOut, this.data, this.data.length, 0);
@@ -348,7 +348,7 @@ public class SigmaDevice {
 
     private void checkDisconnection() {
         if (!this.disconnected.booleanValue() && this.writerStopped.booleanValue()) {
-            new Handler(Looper.getMainLooper()).post(new C04471());
+            new Handler(Looper.getMainLooper()).post(new C04871());
         }
     }
 

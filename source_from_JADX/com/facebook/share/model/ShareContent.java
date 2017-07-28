@@ -8,12 +8,14 @@ import java.util.List;
 
 public abstract class ShareContent<P extends ShareContent, E extends Builder> implements ShareModel {
     private final Uri contentUrl;
+    private final ShareHashtag hashtag;
     private final List<String> peopleIds;
     private final String placeId;
     private final String ref;
 
     public static abstract class Builder<P extends ShareContent, E extends Builder> implements ShareModelBuilder<P, E> {
         private Uri contentUrl;
+        private ShareHashtag hashtag;
         private List<String> peopleIds;
         private String placeId;
         private String ref;
@@ -41,6 +43,11 @@ public abstract class ShareContent<P extends ShareContent, E extends Builder> im
             this.ref = str;
             return this;
         }
+
+        public E setShareHashtag(ShareHashtag shareHashtag) {
+            this.hashtag = shareHashtag;
+            return this;
+        }
     }
 
     protected ShareContent(Parcel parcel) {
@@ -48,6 +55,7 @@ public abstract class ShareContent<P extends ShareContent, E extends Builder> im
         this.peopleIds = readUnmodifiableStringList(parcel);
         this.placeId = parcel.readString();
         this.ref = parcel.readString();
+        this.hashtag = new com.facebook.share.model.ShareHashtag.Builder().readFrom(parcel).build();
     }
 
     protected ShareContent(Builder builder) {
@@ -55,6 +63,7 @@ public abstract class ShareContent<P extends ShareContent, E extends Builder> im
         this.peopleIds = builder.peopleIds;
         this.placeId = builder.placeId;
         this.ref = builder.ref;
+        this.hashtag = builder.hashtag;
     }
 
     private List<String> readUnmodifiableStringList(Parcel parcel) {
@@ -83,10 +92,15 @@ public abstract class ShareContent<P extends ShareContent, E extends Builder> im
         return this.ref;
     }
 
+    public ShareHashtag getShareHashtag() {
+        return this.hashtag;
+    }
+
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeParcelable(this.contentUrl, 0);
         parcel.writeStringList(this.peopleIds);
         parcel.writeString(this.placeId);
         parcel.writeString(this.ref);
+        parcel.writeParcelable(this.hashtag, 0);
     }
 }

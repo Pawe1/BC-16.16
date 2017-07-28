@@ -10,9 +10,7 @@ import de.pagecon.ane.nfc.Manager;
 @TargetApi(10)
 public class ResumeFunction implements FREFunction {
     public static void onResume(Activity a) {
-        if (Manager.instance.nfcAdapter != null) {
-            Manager.instance.nfcAdapter.enableForegroundDispatch(a, Manager.instance.mPendingIntent, null, null);
-        }
+        Manager.instance.enableNfcForegroundDispatch(a);
     }
 
     public FREObject call(FREContext freContext, FREObject[] freObjects) {

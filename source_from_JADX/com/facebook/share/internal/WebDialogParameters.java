@@ -3,15 +3,30 @@ package com.facebook.share.internal;
 import android.os.Bundle;
 import com.facebook.FacebookException;
 import com.facebook.internal.Utility;
+import com.facebook.internal.Utility.Mapper;
 import com.facebook.share.model.AppGroupCreationContent;
 import com.facebook.share.model.AppGroupCreationContent.AppGroupPrivacy;
 import com.facebook.share.model.GameRequestContent;
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.ShareHashtag;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.model.ShareOpenGraphContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
 import java.util.Locale;
 import org.json.JSONObject;
 
 public class WebDialogParameters {
+
+    final class C03461 implements Mapper<SharePhoto, String> {
+        C03461() {
+        }
+
+        public final String apply(SharePhoto sharePhoto) {
+            return sharePhoto.getImageUrl().toString();
+        }
+    }
+
     public static Bundle create(AppGroupCreationContent appGroupCreationContent) {
         Bundle bundle = new Bundle();
         Utility.putNonEmptyString(bundle, "name", appGroupCreationContent.getName());
@@ -26,7 +41,7 @@ public class WebDialogParameters {
     public static Bundle create(GameRequestContent gameRequestContent) {
         Bundle bundle = new Bundle();
         Utility.putNonEmptyString(bundle, "message", gameRequestContent.getMessage());
-        Utility.putNonEmptyString(bundle, "to", gameRequestContent.getTo());
+        Utility.putCommaSeparatedStringList(bundle, "to", gameRequestContent.getRecipients());
         Utility.putNonEmptyString(bundle, ShareConstants.WEB_DIALOG_PARAM_TITLE, gameRequestContent.getTitle());
         Utility.putNonEmptyString(bundle, ShareConstants.WEB_DIALOG_PARAM_DATA, gameRequestContent.getData());
         if (gameRequestContent.getActionType() != null) {
@@ -41,23 +56,41 @@ public class WebDialogParameters {
     }
 
     public static Bundle create(ShareLinkContent shareLinkContent) {
-        Bundle bundle = new Bundle();
-        Utility.putUri(bundle, ShareConstants.WEB_DIALOG_PARAM_HREF, shareLinkContent.getContentUrl());
-        return bundle;
+        Bundle createBaseParameters = createBaseParameters(shareLinkContent);
+        Utility.putUri(createBaseParameters, ShareConstants.WEB_DIALOG_PARAM_HREF, shareLinkContent.getContentUrl());
+        Utility.putNonEmptyString(createBaseParameters, ShareConstants.WEB_DIALOG_PARAM_QUOTE, shareLinkContent.getQuote());
+        return createBaseParameters;
     }
 
     public static Bundle create(ShareOpenGraphContent shareOpenGraphContent) {
-        Bundle bundle = new Bundle();
-        Utility.putNonEmptyString(bundle, ShareConstants.WEB_DIALOG_PARAM_ACTION_TYPE, shareOpenGraphContent.getAction().getActionType());
+        Bundle createBaseParameters = createBaseParameters(shareOpenGraphContent);
+        Utility.putNonEmptyString(createBaseParameters, ShareConstants.WEB_DIALOG_PARAM_ACTION_TYPE, shareOpenGraphContent.getAction().getActionType());
         try {
             JSONObject removeNamespacesFromOGJsonObject = ShareInternalUtility.removeNamespacesFromOGJsonObject(ShareInternalUtility.toJSONObjectForWeb(shareOpenGraphContent), false);
             if (removeNamespacesFromOGJsonObject != null) {
-                Utility.putNonEmptyString(bundle, ShareConstants.WEB_DIALOG_PARAM_ACTION_PROPERTIES, removeNamespacesFromOGJsonObject.toString());
+                Utility.putNonEmptyString(createBaseParameters, ShareConstants.WEB_DIALOG_PARAM_ACTION_PROPERTIES, removeNamespacesFromOGJsonObject.toString());
             }
-            return bundle;
+            return createBaseParameters;
         } catch (Throwable e) {
             throw new FacebookException("Unable to serialize the ShareOpenGraphContent to JSON", e);
         }
+    }
+
+    public static Bundle create(SharePhotoContent sharePhotoContent) {
+        Bundle createBaseParameters = createBaseParameters(sharePhotoContent);
+        String[] strArr = new String[sharePhotoContent.getPhotos().size()];
+        Utility.map(sharePhotoContent.getPhotos(), new C03461()).toArray(strArr);
+        createBaseParameters.putStringArray(ShareConstants.WEB_DIALOG_PARAM_MEDIA, strArr);
+        return createBaseParameters;
+    }
+
+    public static Bundle createBaseParameters(ShareContent shareContent) {
+        Bundle bundle = new Bundle();
+        ShareHashtag shareHashtag = shareContent.getShareHashtag();
+        if (shareHashtag != null) {
+            Utility.putNonEmptyString(bundle, ShareConstants.WEB_DIALOG_PARAM_HASHTAG, shareHashtag.getHashtag());
+        }
+        return bundle;
     }
 
     public static Bundle createForFeed(ShareFeedContent shareFeedContent) {
@@ -78,6 +111,10 @@ public class WebDialogParameters {
         Utility.putNonEmptyString(bundle, "description", shareLinkContent.getContentDescription());
         Utility.putNonEmptyString(bundle, "link", Utility.getUriString(shareLinkContent.getContentUrl()));
         Utility.putNonEmptyString(bundle, "picture", Utility.getUriString(shareLinkContent.getImageUrl()));
+        Utility.putNonEmptyString(bundle, ShareConstants.WEB_DIALOG_PARAM_QUOTE, shareLinkContent.getQuote());
+        if (shareLinkContent.getShareHashtag() != null) {
+            Utility.putNonEmptyString(bundle, ShareConstants.WEB_DIALOG_PARAM_HASHTAG, shareLinkContent.getShareHashtag().getHashtag());
+        }
         return bundle;
     }
 }

@@ -27,10 +27,10 @@ import com.facebook.internal.CallbackManagerImpl.Callback;
 import com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
 import com.facebook.internal.FileLruCache;
 import com.facebook.internal.FileLruCache.Limits;
+import com.facebook.internal.FragmentWrapper;
 import com.facebook.internal.Logger;
 import com.facebook.internal.NativeProtocol;
 import com.facebook.internal.PlatformServiceClient.CompletedListener;
-import com.facebook.internal.ServerProtocol;
 import com.facebook.internal.Utility;
 import com.facebook.internal.WorkQueue;
 import com.facebook.share.internal.LikeContent.Builder;
@@ -42,8 +42,7 @@ import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import p000c.p001m.p002x.p003a.gv.C0058n;
-import p000c.p001m.p002x.p003a.gv.at;
+import p000c.p001m.p002x.p003a.gv.ax;
 
 public class LikeActionController {
     public static final String ACTION_LIKE_ACTION_CONTROLLER_DID_ERROR = "com.facebook.sdk.LikeActionController.DID_ERROR";
@@ -102,12 +101,12 @@ public class LikeActionController {
         void onComplete(LikeActionController likeActionController, FacebookException facebookException);
     }
 
-    final class C02551 implements CreationCallback {
+    final class C03131 implements CreationCallback {
         final /* synthetic */ Intent val$data;
         final /* synthetic */ int val$requestCode;
         final /* synthetic */ int val$resultCode;
 
-        C02551(int i, int i2, Intent intent) {
+        C03131(int i, int i2, Intent intent) {
             this.val$requestCode = i;
             this.val$resultCode = i2;
             this.val$data = intent;
@@ -122,10 +121,10 @@ public class LikeActionController {
         }
     }
 
-    final class C02562 implements Runnable {
+    final class C03142 implements Runnable {
         final /* synthetic */ LikeActionController val$controllerToRefresh;
 
-        C02562(LikeActionController likeActionController) {
+        C03142(LikeActionController likeActionController) {
             this.val$controllerToRefresh = likeActionController;
         }
 
@@ -134,8 +133,8 @@ public class LikeActionController {
         }
     }
 
-    final class C02573 implements Callback {
-        C02573() {
+    final class C03153 implements Callback {
+        C03153() {
         }
 
         public final boolean onActivityResult(int i, Intent intent) {
@@ -143,12 +142,12 @@ public class LikeActionController {
         }
     }
 
-    final class C02584 implements Runnable {
+    final class C03164 implements Runnable {
         final /* synthetic */ CreationCallback val$callback;
         final /* synthetic */ LikeActionController val$controller;
         final /* synthetic */ FacebookException val$error;
 
-        C02584(CreationCallback creationCallback, LikeActionController likeActionController, FacebookException facebookException) {
+        C03164(CreationCallback creationCallback, LikeActionController likeActionController, FacebookException facebookException) {
             this.val$callback = creationCallback;
             this.val$controller = likeActionController;
             this.val$error = facebookException;
@@ -159,8 +158,8 @@ public class LikeActionController {
         }
     }
 
-    final class C02595 extends AccessTokenTracker {
-        C02595() {
+    final class C03175 extends AccessTokenTracker {
+        C03175() {
         }
 
         protected final void onCurrentAccessTokenChanged(AccessToken accessToken, AccessToken accessToken2) {
@@ -179,8 +178,8 @@ public class LikeActionController {
         void onComplete();
     }
 
-    class C02659 implements RequestCompletionCallback {
-        C02659() {
+    class C03239 implements RequestCompletionCallback {
+        C03239() {
         }
 
         public void onComplete() {
@@ -222,8 +221,8 @@ public class LikeActionController {
         protected ObjectType objectType;
         private GraphRequest request;
 
-        class C02661 implements GraphRequest.Callback {
-            C02661() {
+        class C03241 implements GraphRequest.Callback {
+            C03241() {
             }
 
             public void onCompleted(GraphResponse graphResponse) {
@@ -257,8 +256,8 @@ public class LikeActionController {
 
         protected void setRequest(GraphRequest graphRequest) {
             this.request = graphRequest;
-            graphRequest.setVersion(ServerProtocol.GRAPH_API_VERSION);
-            graphRequest.setCallback(new C02661());
+            graphRequest.setVersion(FacebookSdk.getGraphApiVersion());
+            graphRequest.setCallback(new C03241());
         }
     }
 
@@ -288,6 +287,7 @@ public class LikeActionController {
             super(str, objectType);
             Bundle bundle = new Bundle();
             bundle.putString(GraphRequest.FIELDS_PARAM, "engagement.fields(count_string_with_like,count_string_without_like,social_sentence_with_like,social_sentence_without_like)");
+            bundle.putString("locale", Locale.getDefault().toString());
             setRequest(new GraphRequest(AccessToken.getCurrentAccessToken(), str, bundle, HttpMethod.GET));
         }
 
@@ -547,7 +547,7 @@ public class LikeActionController {
         if (bundle != null) {
             intent.putExtras(bundle);
         }
-        at.m70a(FacebookSdk.getApplicationContext()).m74a(intent);
+        ax.m123a(FacebookSdk.getApplicationContext()).m127a(intent);
     }
 
     private boolean canUseOGPublish() {
@@ -572,15 +572,15 @@ public class LikeActionController {
             serializeToDiskAsync(controllerFromInMemoryCache);
         }
         putControllerInMemoryCache(str, controllerFromInMemoryCache);
-        handler.post(new C02562(controllerFromInMemoryCache));
+        handler.post(new C03142(controllerFromInMemoryCache));
         invokeCallbackWithController(creationCallback, controllerFromInMemoryCache, null);
     }
 
     private static LikeActionController deserializeFromDiskSynchronously(String str) {
+        Closeable closeable;
         Throwable e;
         Throwable th;
         LikeActionController likeActionController = null;
-        Closeable closeable;
         try {
             closeable = controllerDiskCache.get(getCacheKeyForObjectId(str));
             if (closeable != null) {
@@ -768,13 +768,13 @@ public class LikeActionController {
         if (Utility.isNullOrEmpty(objectIdForPendingController)) {
             return false;
         }
-        getControllerForObjectId(objectIdForPendingController, ObjectType.UNKNOWN, new C02551(i, i2, intent));
+        getControllerForObjectId(objectIdForPendingController, ObjectType.UNKNOWN, new C03131(i, i2, intent));
         return true;
     }
 
     private static void invokeCallbackWithController(CreationCallback creationCallback, LikeActionController likeActionController, FacebookException facebookException) {
         if (creationCallback != null) {
-            handler.post(new C02584(creationCallback, likeActionController, facebookException));
+            handler.post(new C03164(creationCallback, likeActionController, facebookException));
         }
     }
 
@@ -809,13 +809,13 @@ public class LikeActionController {
                 objectSuffix = FacebookSdk.getApplicationContext().getSharedPreferences(LIKE_ACTION_CONTROLLER_STORE, 0).getInt(LIKE_ACTION_CONTROLLER_STORE_OBJECT_SUFFIX_KEY, 1);
                 controllerDiskCache = new FileLruCache(TAG, new Limits());
                 registerAccessTokenTracker();
-                CallbackManagerImpl.registerStaticCallback(RequestCodeOffset.Like.toRequestCode(), new C02573());
+                CallbackManagerImpl.registerStaticCallback(RequestCodeOffset.Like.toRequestCode(), new C03153());
                 isInitialized = true;
             }
         }
     }
 
-    private void presentLikeDialog(Activity activity, C0058n c0058n, Bundle bundle) {
+    private void presentLikeDialog(Activity activity, FragmentWrapper fragmentWrapper, Bundle bundle) {
         String str;
         if (LikeDialog.canShowNativeDialog()) {
             str = AnalyticsEvents.EVENT_LIKE_VIEW_DID_PRESENT_DIALOG;
@@ -829,8 +829,8 @@ public class LikeActionController {
         }
         if (str != null) {
             LikeContent build = new Builder().setObjectId(this.objectId).setObjectType(this.objectType != null ? this.objectType.toString() : ObjectType.UNKNOWN.toString()).build();
-            if (c0058n != null) {
-                new LikeDialog(c0058n).show(build);
+            if (fragmentWrapper != null) {
+                new LikeDialog(fragmentWrapper).show(build);
             } else {
                 new LikeDialog(activity).show(build);
             }
@@ -927,7 +927,7 @@ public class LikeActionController {
         if (AccessToken.getCurrentAccessToken() == null) {
             refreshStatusViaService();
         } else {
-            fetchVerifiedObjectId(new C02659());
+            fetchVerifiedObjectId(new C03239());
         }
     }
 
@@ -945,7 +945,7 @@ public class LikeActionController {
     }
 
     private static void registerAccessTokenTracker() {
-        accessTokenTracker = new C02595();
+        accessTokenTracker = new C03175();
     }
 
     private void saveState(Bundle bundle) {
@@ -1104,7 +1104,7 @@ Error: java.util.NoSuchElementException
         return (currentAccessToken == null || currentAccessToken.getPermissions() == null || !currentAccessToken.getPermissions().contains("publish_actions")) ? false : true;
     }
 
-    public void toggleLike(Activity activity, C0058n c0058n, Bundle bundle) {
+    public void toggleLike(Activity activity, FragmentWrapper fragmentWrapper, Bundle bundle) {
         boolean z = true;
         boolean z2 = !this.isObjectLiked;
         if (canUseOGPublish()) {
@@ -1121,6 +1121,6 @@ Error: java.util.NoSuchElementException
                 return;
             }
         }
-        presentLikeDialog(activity, c0058n, bundle);
+        presentLikeDialog(activity, fragmentWrapper, bundle);
     }
 }

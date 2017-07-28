@@ -22,7 +22,8 @@ public final class CallbackManagerImpl implements CallbackManager {
         GameRequest(4),
         AppGroupCreate(5),
         AppGroupJoin(6),
-        AppInvite(7);
+        AppInvite(7),
+        DeviceShare(8);
         
         private final int offset;
 

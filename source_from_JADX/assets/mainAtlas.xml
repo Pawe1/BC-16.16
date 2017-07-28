@@ -1,147 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:756370ce4b189935dfa432e4482662d6:d731dddf1f461b21c3b107701d4f2a5f:94a679a67690fec0892e9c8e2fa9ef7d$ -->
-<TextureAtlas imagePath="mainAtlas.png" width="753" height="753">
-    <SubTexture name="activityIcon" x="330" y="340" width="84" height="89"/>
-    <SubTexture name="activityIconSmall" x="699" y="65" rotated="true" width="46" height="43"/>
-    <SubTexture name="addiconwhite" x="561" y="240" width="46" height="46"/>
-    <SubTexture name="aktivitaeten" x="400" y="483" width="44" height="47"/>
-    <SubTexture name="appIcon" x="1" y="340" width="197" height="197"/>
-    <SubTexture name="arrowRight" x="275" y="595" rotated="true" width="46" height="42"/>
-    <SubTexture name="autolapbubble" x="425" y="580" width="47" height="48"/>
-    <SubTexture name="averagedownhillsmall" x="641" y="518" rotated="true" width="18" height="40"/>
-    <SubTexture name="averageiconmini" x="543" y="180" rotated="true" width="16" height="21"/>
-    <SubTexture name="averageuphillsmall" x="661" y="518" rotated="true" width="18" height="40"/>
-    <SubTexture name="backbutton" x="439" y="532" width="42" height="46"/>
-    <SubTexture name="bergab" x="734" y="1" rotated="true" width="18" height="45"/>
-    <SubTexture name="bergauf" x="468" y="331" rotated="true" width="18" height="45"/>
-    <SubTexture name="bergaufab" x="131" y="637" width="58" height="17"/>
-    <SubTexture name="cadenceicon" x="190" y="706" width="52" height="46"/>
-    <SubTexture name="calendericon" x="697" y="256" rotated="true" width="46" height="41"/>
-    <SubTexture name="closeicon" x="697" y="208" width="46" height="46"/>
-    <SubTexture name="closeiconred" x="609" y="280" width="46" height="46"/>
-    <SubTexture name="cloudiconred" x="657" y="178" rotated="true" width="25" height="46"/>
-    <SubTexture name="cloudiconwhite" x="697" y="299" width="46" height="24"/>
+<!-- $TexturePacker:SmartUpdate:0e6dac1a8daa5e3a80d59f78dcd74ec6:5e8efd0912395c91d0fd426bb26723c9:94a679a67690fec0892e9c8e2fa9ef7d$ -->
+<TextureAtlas imagePath="mainAtlas.png" width="807" height="807">
+    <SubTexture name="activityIcon" x="123" y="680" width="84" height="89"/>
+    <SubTexture name="activityIconSmall" x="546" y="562" rotated="true" width="46" height="43"/>
+    <SubTexture name="addiconwhite" x="389" y="609" width="46" height="46"/>
+    <SubTexture name="aktivitaeten" x="360" y="660" width="44" height="47"/>
+    <SubTexture name="appIcon" x="420" y="272" width="197" height="197"/>
+    <SubTexture name="arrowRight" x="308" y="764" rotated="true" width="46" height="42"/>
+    <SubTexture name="attentionbig" x="420" y="110" width="203" height="160" frameX="0" frameY="0" frameWidth="203" frameHeight="165"/>
+    <SubTexture name="autolapbubble" x="356" y="711" width="47" height="48"/>
+    <SubTexture name="averagedownhillsmall" x="635" y="541" width="40" height="18"/>
+    <SubTexture name="averageiconmini" x="758" y="632" width="21" height="16"/>
+    <SubTexture name="averageuphillsmall" x="677" y="541" width="40" height="18"/>
+    <SubTexture name="backbutton" x="642" y="561" rotated="true" width="46" height="42"/>
+    <SubTexture name="bergab" x="399" y="455" rotated="true" width="18" height="45"/>
+    <SubTexture name="bergauf" x="394" y="562" rotated="true" width="18" height="45"/>
+    <SubTexture name="bergaufab" x="345" y="388" width="58" height="17"/>
+    <SubTexture name="bigok" x="1" y="514" width="163" height="164"/>
+    <SubTexture name="cadenceicon" x="207" y="470" width="52" height="46"/>
+    <SubTexture name="calendericon" x="63" y="471" rotated="true" width="46" height="41"/>
+    <SubTexture name="closeicon" x="443" y="514" width="46" height="46"/>
+    <SubTexture name="closeiconred" x="405" y="709" width="46" height="46"/>
+    <SubTexture name="cloudiconred" x="734" y="393" width="46" height="25"/>
+    <SubTexture name="cloudiconwhite" x="37" y="780" width="46" height="24"/>
     <SubTexture name="cloudViewShape" x="1" y="1" width="417" height="337"/>
-    <SubTexture name="connectred" x="298" y="706" width="46" height="46"/>
-    <SubTexture name="connectwhite" x="374" y="631" width="46" height="46"/>
-    <SubTexture name="dashboardbigadddevice" x="420" y="110" width="121" height="92"/>
-    <SubTexture name="dashboardbigdevices" x="131" y="539" rotated="true" width="67" height="96"/>
-    <SubTexture name="dashboardbigimport" x="200" y="598" rotated="true" width="66" height="58"/>
-    <SubTexture name="dashboardbigstatistik" x="619" y="110" width="64" height="66"/>
-    <SubTexture name="dashboardbigtopvalues" x="200" y="531" width="73" height="65"/>
-    <SubTexture name="dashboardbigtracks" x="543" y="110" width="74" height="68"/>
-    <SubTexture name="dashboardsmallcount" x="680" y="373" width="21" height="21"/>
-    <SubTexture name="dashboardsmalldistance" x="678" y="350" width="22" height="21"/>
-    <SubTexture name="dashboardsmallkcal" x="85" y="739" rotated="true" width="21" height="13"/>
-    <SubTexture name="dashboardsmalltime" x="680" y="396" width="21" height="21"/>
-    <SubTexture name="Deleted-Symbol" x="1" y="539" width="128" height="128"/>
-    <SubTexture name="devicesettingsiconred" x="383" y="705" width="46" height="46"/>
-    <SubTexture name="devicesred" x="685" y="110" width="67" height="47"/>
-    <SubTexture name="deviceswhite" x="685" y="159" width="67" height="47"/>
-    <SubTexture name="downloadbutton" x="495" y="322" rotated="true" width="46" height="41"/>
-    <SubTexture name="downloadiconred" x="543" y="339" rotated="true" width="46" height="41"/>
-    <SubTexture name="editbutton" x="474" y="580" width="40" height="46"/>
-    <SubTexture name="focusTrackButton" x="323" y="579" width="49" height="49"/>
-    <SubTexture name="fromdevicewhite" x="561" y="180" rotated="true" width="46" height="58"/>
-    <SubTexture name="fuelicon" x="420" y="331" width="46" height="46"/>
-    <SubTexture name="graphicon" x="442" y="427" width="45" height="46"/>
-    <SubTexture name="hakenicongreen" x="616" y="530" rotated="true" width="23" height="28"/>
-    <SubTexture name="heartrateicon" x="133" y="706" width="55" height="46"/>
-    <SubTexture name="hohenmeter" x="657" y="276" width="38" height="46"/>
-    <SubTexture name="icondown" x="85" y="669" rotated="true" width="46" height="68"/>
-    <SubTexture name="IconSpeed" x="352" y="479" rotated="true" width="46" height="50"/>
-    <SubTexture name="iconstarblacksmall" x="681" y="518" width="24" height="23"/>
-    <SubTexture name="iconstarredsmall" x="708" y="703" width="24" height="23"/>
-    <SubTexture name="iconstarredsmallempty" x="708" y="728" rotated="true" width="23" height="24"/>
-    <SubTexture name="iconup" x="330" y="431" width="68" height="46"/>
-    <SubTexture name="infobutton" x="300" y="479" width="50" height="50"/>
-    <SubTexture name="infobuttonred" x="416" y="379" width="46" height="46"/>
-    <SubTexture name="InfoIcon" x="591" y="339" width="45" height="45"/>
-    <SubTexture name="InitialStartCircleBackground" x="720" y="461" width="32" height="32"/>
-    <SubTexture name="InitialStartCircleForeground" x="720" y="495" width="32" height="32"/>
-    <SubTexture name="InitialStartRectBackground" x="684" y="208" rotated="true" width="11" height="14"/>
-    <SubTexture name="kcal" x="464" y="379" width="28" height="46"/>
-    <SubTexture name="kleinerpfeil" x="681" y="543" width="14" height="15"/>
-    <SubTexture name="laengstezeit" x="446" y="475" width="46" height="46"/>
-    <SubTexture name="lefticon" x="542" y="382" rotated="true" width="46" height="32"/>
-    <SubTexture name="lefticonDisabled" x="494" y="413" rotated="true" width="46" height="32"/>
-    <SubTexture name="linkiconsmall" x="678" y="325" width="23" height="23"/>
-    <SubTexture name="linkIconWhite" x="1" y="669" width="82" height="82"/>
-    <SubTexture name="lockbutton" x="494" y="365" width="46" height="46"/>
-    <SubTexture name="logoutIcon" x="638" y="424" width="42" height="45"/>
-    <SubTexture name="lupe" x="542" y="416" width="46" height="46"/>
-    <SubTexture name="lupe_white" x="494" y="447" width="46" height="46"/>
-    <SubTexture name="mapicon" x="189" y="658" width="54" height="46"/>
-    <SubTexture name="maplapbubble" x="609" y="180" width="46" height="48"/>
-    <SubTexture name="mapLayerButton" x="551" y="288" width="50" height="49"/>
-    <SubTexture name="mapsicon" x="542" y="464" width="46" height="46"/>
-    <SubTexture name="mapstarticon" x="297" y="657" width="35" height="47"/>
-    <SubTexture name="mapstopicon" x="346" y="705" width="35" height="47"/>
-    <SubTexture name="MarkerPopUpBackground" x="420" y="265" width="73" height="64"/>
-    <SubTexture name="menubutton" x="494" y="495" width="46" height="31"/>
-    <SubTexture name="networkiconred" x="133" y="656" width="54" height="48"/>
-    <SubTexture name="noimage" x="334" y="678" width="34" height="25" frameX="0" frameY="-1" frameWidth="34" frameHeight="28"/>
-    <SubTexture name="pfeillinks" x="483" y="528" width="46" height="46"/>
-    <SubTexture name="pfeilmitbg" x="495" y="266" width="54" height="54"/>
-    <SubTexture name="pfeilrechts" x="542" y="512" width="46" height="46"/>
-    <SubTexture name="phaseDistanceIcon" x="682" y="419" rotated="true" width="20" height="21"/>
-    <SubTexture name="phaseHeartrateIcon" x="734" y="703" rotated="true" width="18" height="21"/>
-    <SubTexture name="phasenicon" x="431" y="678" rotated="true" width="41" height="42" frameX="0" frameY="-1" frameWidth="42" frameHeight="46"/>
-    <SubTexture name="phaseTimeIcon" x="431" y="722" width="30" height="30"/>
-    <SubTexture name="playbuttonbig" x="200" y="340" width="128" height="128"/>
-    <SubTexture name="playbuttonwhite" x="374" y="580" width="49" height="49"/>
-    <SubTexture name="pokalIcon" x="590" y="530" rotated="true" width="24" height="28"/>
-    <SubTexture name="powericon" x="516" y="576" width="46" height="46"/>
-    <SubTexture name="profileicon" x="638" y="471" width="39" height="45"/>
-    <SubTexture name="profileiconred" x="474" y="628" width="40" height="45"/>
-    <SubTexture name="reloadicon" x="513" y="204" rotated="true" width="46" height="60"/>
-    <SubTexture name="righticon" x="564" y="560" width="32" height="46"/>
-    <SubTexture name="righticonDisabled" x="598" y="560" width="32" height="46"/>
-    <SubTexture name="saveiconwhite" x="590" y="386" width="46" height="46"/>
-    <SubTexture name="settingsiconred" x="679" y="471" width="39" height="45"/>
-    <SubTexture name="settingsiconwhite" x="708" y="656" width="39" height="45"/>
-    <SubTexture name="sharedicon" x="657" y="226" width="38" height="48"/>
-    <SubTexture name="shareFacebook" x="590" y="434" width="46" height="46"/>
-    <SubTexture name="shareFacebookGrey" x="590" y="482" width="46" height="46"/>
-    <SubTexture name="shareicon" x="400" y="431" width="40" height="50"/>
-    <SubTexture name="shareiconred" x="334" y="630" width="38" height="46"/>
-    <SubTexture name="shareStrava" x="564" y="608" width="46" height="46"/>
-    <SubTexture name="shareStravaGrey" x="516" y="624" width="46" height="46"/>
-    <SubTexture name="shareTrainingPeaks" x="612" y="608" width="46" height="46"/>
-    <SubTexture name="shareTrainingPeaksGrey" x="632" y="560" width="46" height="46"/>
-    <SubTexture name="shareTwitter" x="660" y="608" width="46" height="46"/>
-    <SubTexture name="shareTwitterGrey" x="564" y="656" width="46" height="46"/>
-    <SubTexture name="shareTwoPeak" x="612" y="656" width="46" height="46"/>
-    <SubTexture name="shareTwoPeakGrey" x="660" y="656" width="46" height="46"/>
-    <SubTexture name="shoeiconred" x="370" y="679" width="46" height="24"/>
+    <SubTexture name="connectred" x="445" y="757" width="46" height="46"/>
+    <SubTexture name="connectwhite" x="406" y="657" width="46" height="46"/>
+    <SubTexture name="dashboard" x="358" y="609" rotated="true" width="29" height="49"/>
+    <SubTexture name="dashboardbigadddevice" x="683" y="420" width="121" height="92"/>
+    <SubTexture name="dashboardbigdevices" x="625" y="158" rotated="true" width="67" height="96"/>
+    <SubTexture name="dashboardbigimport" x="734" y="258" rotated="true" width="66" height="58"/>
+    <SubTexture name="dashboardbigstatistik" x="625" y="256" rotated="true" width="66" height="64"/>
+    <SubTexture name="dashboardbigtopvalues" x="619" y="322" rotated="true" width="65" height="73"/>
+    <SubTexture name="dashboardbigtracks" x="734" y="36" rotated="true" width="68" height="74"/>
+    <SubTexture name="dashboardsmallcount" x="738" y="579" width="21" height="21"/>
+    <SubTexture name="dashboardsmalldistance" x="563" y="471" width="22" height="21"/>
+    <SubTexture name="dashboardsmallkcal" x="405" y="340" width="13" height="21"/>
+    <SubTexture name="dashboardsmalltime" x="781" y="632" width="21" height="21"/>
+    <SubTexture name="Deleted-Symbol" x="1" y="340" width="128" height="128"/>
+    <SubTexture name="devicesettingsiconred" x="437" y="608" width="46" height="46"/>
+    <SubTexture name="devicesred" x="734" y="160" width="67" height="47"/>
+    <SubTexture name="deviceswhite" x="734" y="209" width="67" height="47"/>
+    <SubTexture name="downloadbutton" x="111" y="471" rotated="true" width="46" height="41"/>
+    <SubTexture name="downloadiconred" x="159" y="471" rotated="true" width="46" height="41"/>
+    <SubTexture name="editbutton" x="419" y="471" rotated="true" width="46" height="40"/>
+    <SubTexture name="focusTrackButton" x="305" y="713" width="49" height="49"/>
+    <SubTexture name="fromdevicewhite" x="345" y="340" width="58" height="46"/>
+    <SubTexture name="fuelicon" x="491" y="514" width="46" height="46"/>
+    <SubTexture name="ghostIcon" x="695" y="115" width="37" height="47"/>
+    <SubTexture name="graphicon" x="298" y="562" rotated="true" width="46" height="45"/>
+    <SubTexture name="hakenicongreen" x="708" y="514" width="28" height="23"/>
+    <SubTexture name="heartrateicon" x="345" y="407" width="55" height="46"/>
+    <SubTexture name="hohenmeter" x="694" y="214" width="38" height="46"/>
+    <SubTexture name="icondown" x="734" y="112" width="68" height="46"/>
+    <SubTexture name="IconSpeed" x="209" y="716" rotated="true" width="46" height="50"/>
+    <SubTexture name="iconstarblacksmall" x="782" y="393" width="24" height="23"/>
+    <SubTexture name="iconstarredsmall" x="317" y="502" width="24" height="23"/>
+    <SubTexture name="iconstarredsmallempty" x="683" y="514" rotated="true" width="23" height="24"/>
+    <SubTexture name="iconup" x="625" y="110" width="68" height="46"/>
+    <SubTexture name="infobutton" x="209" y="664" width="50" height="50"/>
+    <SubTexture name="infobuttonred" x="453" y="705" width="46" height="46"/>
+    <SubTexture name="InfoIcon" x="356" y="761" width="45" height="45"/>
+    <SubTexture name="infoLayerArrow" x="405" y="363" rotated="true" width="13" height="16"/>
+    <SubTexture name="infoLayerBackground" x="135" y="771" rotated="true" width="27" height="33"/>
+    <SubTexture name="InitialStartCircleBackground" x="309" y="528" width="32" height="32"/>
+    <SubTexture name="InitialStartCircleForeground" x="759" y="655" width="32" height="32"/>
+    <SubTexture name="InitialStartRectBackground" x="405" y="381" rotated="true" width="11" height="14"/>
+    <SubTexture name="kcal" x="760" y="602" rotated="true" width="46" height="28"/>
+    <SubTexture name="kleinerpfeil" x="166" y="664" rotated="true" width="15" height="14"/>
+    <SubTexture name="laengstezeit" x="454" y="656" width="46" height="46"/>
+    <SubTexture name="lefticon" x="164" y="771" rotated="true" width="46" height="32"/>
+    <SubTexture name="lefticonDisabled" x="261" y="528" rotated="true" width="46" height="32"/>
+    <SubTexture name="linkiconsmall" x="738" y="514" width="23" height="23"/>
+    <SubTexture name="linkIconWhite" x="261" y="340" width="82" height="82"/>
+    <SubTexture name="locationSearchIcon" x="307" y="609" width="49" height="49"/>
+    <SubTexture name="lockbutton" x="485" y="608" width="46" height="46"/>
+    <SubTexture name="logoutIcon" x="594" y="562" rotated="true" width="46" height="43"/>
+    <SubTexture name="lupe" x="539" y="514" width="46" height="46"/>
+    <SubTexture name="lupe_white" x="493" y="753" width="46" height="46"/>
+    <SubTexture name="mapicon" x="261" y="480" width="54" height="46"/>
+    <SubTexture name="maplapbubble" x="393" y="514" rotated="true" width="48" height="46"/>
+    <SubTexture name="mapLayerButton" x="214" y="609" rotated="true" width="49" height="50"/>
+    <SubTexture name="mapPointEditIcon" x="734" y="1" rotated="true" width="70" height="33"/>
+    <SubTexture name="mapsicon" x="501" y="704" width="46" height="46"/>
+    <SubTexture name="mapsred" x="1" y="471" width="60" height="41"/>
+    <SubTexture name="mapstarticon" x="699" y="65" width="33" height="48"/>
+    <SubTexture name="mapstopicon" x="85" y="773" rotated="true" width="48" height="33"/>
+    <SubTexture name="MarkerPopUpBackground" x="734" y="318" rotated="true" width="64" height="73"/>
+    <SubTexture name="menubutton" x="727" y="701" rotated="true" width="31" height="46"/>
+    <SubTexture name="networkiconred" x="343" y="455" width="54" height="48"/>
+    <SubTexture name="noimage" x="1" y="780" width="34" height="25" frameX="0" frameY="-1" frameWidth="34" frameHeight="28"/>
+    <SubTexture name="pageindicatorNormal" x="742" y="539" width="18" height="18"/>
+    <SubTexture name="pageindicatorSelected" x="742" y="559" width="18" height="18"/>
+    <SubTexture name="pfeillinks" x="502" y="656" width="46" height="46"/>
+    <SubTexture name="pfeilmitbg" x="261" y="424" width="54" height="54"/>
+    <SubTexture name="pfeilrechts" x="533" y="608" width="46" height="46"/>
+    <SubTexture name="phaseDistanceIcon" x="719" y="539" width="21" height="20"/>
+    <SubTexture name="phaseHeartrateIcon" x="563" y="494" width="21" height="18"/>
+    <SubTexture name="phasenicon" x="254" y="566" width="42" height="41" frameX="0" frameY="-1" frameWidth="42" frameHeight="46"/>
+    <SubTexture name="phaseTimeIcon" x="760" y="722" width="30" height="30"/>
+    <SubTexture name="playbuttonbig" x="131" y="340" width="128" height="128"/>
+    <SubTexture name="playbuttonwhite" x="309" y="660" width="49" height="49"/>
+    <SubTexture name="pointNaviEditIcon" x="166" y="609" rotated="true" width="46" height="53" frameX="0" frameY="0" frameWidth="53" frameHeight="47"/>
+    <SubTexture name="pointNavigationIcon" x="587" y="471" width="30" height="40"/>
+    <SubTexture name="pokalIcon" x="317" y="472" rotated="true" width="24" height="28"/>
+    <SubTexture name="powericon" x="587" y="514" width="46" height="46"/>
+    <SubTexture name="profileicon" x="693" y="262" width="39" height="45"/>
+    <SubTexture name="profileiconred" x="403" y="761" width="40" height="45"/>
+    <SubTexture name="reloadicon" x="619" y="445" width="60" height="46"/>
+    <SubTexture name="righticon" x="693" y="703" width="32" height="46"/>
+    <SubTexture name="righticonDisabled" x="694" y="653" width="32" height="46"/>
+    <SubTexture name="satellitIcon" x="762" y="548" width="40" height="40"/>
+    <SubTexture name="saveiconwhite" x="635" y="493" width="46" height="46"/>
+    <SubTexture name="SearchEditorIcon" x="760" y="689" width="31" height="31"/>
+    <SubTexture name="settingsiconred" x="693" y="309" width="39" height="45"/>
+    <SubTexture name="settingsiconwhite" x="166" y="514" width="39" height="45"/>
+    <SubTexture name="sharedicon" x="694" y="164" width="38" height="48"/>
+    <SubTexture name="shareFacebook" x="541" y="752" width="46" height="46"/>
+    <SubTexture name="shareFacebookGrey" x="549" y="704" width="46" height="46"/>
+    <SubTexture name="shareicon" x="265" y="609" width="40" height="50"/>
+    <SubTexture name="shareiconred" x="166" y="561" width="38" height="46"/>
+    <SubTexture name="shareStrava" x="550" y="656" width="46" height="46"/>
+    <SubTexture name="shareStravaGrey" x="581" y="607" width="46" height="46"/>
+    <SubTexture name="shareTrainingPeaks" x="589" y="752" width="46" height="46"/>
+    <SubTexture name="shareTrainingPeaksGrey" x="597" y="704" width="46" height="46"/>
+    <SubTexture name="shareTwitter" x="598" y="655" width="46" height="46"/>
+    <SubTexture name="shareTwitterGrey" x="629" y="607" width="46" height="46"/>
+    <SubTexture name="shareTwoPeak" x="637" y="752" width="46" height="46"/>
+    <SubTexture name="shareTwoPeakGrey" x="645" y="703" width="46" height="46"/>
+    <SubTexture name="shoeiconred" x="317" y="424" rotated="true" width="24" height="46"/>
     <SubTexture name="sigmacloudlogo" x="420" y="1" width="312" height="30"/>
     <SubTexture name="sigmacloudwhite" x="420" y="33" width="312" height="30"/>
     <SubTexture name="sigmagermanylogowhite" x="420" y="65" width="277" height="43"/>
-    <SubTexture name="sigmaminiiconwhite" x="463" y="723" width="46" height="29"/>
-    <SubTexture name="sleepScreenIcon" x="516" y="672" rotated="true" width="46" height="31"/>
-    <SubTexture name="sortbutton" x="516" y="705" rotated="true" width="46" height="42"/>
-    <SubTexture name="statsiconwhite" x="708" y="325" width="44" height="46"/>
-    <SubTexture name="strava" x="720" y="417" width="32" height="42" frameX="-6" frameY="-3" frameWidth="46" frameHeight="46"/>
-    <SubTexture name="strecke" x="609" y="230" rotated="true" width="46" height="48"/>
-    <SubTexture name="streckesmall" x="682" y="442" width="21" height="21"/>
-    <SubTexture name="temperatureicon" x="268" y="639" rotated="true" width="46" height="16"/>
-    <SubTexture name="toggleoff" x="420" y="204" width="91" height="59" frameX="-5" frameY="-1" frameWidth="106" frameHeight="61"/>
-    <SubTexture name="toggleon" x="200" y="470" width="98" height="59" frameX="-6" frameY="-1" frameWidth="107" frameHeight="61"/>
-    <SubTexture name="topvaluesiconwhite" x="244" y="706" width="52" height="46"/>
-    <SubTexture name="track" x="708" y="373" width="44" height="42"/>
-    <SubTexture name="trackred" x="245" y="658" width="50" height="46"/>
-    <SubTexture name="trackwhite" x="387" y="532" width="50" height="46"/>
-    <SubTexture name="trashicon" x="638" y="328" width="38" height="46"/>
-    <SubTexture name="uhr" x="474" y="675" width="40" height="46"/>
-    <SubTexture name="unlockButton" x="564" y="704" rotated="true" width="46" height="45"/>
-    <SubTexture name="uploadButton" x="638" y="376" width="40" height="46"/>
-    <SubTexture name="uploadButtonRed" x="431" y="630" width="41" height="46"/>
-    <SubTexture name="uploadicon" x="612" y="704" width="46" height="46"/>
-    <SubTexture name="uploadicon2" x="680" y="560" width="38" height="46"/>
-    <SubTexture name="values1icon" x="660" y="704" width="46" height="46"/>
-    <SubTexture name="videoicon" x="275" y="531" rotated="true" width="46" height="62"/>
-    <SubTexture name="videoiconwhite" x="323" y="531" width="62" height="46"/>
-    <SubTexture name="whiteshareicon" x="708" y="608" width="38" height="46"/>
+    <SubTexture name="sigmaminiiconwhite" x="728" y="653" rotated="true" width="29" height="46"/>
+    <SubTexture name="sleepScreenIcon" x="725" y="605" width="31" height="46"/>
+    <SubTexture name="sortbutton" x="690" y="561" rotated="true" width="46" height="42"/>
+    <SubTexture name="sportprofileTemplate" x="646" y="655" width="46" height="46"/>
+    <SubTexture name="statsiconwhite" x="414" y="562" rotated="true" width="46" height="44"/>
+    <SubTexture name="strava" x="763" y="514" rotated="true" width="42" height="32" frameX="-6" frameY="-3" frameWidth="46" frameHeight="46"/>
+    <SubTexture name="strecke" x="343" y="514" width="48" height="46"/>
+    <SubTexture name="streckesmall" x="733" y="749" width="21" height="21"/>
+    <SubTexture name="temperatureicon" x="402" y="407" width="16" height="46"/>
+    <SubTexture name="toggleoff" x="62" y="680" rotated="true" width="59" height="91" frameX="-5" frameY="-1" frameWidth="106" frameHeight="61"/>
+    <SubTexture name="toggleon" x="1" y="680" rotated="true" width="59" height="98" frameX="-6" frameY="-1" frameWidth="107" frameHeight="61"/>
+    <SubTexture name="topvaluesiconwhite" x="207" y="518" width="52" height="46"/>
+    <SubTexture name="track" x="462" y="562" rotated="true" width="42" height="44"/>
+    <SubTexture name="trackred" x="257" y="716" rotated="true" width="46" height="50"/>
+    <SubTexture name="trackwhite" x="261" y="661" rotated="true" width="46" height="50"/>
+    <SubTexture name="trashicon" x="506" y="562" width="38" height="44"/>
+    <SubTexture name="uhr" x="467" y="471" rotated="true" width="46" height="40"/>
+    <SubTexture name="unlockButton" x="346" y="562" rotated="true" width="46" height="45"/>
+    <SubTexture name="uploadButton" x="515" y="471" rotated="true" width="46" height="40"/>
+    <SubTexture name="uploadButtonRed" x="206" y="566" rotated="true" width="46" height="41"/>
+    <SubTexture name="uploadicon" x="677" y="605" width="46" height="46"/>
+    <SubTexture name="uploadicon2" x="212" y="768" rotated="true" width="46" height="38"/>
+    <SubTexture name="values1icon" x="685" y="751" width="46" height="46"/>
+    <SubTexture name="videoicon" x="686" y="356" rotated="true" width="46" height="62"/>
+    <SubTexture name="videoiconwhite" x="619" y="397" width="62" height="46"/>
+    <SubTexture name="whiteshareicon" x="260" y="768" rotated="true" width="46" height="38"/>
 </TextureAtlas>
 

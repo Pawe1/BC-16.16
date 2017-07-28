@@ -2,32 +2,18 @@ package com.facebook;
 
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.util.Log;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 public class GraphRequestAsyncTask extends AsyncTask<Void, Void, List<GraphResponse>> {
     private static final String TAG = GraphRequestAsyncTask.class.getCanonicalName();
-    private static Method executeOnExecutorMethod;
     private final HttpURLConnection connection;
     private Exception exception;
     private final GraphRequestBatch requests;
-
-    static {
-        for (Method method : AsyncTask.class.getMethods()) {
-            if ("executeOnExecutor".equals(method.getName())) {
-                Class[] parameterTypes = method.getParameterTypes();
-                if (parameterTypes.length == 2 && parameterTypes[0] == Executor.class && parameterTypes[1].isArray()) {
-                    executeOnExecutorMethod = method;
-                    return;
-                }
-            }
-        }
-    }
 
     public GraphRequestAsyncTask(GraphRequestBatch graphRequestBatch) {
         this(null, graphRequestBatch);
@@ -63,19 +49,6 @@ public class GraphRequestAsyncTask extends AsyncTask<Void, Void, List<GraphRespo
         }
     }
 
-    GraphRequestAsyncTask executeOnSettingsExecutor() {
-        if (executeOnExecutorMethod != null) {
-            try {
-                executeOnExecutorMethod.invoke(this, new Object[]{FacebookSdk.getExecutor(), null});
-            } catch (InvocationTargetException e) {
-            } catch (IllegalAccessException e2) {
-            }
-        } else {
-            execute(new Void[0]);
-        }
-        return this;
-    }
-
     protected final Exception getException() {
         return this.exception;
     }
@@ -97,7 +70,7 @@ public class GraphRequestAsyncTask extends AsyncTask<Void, Void, List<GraphRespo
             Log.d(TAG, String.format("execute async task: %s", new Object[]{this}));
         }
         if (this.requests.getCallbackHandler() == null) {
-            this.requests.setCallbackHandler(new Handler());
+            this.requests.setCallbackHandler(Thread.currentThread() instanceof HandlerThread ? new Handler() : new Handler(Looper.getMainLooper()));
         }
     }
 

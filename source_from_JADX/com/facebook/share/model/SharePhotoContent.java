@@ -7,11 +7,11 @@ import java.util.Collections;
 import java.util.List;
 
 public final class SharePhotoContent extends ShareContent<SharePhotoContent, Builder> {
-    public static final Creator<SharePhotoContent> CREATOR = new C02951();
+    public static final Creator<SharePhotoContent> CREATOR = new C03571();
     private final List<SharePhoto> photos;
 
-    final class C02951 implements Creator<SharePhotoContent> {
-        C02951() {
+    final class C03571 implements Creator<SharePhotoContent> {
+        C03571() {
         }
 
         public final SharePhotoContent createFromParcel(Parcel parcel) {
@@ -46,10 +46,6 @@ public final class SharePhotoContent extends ShareContent<SharePhotoContent, Bui
             return new SharePhotoContent();
         }
 
-        public Builder readFrom(Parcel parcel) {
-            return readFrom((SharePhotoContent) parcel.readParcelable(SharePhotoContent.class.getClassLoader()));
-        }
-
         public Builder readFrom(SharePhotoContent sharePhotoContent) {
             return sharePhotoContent == null ? this : ((Builder) super.readFrom((ShareContent) sharePhotoContent)).addPhotos(sharePhotoContent.getPhotos());
         }
@@ -63,7 +59,7 @@ public final class SharePhotoContent extends ShareContent<SharePhotoContent, Bui
 
     SharePhotoContent(Parcel parcel) {
         super(parcel);
-        this.photos = Collections.unmodifiableList(com.facebook.share.model.SharePhoto.Builder.readListFrom(parcel));
+        this.photos = Collections.unmodifiableList(com.facebook.share.model.SharePhoto.Builder.readPhotoListFrom(parcel));
     }
 
     private SharePhotoContent(Builder builder) {
@@ -81,6 +77,6 @@ public final class SharePhotoContent extends ShareContent<SharePhotoContent, Bui
 
     public final void writeToParcel(Parcel parcel, int i) {
         super.writeToParcel(parcel, i);
-        com.facebook.share.model.SharePhoto.Builder.writeListTo(parcel, this.photos);
+        com.facebook.share.model.SharePhoto.Builder.writePhotoListTo(parcel, i, this.photos);
     }
 }

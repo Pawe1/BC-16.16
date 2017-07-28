@@ -17,6 +17,9 @@
         <RelativeLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@id/Footer" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
             <View android:id="@id/Line2" android:background="#ff909090" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x201" />
             <TextView android:id="@id/TrustQuestion" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/IDA_CURL_INTERFACE_TRUSTSER" android:layout_below="@id/Line2" />
+            <Button android:id="@id/NeutralButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/IDA_CURL_INTERFACE_THISSESS" android:layout_below="@id/TrustQuestion" />
+            <Button android:id="@id/NegativeButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/IDA_CURL_INTERFACE_NOSESS" android:layout_below="@id/NeutralButton" />
+            <Button android:id="@id/PositiveButton" android:visibility="invisible" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/IDA_CURL_INTERFACE_ALLSESS" android:layout_below="@id/NegativeButton" />
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

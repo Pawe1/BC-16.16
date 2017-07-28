@@ -18,8 +18,8 @@ public final class ListenErrorDialog {
     private final Activity mActivity;
     private final String mDebuggerPort;
 
-    class C01221 implements OnClickListener {
-        C01221() {
+    class C01311 implements OnClickListener {
+        C01311() {
         }
 
         public void onClick(DialogInterface dialogInterface, int i) {
@@ -27,8 +27,8 @@ public final class ListenErrorDialog {
         }
     }
 
-    class C01232 implements OnClickListener {
-        C01232() {
+    class C01322 implements OnClickListener {
+        C01322() {
         }
 
         public void onClick(DialogInterface dialogInterface, int i) {
@@ -36,8 +36,8 @@ public final class ListenErrorDialog {
         }
     }
 
-    class C01243 implements OnCancelListener {
-        C01243() {
+    class C01333 implements OnCancelListener {
+        C01333() {
         }
 
         public void onCancel(DialogInterface dialogInterface) {
@@ -62,9 +62,9 @@ public final class ListenErrorDialog {
         builder.setIcon(C0003R.drawable.banner);
         builder.setView(linearLayout);
         builder.setTitle(AndroidLocale.GetLocalizedString(STRING_ID.IDA_DEBUGGER_LISTEN_ERROR_TITLE));
-        builder.setPositiveButton(AndroidLocale.GetLocalizedString(STRING_ID.IDA_CANCEL), new C01221());
-        builder.setNegativeButton(AndroidLocale.GetLocalizedString(STRING_ID.IDA_CONTINUE), new C01232());
-        builder.setOnCancelListener(new C01243());
+        builder.setPositiveButton(AndroidLocale.GetLocalizedString(STRING_ID.IDA_CANCEL), new C01311());
+        builder.setNegativeButton(AndroidLocale.GetLocalizedString(STRING_ID.IDA_CONTINUE), new C01322());
+        builder.setOnCancelListener(new C01333());
         builder.show();
     }
 

@@ -3,14 +3,18 @@ package com.adobe.air;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build.VERSION;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore.Images.Media;
 import com.facebook.internal.AnalyticsEvents;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -113,37 +117,37 @@ public final class CameraUI implements ActivityResultCallback {
     }
 
     private Cursor getCursorFromUri(Uri uri, Activity activity, String[] strArr) {
-        int i;
         Throwable th;
         Cursor cursor = null;
-        int i2 = 1;
+        int i = 1;
+        int i2;
         try {
             Cursor query = activity.getContentResolver().query(uri, strArr, null, null, null);
             try {
                 if (query.moveToFirst()) {
                     if (query != null) {
-                        i = 1;
+                        i2 = 1;
                     } else {
-                        i = 0;
-                    }
-                    if (query.moveToFirst()) {
                         i2 = 0;
                     }
-                    if ((i & i2) != 0) {
+                    if (query.moveToFirst()) {
+                        i = 0;
+                    }
+                    if ((i2 & i) != 0) {
                         query.close();
                     }
                     return query;
                 }
                 query.close();
                 if (query != null) {
-                    i = 1;
+                    i2 = 1;
                 } else {
-                    i = 0;
-                }
-                if (query.moveToFirst()) {
                     i2 = 0;
                 }
-                if ((i & i2) != 0) {
+                if (query.moveToFirst()) {
+                    i = 0;
+                }
+                if ((i2 & i) != 0) {
                     query.close();
                 }
                 return null;
@@ -151,14 +155,14 @@ public final class CameraUI implements ActivityResultCallback {
                 cursor = query;
                 th = th2;
                 if (cursor == null) {
-                    i = 0;
+                    i2 = 0;
                 } else {
-                    i = 1;
+                    i2 = 1;
                 }
                 if (cursor.moveToFirst()) {
-                    i2 = 0;
+                    i = 0;
                 }
-                if ((i & i2) != 0) {
+                if ((i2 & i) != 0) {
                     cursor.close();
                 }
                 throw th;
@@ -166,14 +170,14 @@ public final class CameraUI implements ActivityResultCallback {
         } catch (Throwable th22) {
             th = th22;
             if (cursor == null) {
-                i = 1;
+                i2 = 1;
             } else {
-                i = 0;
-            }
-            if (cursor.moveToFirst()) {
                 i2 = 0;
             }
-            if ((i & i2) != 0) {
+            if (cursor.moveToFirst()) {
+                i = 0;
+            }
+            if ((i2 & i) != 0) {
                 cursor.close();
             }
             throw th;
@@ -386,32 +390,36 @@ public final class CameraUI implements ActivityResultCallback {
     }
 
     private String getCameraRollDirectory(Activity activity) {
+        Uri insert;
         if (sCameraRollPath != null) {
             return sCameraRollPath;
         }
-        Uri insert;
         Uri insert2;
-        try {
-            insert = activity.getContentResolver().insert(Media.EXTERNAL_CONTENT_URI, new ContentValues());
-        } catch (Exception e) {
-            insert = null;
-        }
-        if (insert == null) {
+        if (null == null) {
             try {
-                insert2 = activity.getContentResolver().insert(Media.getContentUri(PHONE_STORAGE), new ContentValues());
-            } catch (Exception e2) {
-                insert2 = insert;
+                insert2 = activity.getContentResolver().insert(Media.INTERNAL_CONTENT_URI, new ContentValues());
+            } catch (Exception e) {
+                insert2 = null;
             }
         } else {
-            insert2 = insert;
+            insert2 = null;
         }
-        if (insert2 != null) {
+        if (insert2 == null) {
             try {
-                sCameraRollPath = getFileFromUri(insert2, activity).getParent();
+                insert = activity.getContentResolver().insert(Media.getContentUri(PHONE_STORAGE), new ContentValues());
+            } catch (Exception e2) {
+                insert = insert2;
+            }
+        } else {
+            insert = insert2;
+        }
+        if (insert != null) {
+            try {
+                sCameraRollPath = getFileFromUri(insert, activity).getParent();
             } catch (ActivityNotFoundException e3) {
             } catch (NullPointerException e4) {
             } finally {
-                activity.getContentResolver().delete(insert2, null, null);
+                activity.getContentResolver().delete(insert, null, null);
             }
         } else {
             File externalStoragePublicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -423,29 +431,60 @@ public final class CameraUI implements ActivityResultCallback {
     }
 
     private int stillPictureWork() {
-        Activity activity = AndroidActivityWrapper.GetAndroidActivityWrapper().getActivity();
+        String str = null;
+        Context activity = AndroidActivityWrapper.GetAndroidActivityWrapper().getActivity();
         if (activity == null) {
             return 4;
         }
-        if (getCameraRollDirectory(activity) == null) {
+        if ((AndroidActivityWrapper.GetAndroidActivityWrapper().GetTargetSdkVersion() < 23 || VERSION.SDK_INT < 23) && getCameraRollDirectory(activity) == null) {
             return 2;
         }
-        String str = getCameraRollDirectory(activity) + "/" + new SimpleDateFormat("'IMG'_yyyyMMdd_HHmmss").format(new Date(System.currentTimeMillis())) + ".jpg";
-        File file = new File(str);
-        if (file.exists()) {
+        File file;
+        String format = new SimpleDateFormat("'IMG'_yyyyMMdd_HHmmss").format(new Date(System.currentTimeMillis()));
+        if (AndroidActivityWrapper.GetAndroidActivityWrapper().GetTargetSdkVersion() < 23 || VERSION.SDK_INT < 23) {
+            format = getCameraRollDirectory(activity) + "/" + format + ".jpg";
+            file = new File(format);
+            if (file.exists()) {
+                file = null;
+            }
+        } else {
+            file = new File(activity.getCacheDir(), "Pictures");
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            try {
+                file = File.createTempFile(format, ".jpg", file);
+                format = file.getAbsolutePath();
+            } catch (IOException e) {
+                format = null;
+                file = null;
+            }
+        }
+        if (file == null) {
             return 2;
         }
         int i;
         try {
             Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-            intent.putExtra("output", Uri.fromFile(file));
+            if (AndroidActivityWrapper.GetAndroidActivityWrapper().GetTargetSdkVersion() < 23 || VERSION.SDK_INT < 23) {
+                intent.putExtra("output", Uri.fromFile(file));
+            } else {
+                Parcelable uriForFile;
+                try {
+                    uriForFile = CameraUIProvider.getUriForFile(activity, activity.getPackageName() + ".provider", file);
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                    uriForFile = null;
+                }
+                intent.putExtra("output", uriForFile);
+                intent.setFlags(2);
+            }
             activity.startActivityForResult(intent, 3);
+            str = format;
             i = 0;
-        } catch (ActivityNotFoundException e) {
-            str = null;
+        } catch (ActivityNotFoundException e3) {
             i = 3;
-        } catch (NullPointerException e2) {
-            str = null;
+        } catch (NullPointerException e4) {
             i = 2;
         }
         this.mImagePath = str;

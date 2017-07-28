@@ -50,8 +50,8 @@ public class GamePreviewAppEntry extends Activity {
     private static DexClassLoader sDloader;
     private static boolean sRuntimeClassesLoaded = false;
 
-    class C01161 implements OnClickListener {
-        C01161() {
+    class C01251 implements OnClickListener {
+        C01251() {
         }
 
         public void onClick(DialogInterface dialogInterface, int i) {
@@ -60,8 +60,8 @@ public class GamePreviewAppEntry extends Activity {
         }
     }
 
-    class C01172 implements OnClickListener {
-        C01172() {
+    class C01262 implements OnClickListener {
+        C01262() {
         }
 
         public void onClick(DialogInterface dialogInterface, int i) {
@@ -69,8 +69,8 @@ public class GamePreviewAppEntry extends Activity {
         }
     }
 
-    class C01183 implements OnCancelListener {
-        C01183() {
+    class C01273 implements OnCancelListener {
+        C01273() {
         }
 
         public void onCancel(DialogInterface dialogInterface) {
@@ -78,8 +78,8 @@ public class GamePreviewAppEntry extends Activity {
         }
     }
 
-    class C01194 implements ServiceConnection {
-        C01194() {
+    class C01284 implements ServiceConnection {
+        C01284() {
         }
 
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -145,9 +145,9 @@ public class GamePreviewAppEntry extends Activity {
         Builder builder = new Builder(this);
         builder.setTitle(i);
         builder.setMessage(str);
-        builder.setPositiveButton(i2, new C01161());
-        builder.setNegativeButton(i3, new C01172());
-        builder.setOnCancelListener(new C01183());
+        builder.setPositiveButton(i2, new C01251());
+        builder.setNegativeButton(i3, new C01262());
+        builder.setOnCancelListener(new C01273());
         builder.show();
     }
 
@@ -189,7 +189,7 @@ public class GamePreviewAppEntry extends Activity {
         try {
             Intent intent = new Intent("com.adobe.air.AIRServiceAction");
             intent.setClassName(RUNTIME_PACKAGE_ID, "com.adobe.air.AIRService");
-            bindService(intent, new C01194(), 1);
+            bindService(intent, new C01284(), 1);
         } catch (Exception e) {
         }
     }

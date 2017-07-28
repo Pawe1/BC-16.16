@@ -15,8 +15,8 @@ class DrawThread extends Thread {
     private AIRWindowThreadedSurfaceView mView = null;
 
     /* compiled from: AIRWindowThreadedSurfaceView */
-    class C01131 extends Handler {
-        C01131() {
+    class C01221 extends Handler {
+        C01221() {
         }
 
         public void handleMessage(Message message) {
@@ -33,7 +33,7 @@ class DrawThread extends Thread {
 
     public void run() {
         Looper.prepare();
-        this.mHandler = new C01131();
+        this.mHandler = new C01221();
         this.mLooper = Looper.myLooper();
         Looper.loop();
     }
@@ -61,9 +61,9 @@ class DrawThread extends Thread {
 
     private void draw(DrawRequest drawRequest) {
         if (drawRequest.scale) {
-            this.mView.drawScaled(drawRequest.f304x, drawRequest.f305y, drawRequest.wd, drawRequest.ht, drawRequest.bm, drawRequest.dstX, drawRequest.dstY, drawRequest.dstWd, drawRequest.dstHt, drawRequest.fullsc, drawRequest.bgColor);
+            this.mView.drawScaled(drawRequest.f316x, drawRequest.f317y, drawRequest.wd, drawRequest.ht, drawRequest.bm, drawRequest.dstX, drawRequest.dstY, drawRequest.dstWd, drawRequest.dstHt, drawRequest.fullsc, drawRequest.bgColor);
         } else {
-            this.mView.draw(drawRequest.f304x, drawRequest.f305y, drawRequest.wd, drawRequest.ht, drawRequest.bm);
+            this.mView.draw(drawRequest.f316x, drawRequest.f317y, drawRequest.wd, drawRequest.ht, drawRequest.bm);
         }
     }
 }

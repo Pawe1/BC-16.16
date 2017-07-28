@@ -79,8 +79,8 @@ public class TaskManager {
     private final TouchSensor mTouchSensor;
     private final Vibrator mVibrator;
 
-    class C01461 implements com.adobe.air.wand.view.TouchSensor.Listener {
-        C01461() {
+    class C01511 implements com.adobe.air.wand.view.TouchSensor.Listener {
+        C01511() {
         }
 
         public void onTouchEvent(TouchEventData touchEventData) {
@@ -92,8 +92,8 @@ public class TaskManager {
         }
     }
 
-    class C01472 implements com.adobe.air.wand.motionsensor.MotionSensor.Listener {
-        C01472() {
+    class C01522 implements com.adobe.air.wand.motionsensor.MotionSensor.Listener {
+        C01522() {
         }
 
         public void onSensorChanged(float[] fArr, long j) {
@@ -101,8 +101,8 @@ public class TaskManager {
         }
     }
 
-    class C01483 implements com.adobe.air.wand.motionsensor.MotionSensor.Listener {
-        C01483() {
+    class C01533 implements com.adobe.air.wand.motionsensor.MotionSensor.Listener {
+        C01533() {
         }
 
         public void onSensorChanged(float[] fArr, long j) {
@@ -110,8 +110,8 @@ public class TaskManager {
         }
     }
 
-    class C01494 implements com.adobe.air.wand.motionsensor.MotionSensor.Listener {
-        C01494() {
+    class C01544 implements com.adobe.air.wand.motionsensor.MotionSensor.Listener {
+        C01544() {
         }
 
         public void onSensorChanged(float[] fArr, long j) {
@@ -177,10 +177,10 @@ public class TaskManager {
             throw new Exception("Invalid TouchSensor");
         }
         this.mTouchSensor = touchSensor;
-        this.mTouchSensor.setListener(new C01461());
-        this.mAccelerometer.setListener(new C01472());
-        this.mMagnetometer.setListener(new C01483());
-        this.mGyroscope.setListener(new C01494());
+        this.mTouchSensor.setListener(new C01511());
+        this.mAccelerometer.setListener(new C01522());
+        this.mMagnetometer.setListener(new C01533());
+        this.mGyroscope.setListener(new C01544());
     }
 
     private String[] getGesturePhases(int i) {
@@ -208,19 +208,19 @@ public class TaskManager {
                 createDataObject.put(NAME_NOTIFICATION_PHASE, put);
                 switch (gestureEventData.mType) {
                     case 0:
-                        createDataObject.put(NAME_NOTIFICATION_TYPE, GESTURE_TYPE_ZOOM);
+                        createDataObject.put("type", GESTURE_TYPE_ZOOM);
                         break;
                     case 1:
-                        createDataObject.put(NAME_NOTIFICATION_TYPE, GESTURE_TYPE_PAN);
+                        createDataObject.put("type", GESTURE_TYPE_PAN);
                         break;
                     case 2:
-                        createDataObject.put(NAME_NOTIFICATION_TYPE, GESTURE_TYPE_ROTATE);
+                        createDataObject.put("type", GESTURE_TYPE_ROTATE);
                         break;
                     case 3:
-                        createDataObject.put(NAME_NOTIFICATION_TYPE, GESTURE_TYPE_TWO_FINGER_TAP);
+                        createDataObject.put("type", GESTURE_TYPE_TWO_FINGER_TAP);
                         break;
                     case 4:
-                        createDataObject.put(NAME_NOTIFICATION_TYPE, GESTURE_TYPE_SWIPE);
+                        createDataObject.put("type", GESTURE_TYPE_SWIPE);
                         break;
                 }
                 createDataObject.put(NAME_NOTIFICATION_IS_TRANSFORM, gestureEventData.mIsTransform);
@@ -260,7 +260,7 @@ public class TaskManager {
         for (String put : touchTypes) {
             try {
                 MessageDataObject createDataObject = this.mMessageManager.createDataObject();
-                createDataObject.put(NAME_NOTIFICATION_TYPE, put);
+                createDataObject.put("type", put);
                 createDataObject.put(NAME_NOTIFICATION_IS_PRIMARY_TOUCH_POINT, touchEventData.mIsPrimaryPoint);
                 createDataObject.put(NAME_NOTIFICATION_LOCAL_X, (double) touchEventData.mXCoord);
                 createDataObject.put(NAME_NOTIFICATION_LOCAL_Y, (double) touchEventData.mYCoord);

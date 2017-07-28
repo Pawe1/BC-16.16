@@ -3,19 +3,21 @@ package com.facebook.share.model;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.Parcelable.Creator;
+import com.facebook.share.model.ShareMedia.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class SharePhoto extends ShareMedia {
-    public static final Creator<SharePhoto> CREATOR = new C02941();
+    public static final Creator<SharePhoto> CREATOR = new C03561();
     private final Bitmap bitmap;
     private final String caption;
     private final Uri imageUrl;
     private final boolean userGenerated;
 
-    final class C02941 implements Creator<SharePhoto> {
-        C02941() {
+    final class C03561 implements Creator<SharePhoto> {
+        C03561() {
         }
 
         public final SharePhoto createFromParcel(Parcel parcel) {
@@ -33,18 +35,23 @@ public final class SharePhoto extends ShareMedia {
         private Uri imageUrl;
         private boolean userGenerated;
 
-        public static List<SharePhoto> readListFrom(Parcel parcel) {
+        static List<SharePhoto> readPhotoListFrom(Parcel parcel) {
+            List<ShareMedia> readListFrom = com.facebook.share.model.ShareMedia.Builder.readListFrom(parcel);
             List<SharePhoto> arrayList = new ArrayList();
-            parcel.readTypedList(arrayList, SharePhoto.CREATOR);
+            for (ShareMedia shareMedia : readListFrom) {
+                if (shareMedia instanceof SharePhoto) {
+                    arrayList.add((SharePhoto) shareMedia);
+                }
+            }
             return arrayList;
         }
 
-        public static void writeListTo(Parcel parcel, List<SharePhoto> list) {
-            List arrayList = new ArrayList();
-            for (SharePhoto add : list) {
-                arrayList.add(add);
+        static void writePhotoListTo(Parcel parcel, int i, List<SharePhoto> list) {
+            Parcelable[] parcelableArr = new ShareMedia[list.size()];
+            for (int i2 = 0; i2 < list.size(); i2++) {
+                parcelableArr[i2] = (ShareMedia) list.get(i2);
             }
-            parcel.writeTypedList(arrayList);
+            parcel.writeParcelableArray(parcelableArr, i);
         }
 
         public final SharePhoto build() {
@@ -59,7 +66,7 @@ public final class SharePhoto extends ShareMedia {
             return this.imageUrl;
         }
 
-        public final Builder readFrom(Parcel parcel) {
+        final Builder readFrom(Parcel parcel) {
             return readFrom((SharePhoto) parcel.readParcelable(SharePhoto.class.getClassLoader()));
         }
 
@@ -118,6 +125,10 @@ public final class SharePhoto extends ShareMedia {
 
     public final Uri getImageUrl() {
         return this.imageUrl;
+    }
+
+    public final Type getMediaType() {
+        return Type.PHOTO;
     }
 
     public final boolean getUserGenerated() {

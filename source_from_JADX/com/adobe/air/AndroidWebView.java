@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Picture;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Build.VERSION;
 import android.util.AttributeSet;
 import android.util.Base64;
@@ -18,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.webkit.SslErrorHandler;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -49,10 +51,10 @@ public class AndroidWebView implements StateChangeCallback {
     private String mUrl = null;
     private AndroidWebViewImpl mView = new AndroidWebViewImpl(this.mContext);
 
-    class C01061 extends WebChromeClient {
+    class C01141 extends WebChromeClient {
         private ValueCallback<Uri> mUploadMessage;
 
-        C01061() {
+        C01141() {
         }
 
         public void onShowCustomView(View view, CustomViewCallback customViewCallback) {
@@ -75,10 +77,10 @@ public class AndroidWebView implements StateChangeCallback {
                 GetAndroidActivityWrapper.addActivityResultListener(new ActivityResultCallback() {
                     public void onActivityResult(int i, int i2, Intent intent) {
                         if (i == 5) {
-                            if (C01061.this.mUploadMessage != null) {
+                            if (C01141.this.mUploadMessage != null) {
                                 Object data = (intent == null || i2 != -1) ? null : intent.getData();
-                                C01061.this.mUploadMessage.onReceiveValue(data);
-                                C01061.this.mUploadMessage = null;
+                                C01141.this.mUploadMessage.onReceiveValue(data);
+                                C01141.this.mUploadMessage = null;
                             }
                             GetAndroidActivityWrapper.removeActivityResultListener(this);
                         }
@@ -92,8 +94,8 @@ public class AndroidWebView implements StateChangeCallback {
         }
     }
 
-    class C01083 implements Runnable {
-        C01083() {
+    class C01173 implements Runnable {
+        C01173() {
         }
 
         public void run() {
@@ -314,7 +316,7 @@ public class AndroidWebView implements StateChangeCallback {
         }
         this.mView.setScrollbarFadingEnabled(true);
         this.mView.setScrollBarStyle(CompanionView.kTouchMetaStateIsPen);
-        this.mView.setWebChromeClient(new C01061());
+        this.mView.setWebChromeClient(new C01141());
         this.mView.setWebViewClient(new WebViewClient() {
             private String mLastPageStartedUrl = null;
             private String mNoCompleteForUrl = null;
@@ -343,6 +345,29 @@ public class AndroidWebView implements StateChangeCallback {
                 this.mNoCompleteForUrl = null;
             }
 
+            public void onReceivedSslError(WebView webView, final SslErrorHandler sslErrorHandler, final SslError sslError) {
+                if (this.mUrl != null && sslError.getCertificate() != null) {
+                    final String str = this.mUrl;
+                    new Thread() {
+                        public void run() {
+                            Object obj = null;
+                            if (sslError.getCertificate() != null) {
+                                SSLSecurityDialog sSLSecurityDialog = new SSLSecurityDialog();
+                                sSLSecurityDialog.show(str, sslError.getCertificate());
+                                if (sSLSecurityDialog.getUserAction().equals("session")) {
+                                    obj = 1;
+                                }
+                            }
+                            if (obj != null) {
+                                sslErrorHandler.proceed();
+                            } else {
+                                sslErrorHandler.cancel();
+                            }
+                        }
+                    }.start();
+                }
+            }
+
             public void doUpdateVisitedHistory(WebView webView, String str, boolean z) {
                 if (this.mLastPageStartedUrl != null && this.mLastPageStartedUrl.equals(str)) {
                     this.onLocationChange(str);
@@ -358,6 +383,10 @@ public class AndroidWebView implements StateChangeCallback {
                 }
             }
         });
+    }
+
+    public void enableLocalDomStorage() {
+        this.mView.getSettings().setDomStorageEnabled(true);
     }
 
     /* JADX WARNING: inconsistent code. */
@@ -386,7 +415,7 @@ public class AndroidWebView implements StateChangeCallback {
         r0 = r0.invoke(r3, r4);	 Catch:{ Exception -> 0x0057 }
         r0 = (java.lang.Boolean) r0;	 Catch:{ Exception -> 0x0057 }
         r0 = r0.booleanValue();	 Catch:{ Exception -> 0x0057 }
-        r3 = com.adobe.air.AndroidWebView.C01094.$SwitchMap$com$adobe$air$AndroidActivityWrapper$ActivityState;	 Catch:{ Exception -> 0x0057 }
+        r3 = com.adobe.air.AndroidWebView.C01184.$SwitchMap$com$adobe$air$AndroidActivityWrapper$ActivityState;	 Catch:{ Exception -> 0x0057 }
         r4 = r6.ordinal();	 Catch:{ Exception -> 0x0057 }
         r3 = r3[r4];	 Catch:{ Exception -> 0x0057 }
         switch(r3) {
@@ -395,7 +424,7 @@ public class AndroidWebView implements StateChangeCallback {
             default: goto L_0x003b;
         };
     L_0x003b:
-        r0 = com.adobe.air.AndroidWebView.C01094.$SwitchMap$com$adobe$air$AndroidActivityWrapper$ActivityState;
+        r0 = com.adobe.air.AndroidWebView.C01184.$SwitchMap$com$adobe$air$AndroidActivityWrapper$ActivityState;
         r1 = r6.ordinal();
         r0 = r0[r1];
         switch(r0) {
@@ -559,7 +588,7 @@ public class AndroidWebView implements StateChangeCallback {
 
     private void refreshGlobalBounds() {
         if (this.mView != null) {
-            this.mView.post(new C01083());
+            this.mView.post(new C01173());
         }
     }
 

@@ -15,12 +15,12 @@ public class CollectionMapper {
         void onComplete();
     }
 
-    final class C02001 implements OnMapperCompleteListener {
+    final class C02341 implements OnMapperCompleteListener {
         final /* synthetic */ Mutable val$didReturnError;
         final /* synthetic */ OnMapperCompleteListener val$onMapperCompleteListener;
         final /* synthetic */ Mutable val$pendingJobCount;
 
-        C02001(Mutable mutable, Mutable mutable2, OnMapperCompleteListener onMapperCompleteListener) {
+        C02341(Mutable mutable, Mutable mutable2, OnMapperCompleteListener onMapperCompleteListener) {
             this.val$didReturnError = mutable;
             this.val$pendingJobCount = mutable2;
             this.val$onMapperCompleteListener = onMapperCompleteListener;
@@ -49,12 +49,12 @@ public class CollectionMapper {
         void onComplete(Object obj);
     }
 
-    final class C02012 implements OnMapValueCompleteListener {
+    final class C02352 implements OnMapValueCompleteListener {
         final /* synthetic */ Collection val$collection;
         final /* synthetic */ OnMapperCompleteListener val$jobCompleteListener;
         final /* synthetic */ Object val$key;
 
-        C02012(Collection collection, Object obj, OnMapperCompleteListener onMapperCompleteListener) {
+        C02352(Collection collection, Object obj, OnMapperCompleteListener onMapperCompleteListener) {
             this.val$collection = collection;
             this.val$key = obj;
             this.val$jobCompleteListener = onMapperCompleteListener;
@@ -88,7 +88,7 @@ public class CollectionMapper {
     public static <T> void iterate(Collection<T> collection, ValueMapper valueMapper, OnMapperCompleteListener onMapperCompleteListener) {
         Mutable mutable = new Mutable(Boolean.valueOf(false));
         Mutable mutable2 = new Mutable(Integer.valueOf(1));
-        OnMapperCompleteListener c02001 = new C02001(mutable, mutable2, onMapperCompleteListener);
+        OnMapperCompleteListener c02341 = new C02341(mutable, mutable2, onMapperCompleteListener);
         Iterator keyIterator = collection.keyIterator();
         List linkedList = new LinkedList();
         while (keyIterator.hasNext()) {
@@ -96,11 +96,11 @@ public class CollectionMapper {
         }
         for (Object next : linkedList) {
             Object obj = collection.get(next);
-            OnMapValueCompleteListener c02012 = new C02012(collection, next, c02001);
+            OnMapValueCompleteListener c02352 = new C02352(collection, next, c02341);
             Object next2 = mutable2.value;
             mutable2.value = Integer.valueOf(((Integer) mutable2.value).intValue() + 1);
-            valueMapper.mapValue(obj, c02012);
+            valueMapper.mapValue(obj, c02352);
         }
-        c02001.onComplete();
+        c02341.onComplete();
     }
 }

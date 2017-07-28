@@ -18,8 +18,8 @@ public class BundleJSONConverter {
         void setOnJSON(JSONObject jSONObject, String str, Object obj);
     }
 
-    final class C01931 implements Setter {
-        C01931() {
+    final class C02271 implements Setter {
+        C02271() {
         }
 
         public final void setOnBundle(Bundle bundle, String str, Object obj) {
@@ -31,8 +31,8 @@ public class BundleJSONConverter {
         }
     }
 
-    final class C01942 implements Setter {
-        C01942() {
+    final class C02282 implements Setter {
+        C02282() {
         }
 
         public final void setOnBundle(Bundle bundle, String str, Object obj) {
@@ -44,8 +44,8 @@ public class BundleJSONConverter {
         }
     }
 
-    final class C01953 implements Setter {
-        C01953() {
+    final class C02293 implements Setter {
+        C02293() {
         }
 
         public final void setOnBundle(Bundle bundle, String str, Object obj) {
@@ -57,8 +57,8 @@ public class BundleJSONConverter {
         }
     }
 
-    final class C01964 implements Setter {
-        C01964() {
+    final class C02304 implements Setter {
+        C02304() {
         }
 
         public final void setOnBundle(Bundle bundle, String str, Object obj) {
@@ -70,8 +70,8 @@ public class BundleJSONConverter {
         }
     }
 
-    final class C01975 implements Setter {
-        C01975() {
+    final class C02315 implements Setter {
+        C02315() {
         }
 
         public final void setOnBundle(Bundle bundle, String str, Object obj) {
@@ -83,8 +83,8 @@ public class BundleJSONConverter {
         }
     }
 
-    final class C01986 implements Setter {
-        C01986() {
+    final class C02326 implements Setter {
+        C02326() {
         }
 
         public final void setOnBundle(Bundle bundle, String str, Object obj) {
@@ -100,8 +100,8 @@ public class BundleJSONConverter {
         }
     }
 
-    final class C01997 implements Setter {
-        C01997() {
+    final class C02337 implements Setter {
+        C02337() {
         }
 
         public final void setOnBundle(Bundle bundle, String str, Object obj) {
@@ -132,13 +132,13 @@ public class BundleJSONConverter {
     static {
         Map hashMap = new HashMap();
         SETTERS = hashMap;
-        hashMap.put(Boolean.class, new C01931());
-        SETTERS.put(Integer.class, new C01942());
-        SETTERS.put(Long.class, new C01953());
-        SETTERS.put(Double.class, new C01964());
-        SETTERS.put(String.class, new C01975());
-        SETTERS.put(String[].class, new C01986());
-        SETTERS.put(JSONArray.class, new C01997());
+        hashMap.put(Boolean.class, new C02271());
+        SETTERS.put(Integer.class, new C02282());
+        SETTERS.put(Long.class, new C02293());
+        SETTERS.put(Double.class, new C02304());
+        SETTERS.put(String.class, new C02315());
+        SETTERS.put(String[].class, new C02326());
+        SETTERS.put(JSONArray.class, new C02337());
     }
 
     public static Bundle convertToBundle(JSONObject jSONObject) {

@@ -2,12 +2,28 @@ package com.facebook.share.model;
 
 import android.os.Bundle;
 import android.os.Parcel;
+import android.os.Parcelable;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ShareMedia implements ShareModel {
     private final Bundle params;
 
     public static abstract class Builder<M extends ShareMedia, B extends Builder> implements ShareModelBuilder<M, B> {
         private Bundle params = new Bundle();
+
+        static List<ShareMedia> readListFrom(Parcel parcel) {
+            Parcelable[] readParcelableArray = parcel.readParcelableArray(ShareMedia.class.getClassLoader());
+            List<ShareMedia> arrayList = new ArrayList(readParcelableArray.length);
+            for (Parcelable parcelable : readParcelableArray) {
+                arrayList.add((ShareMedia) parcelable);
+            }
+            return arrayList;
+        }
+
+        static void writeListTo(Parcel parcel, int i, List<ShareMedia> list) {
+            parcel.writeParcelableArray((ShareMedia[]) list.toArray(), i);
+        }
 
         public B readFrom(M m) {
             return m == null ? this : setParameters(m.getParameters());
@@ -26,6 +42,11 @@ public abstract class ShareMedia implements ShareModel {
         }
     }
 
+    public enum Type {
+        PHOTO,
+        VIDEO
+    }
+
     ShareMedia(Parcel parcel) {
         this.params = parcel.readBundle();
     }
@@ -37,6 +58,8 @@ public abstract class ShareMedia implements ShareModel {
     public int describeContents() {
         return 0;
     }
+
+    public abstract Type getMediaType();
 
     @Deprecated
     public Bundle getParameters() {

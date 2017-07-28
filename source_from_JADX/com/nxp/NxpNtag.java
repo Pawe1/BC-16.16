@@ -4,7 +4,6 @@ import android.nfc.Tag;
 import android.nfc.tech.NfcA;
 import android.nfc.tech.TagTechnology;
 import android.os.Build;
-import android.util.Log;
 import com.nxp.Get_version_response.Prod;
 import com.sigmasport.misc.NfcProprietaryCmd;
 import de.pagecon.ane.nfc.Manager;
@@ -12,11 +11,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class NxpNtag implements TagTechnology {
-    private static final boolean DEBUG = true;
-    static final String TAG = NxpNtag.class.getName();
     private final int DYNAMIC_LOCK_BYTE_CONFIG_SIZE = 4;
     private final int EEPROM_BLOCK_SIZE = 16;
-    private final byte EEPROM_PAGE_SIZE = (byte) 4;
     private Sector mEepromSector;
     Get_version_response mGetVersion;
     NfcA mNfcA;
@@ -101,6 +97,12 @@ public class NxpNtag implements TagTechnology {
         }
     }
 
+    public enum R_W_Methods {
+        Fast_Mode,
+        Polling_Mode,
+        Error
+    }
+
     public enum Register implements Byte_enum {
         Session((byte) -8),
         Configuration((byte) -24),
@@ -119,10 +121,25 @@ public class NxpNtag implements TagTechnology {
         }
     }
 
-    public enum R_W_Methods {
-        Fast_Mode,
-        Polling_Mode,
-        Error
+    public enum SR_Offset implements Byte_enum {
+        NC_REG((byte) 0),
+        LAST_NDEF_PAGE((byte) 1),
+        SM_REG((byte) 2),
+        WDT_LS((byte) 3),
+        WDT_MS((byte) 4),
+        I2C_CLOCK_STR((byte) 5),
+        NS_REG((byte) 6),
+        FIXED((byte) 7);
+        
+        byte value;
+
+        private SR_Offset(byte value) {
+            this.value = value;
+        }
+
+        public byte getValue() {
+            return this.value;
+        }
     }
 
     public enum Sector implements Byte_enum {
@@ -157,35 +174,6 @@ public class NxpNtag implements TagTechnology {
         }
     }
 
-    public enum SR_Offset implements Byte_enum {
-        NC_REG((byte) 0),
-        LAST_NDEF_PAGE((byte) 1),
-        SM_REG((byte) 2),
-        WDT_LS((byte) 3),
-        WDT_MS((byte) 4),
-        I2C_CLOCK_STR((byte) 5),
-        NS_REG((byte) 6),
-        FIXED((byte) 7);
-        
-        byte value;
-
-        private SR_Offset(byte value) {
-            this.value = value;
-        }
-
-        public byte getValue() {
-            return this.value;
-        }
-    }
-
-    private String toHexString(byte[] data) {
-        String hexString = new String();
-        for (int index = 0; index < data.length; index++) {
-            hexString = new StringBuilder(String.valueOf(hexString)).append(String.format("%02x", new Object[]{Byte.valueOf(data[index])})).toString();
-        }
-        return hexString;
-    }
-
     public NxpNtag(NfcA nfca) {
         this.mNfcA = nfca;
         this.mPhoneManufacturer = Build.MANUFACTURER;
@@ -193,15 +181,16 @@ public class NxpNtag implements TagTechnology {
     }
 
     public static NxpNtag get(Tag tag) {
-        Log.d(TAG, "Atag txrxsize" + NfcA.get(tag).getMaxTransceiveLength());
+        Manager.cLog("Atag txrxsize" + NfcA.get(tag).getMaxTransceiveLength());
         if (tag.getId().length < 2) {
             return null;
         }
-        Log.d(TAG, "uid: " + String.format("0x%x", new Object[]{Byte.valueOf(uid[0])}) + " " + String.format("0x%x", new Object[]{Byte.valueOf(uid[1])}));
+        Manager.cLog("uid: " + String.format("0x%x", new Object[]{Byte.valueOf(uid[0])}) + " " + String.format("0x%x", new Object[]{Byte.valueOf(uid[1])}));
         return new NxpNtag(NfcA.get(tag));
     }
 
     public void close() throws IOException {
+        Manager.cLog("NxpNtag close");
         this.mNfcA.close();
     }
 
@@ -212,7 +201,7 @@ public class NxpNtag implements TagTechnology {
             Get_Product();
         } catch (IOException e) {
             String errorMessage = "Fail to connect Nfc tag";
-            Log.d(TAG, errorMessage);
+            Manager.cLog(errorMessage);
             if (e.getMessage() == null) {
                 throw new IOException(errorMessage);
             }
@@ -435,20 +424,33 @@ public class NxpNtag implements TagTechnology {
     }
 
     public byte[] read_SRam(int Blocks, R_W_Methods Method) throws IOException {
+        return read_SRam(Blocks, Method, 6, 4);
+    }
+
+    public byte[] read_SRam(int Blocks, R_W_Methods Method, int readDelay) throws IOException {
+        return read_SRam(Blocks, Method, readDelay, 4);
+    }
+
+    public byte[] read_SRam(int Blocks, R_W_Methods Method, int readDelay, int readBlockDelay) throws IOException {
+        Manager.cLog("read_SRam: Blocks: " + Blocks + " // readDelay: " + readDelay + " // readBlockDelay: " + readBlockDelay);
         byte[] answer = new byte[(Blocks * 64)];
         for (int i = 0; i < Blocks; i++) {
             if (Method == R_W_Methods.Polling_Mode) {
                 waitforI2Cwrite();
             } else {
                 try {
-                    Thread.sleep(6);
+                    Thread.sleep((long) readDelay);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
             byte[] temp = read_SRAM_Block();
-            Manager.cLog("read sram data(" + i + "): " + temp.length);
             System.arraycopy(temp, 0, answer, i * 64, temp.length);
+        }
+        try {
+            Thread.sleep((long) readBlockDelay);
+        } catch (InterruptedException e2) {
+            e2.printStackTrace();
         }
         return answer;
     }
@@ -525,7 +527,6 @@ public class NxpNtag implements TagTechnology {
     }
 
     public byte[] fast_read(byte StartAddr, byte EndAddr) throws IOException {
-        byte[] answer = new byte[0];
         return this.mNfcA.transceive(new byte[]{(byte) 58, StartAddr, EndAddr});
     }
 
@@ -554,7 +555,7 @@ public class NxpNtag implements TagTechnology {
             absAddr = (byte) (absAddr + 4);
             idx += size;
             if ((absAddr & 255) == 234) {
-                Log.d(TAG, "addr: " + (absAddr & 255));
+                Manager.cLog("addr: " + (absAddr & 255));
                 break;
             }
         }

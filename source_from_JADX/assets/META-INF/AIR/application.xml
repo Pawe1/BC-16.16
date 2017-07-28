@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/23.0">
+<application xmlns="http://ns.adobe.com/air/application/25.0">
 
 	<id>com.sigmasport.SIGMALink</id>
 	<filename>SIGMALink</filename>
 	<name>SIGMA LINK</name>
 
-	<!--  Muss mit jedem Release hochzählen (5.1.0, 5.1.1, 5.1.2, etc.) Wird im DC als Build ausgegeben-->
-	<versionNumber>1.1.10</versionNumber>
+	<!-- ___ versionNumber ___ Entspricht der Buildnummer! Major und Minor sind 
+		identisch mit versionLabel! Die letzte Ziffer ist solange fortlaufen, bis 
+		die Major- und/oder Minorversion verändert/erhöht wird. Dann geht es wieder 
+		bei 0 los! -->
+	<versionNumber>1.3.7</versionNumber>
 
-	<!--  Nur die Hauptversion hochzählen (5.1.0, 5.2.0, etc.) wird im DC nicht ausgegeben / Wichtig für iOS  -->
-	<versionLabel>1.1.0</versionLabel>
+	<!-- ___ versionLabel ___ Major und Minor sind identisch mit versionNumber! 
+		Die letzte Ziffer bleibt bis zum Release stehen! Nachdem die Version im Store 
+		released wurde, wird die Version erhöht! Vorher nicht! -->
+	<versionLabel>1.3.0</versionLabel>
 
-	<!--  Label, das im DC für die Anzeige der Version genutzt wird -->
-	<description>1.1</description>
+	<!-- Label, das im DC für die Anzeige der Version genutzt wird -->
+	<description>1.3</description>
 
 	<initialWindow>
 		<content>SIGMALink.swf</content>
 		<visible>true</visible>
 		<aspectRatio>portrait</aspectRatio>
-		<autoOrients>false</autoOrients> 
+		<autoOrients>false</autoOrients>
 		<fullScreen>false</fullScreen>
 		<renderMode>direct</renderMode>
+		<softKeyboardBehavior>none</softKeyboardBehavior>
 		<requestedDisplayResolution>high</requestedDisplayResolution>
 		<depthAndStencil>true</depthAndStencil>
 	</initialWindow>
 
 	<supportedProfiles>mobileDevice extendedMobileDevice</supportedProfiles>
-	<!-- <supportedLanguages>en de es fr it nl pl</supportedLanguages>-->
+	<!-- <supportedLanguages>en de es fr it nl pl</supportedLanguages> -->
 
 	<icon>
 		<image16x16>frontend/icons/16_16.png</image16x16>
@@ -55,10 +61,10 @@
 		<image1024x1024>frontend/icons/1024_1024.png</image1024x1024>
 	</icon>
 
-	<!--  android  -->
+	<!-- android -->
 	<android>
 		<colorDepth>16bit</colorDepth>
-		<!-- 		<webContentsDebuggingEnabled>true</webContentsDebuggingEnabled> -->
+		<!-- <webContentsDebuggingEnabled>true</webContentsDebuggingEnabled> -->
 		<manifestAdditions>
 			<![CDATA[
 			<manifest android:installLocation="auto">
@@ -69,16 +75,26 @@
 			
 				 <!-- Internet Permission -->
 				<uses-permission android:name="android.permission.INTERNET"/>
-				<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-				<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+				<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 				<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 				<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 				<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-	     		<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	     		
+	     		
+	     		<!-- WICHTIG FÜR PAIRING! -->
+	     		<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+				<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	     		
+	     		<!-- WAKE_LOCK -->
+	     		<uses-permission android:name="android.permission.WAKE_LOCK"/>
+	     		<uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
 	     		
 	     		 <!-- NFC Permission -->
 	     		<uses-permission android:name="android.permission.NFC" />
 				<uses-feature android:name="android.hardware.nfc" android:required="false"/>
+				
+				<!-- USB -->
+				<uses-feature android:name="android.hardware.usb.host" android:required="false"/>
 				
 				 <!-- Bluetooth Permission -->
 				<uses-permission android:name="android.permission.BLUETOOTH"/>
@@ -87,15 +103,18 @@
  				<uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
 		
 			    <application android:enabled="true">
-				    <activity android:launchMode="standard">
+			    	<!-- http://stackoverflow.com/questions/15206064/preventing-main-activity-from-being-launched-if-running-already -->
+				    <activity android:launchMode="singleTop">
 				    	<intent-filter>
 							<action android:name="android.intent.action.MAIN"/>
 							<category android:name="android.intent.category.LAUNCHER"/>
 						</intent-filter>
+						
 						<intent-filter>
 							<action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
 						</intent-filter>
 						<meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/device_filter" />
+						
 						<intent-filter>
 							<action android:name="android.intent.action.VIEW" />
 							<category android:name="android.intent.category.DEFAULT" />
@@ -103,20 +122,42 @@
 							<!-- Accepts URIs sigmalinkapp://" -->
   							<data android:scheme="sigmalinkapp" />
 						</intent-filter>
+						
+						<intent-filter>
+						    <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+						</intent-filter>
 					</activity>
+					
 					<activity
           				android:name="de.pagecon.bleane.extension.HelperActivity"
-          				android:theme="@android:style/Theme.NoDisplay" >
+          				android:theme="@android:style/Theme.Translucent.NoTitleBar" >
       				</activity>
+      				
       				<service android:name="de.pagecon.ane.services.MyNLNotificationService" android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
 			            <intent-filter>
 			                <action android:name="android.service.notification.NotificationListenerService" />
 			            </intent-filter>
 			        </service>
-					<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="fb1625696504406291"/>
+			        
+			        <!-- new in GoViral5.5- required to attach anything when sharing on Android! Replace "com.yourcompany.yourgame" with your apps ID -->
+					<provider android:name="com.milkmangames.extensions.android.goviral.AttachedFileProvider" 
+							  android:authorities="air.com.sigmasport.SIGMALink.AttachedFileProvider" 
+							  android:enabled="true" android:exported="false"
+							  android:grantUriPermissions="true"/>
+							  
+					<!-- insert your numeric application id in in android:value, prefixed by fb.  note that has changed format since goviral4! -->
+					<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="fb1614345838874691"/>
+					
+					<!-- insert your app name in android:value -->
 					<meta-data android:name="com.facebook.sdk.ApplicationName" android:value="SIGMA LINK" />
-					<activity android:name="com.facebook.FacebookActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:label="SIGMA LINK" />
-					<provider android:authorities="com.facebook.app.FacebookContentProvider1625696504406291" android:name="com.facebook.FacebookContentProvider" android:exported="true" />
+					
+					<!-- insert your app name in android:label -->
+					<activity 
+						android:name="com.facebook.FacebookActivity" 
+						android:theme="@android:style/Theme.Translucent.NoTitleBar" 
+						android:label="SIGMA LINK" />
+						<!-- note that this has CHANGED since GoViral 4, although it looks similar. put your numeric facebook application id instead of 0000 -->
+					<provider android:authorities="com.facebook.app.FacebookContentProvider1614345838874691" android:name="com.facebook.FacebookContentProvider" android:exported="true" />
 			    </application>
 			    
 			</manifest>
@@ -131,10 +172,88 @@
 	<iPhone>
 		<InfoAdditions>
 			<![CDATA[
+			
+			
+			<key>LSApplicationQueriesSchemes</key>
+			<array>
+		        <string>fbapi</string>
+		        <string>fb-messenger-api</string>
+		        <string>fbauth2</string>
+		        <string>fbshareextension</string>
+			</array>
+			
+			<key>NSAppTransportSecurity</key>
+			<dict>
+			<key>NSAllowsArbitraryLoads</key><true/>
+			
+			    <key>NSExceptionDomains</key>
+			    <dict>
+			        <key>sigma-dc-control.com</key>
+			        <dict>
+			            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+			            <true/>
+			            <key>NSIncludesSubdomains</key>
+			            <true/>
+			            <key>NSExceptionRequiresForwardSecrecy</key>
+			            <true/>
+			        </dict>
+			        <key>mapbox.com</key>
+			        <dict>
+			            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+			            <true/>
+			            <key>NSIncludesSubdomains</key>
+			            <true/>
+			            <key>NSExceptionRequiresForwardSecrecy</key>
+			            <true/>
+			        </dict>
+			        <key>facebook.com</key>
+			        <dict>
+			            <key>NSIncludesSubdomains</key>
+			            <true/>                
+			            <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+			            <false/>
+			        </dict>
+			        <key>fbcdn.net</key>
+			        <dict>
+			            <key>NSIncludesSubdomains</key>
+			            <true/>
+			            <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+			            <false/>
+			        </dict>
+			        <key>akamaihd.net</key>
+			        <dict>
+			            <key>NSIncludesSubdomains</key>
+			            <true/>
+			            <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+			            <false/>
+			        </dict>
+			    </dict>
+			</dict>
+			
+			<key>UIApplicationExitsOnSuspend</key>
+			<false/>
+			
+			<key>FacebookAppID</key>
+			<string>1614345838874691</string>
+			
+			<key>FacebookDisplayName</key>
+			<string>SIGMA LINK</string>
+			
 			<key>UIDeviceFamily</key>
 			<array>
 				<string>1</string>
 				<string>2</string>
+			</array>
+			
+			<key>CFBundleURLTypes</key>
+			<array>
+				<dict>
+					<key>CFBundleURLSchemes</key>
+					<array>
+						<string>fb1614345838874691</string>
+						<string>sigmalinkapp</string>
+					</array>
+				</dict>
 			</array>
 			
             <key>MinimumOSVersion</key>
@@ -148,66 +267,12 @@
 	        
 	        <key>NSLocationWhenInUseUsageDescription</key>
 			<string>Allow SIGMA Link usage of GPS when application is in foreground</string>
+			
+			<key>NSBluetoothPeripheralUsageDescription</key>
+			<string>Allow SIGMA Link usage of Bluetooth Le for syncing Data between SIGMA Link and your SIGMA device</string>
 	       
-	       <key>NSAppTransportSecurity</key>
-			<dict>
-			    <key>NSExceptionDomains</key>
-			    <dict>
-			        <key>sigma-dc-control.com</key>
-			        <dict>
-			            <key>NSExceptionAllowsInsecureHTTPLoads</key>
-			            <true/>
-			            <key>NSIncludesSubdomains</key>
-			            <true/>
-			            <key>NSExceptionRequiresForwardSecrecy</key>
-			            <true/>
-			        </dict>
-			        <key>facebook.com</key>
-					<dict>
-						<key>NSIncludesSubdomains</key>
-						<true/>
-						<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-						<false/>
-					</dict>
-					<key>fbcdn.net</key>
-					<dict>
-						<key>NSIncludesSubdomains</key>
-						<true/>
-						<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-						<false/>
-					</dict>
-					<key>akamaihd.net</key>
-					<dict>
-						<key>NSIncludesSubdomains</key>
-						<true/>
-						<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-						<false/>
-					</dict>
-			    </dict>
-			</dict>
-			<key>LSApplicationQueriesSchemes</key>
-			<array>
-				<string>fbapi</string>
-				<string>fb-messenger-api</string>
-				<string>fbauth2</string>
-				<string>fbshareextension</string>
-			</array>
-			<key>UIApplicationExitsOnSuspend</key>
-			<false/>
-            <key>FacebookAppID</key>
-			<string>1625696504406291</string>
-			<key>FacebookDisplayName</key>
-			<string>SIGMA LINK</string>
-   			<key>CFBundleURLTypes</key>
-			<array>
-				<dict>
-					<key>CFBundleURLSchemes</key>
-					<array>
-						<string>fb1625696504406291</string>
-						<string>sigmalinkapp</string>
-					</array>
-				</dict>
-			</array>
+	       <key>ITSAppUsesNonExemptEncryption</key><false/>
+	       
 
 			]]>
 		</InfoAdditions>
@@ -221,7 +286,7 @@
 				<true/>
 			]]>
 		</Entitlements>
-
+		
 	</iPhone>
 
 	<extensions>

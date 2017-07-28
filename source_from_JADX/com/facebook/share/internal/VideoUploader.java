@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.os.ParcelFileDescriptor.AutoCloseInputStream;
+import android.text.TextUtils;
 import android.util.Log;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -61,8 +62,8 @@ public class VideoUploader {
     private static Set<UploadContext> pendingUploads = new HashSet();
     private static WorkQueue uploadQueue = new WorkQueue(8);
 
-    final class C02811 extends AccessTokenTracker {
-        C02811() {
+    final class C03401 extends AccessTokenTracker {
+        C03401() {
         }
 
         protected final void onCurrentAccessTokenChanged(AccessToken accessToken, AccessToken accessToken2) {
@@ -78,8 +79,8 @@ public class VideoUploader {
         protected int completedRetries;
         protected UploadContext uploadContext;
 
-        class C02851 implements Runnable {
-            C02851() {
+        class C03441 implements Runnable {
+            C03441() {
             }
 
             public void run() {
@@ -96,7 +97,7 @@ public class VideoUploader {
             if (this.completedRetries >= 2 || !getTransientErrorCodes().contains(Integer.valueOf(i))) {
                 return false;
             }
-            VideoUploader.getHandler().postDelayed(new C02851(), (long) (((int) Math.pow(3.0d, (double) this.completedRetries)) * VideoUploader.RETRY_DELAY_UNIT_MS));
+            VideoUploader.getHandler().postDelayed(new C03441(), (long) (((int) Math.pow(3.0d, (double) this.completedRetries)) * VideoUploader.RETRY_DELAY_UNIT_MS));
             return true;
         }
 
@@ -166,10 +167,10 @@ public class VideoUploader {
     }
 
     private static class FinishUploadWorkItem extends UploadWorkItemBase {
-        static final Set<Integer> transientErrorCodes = new C02821();
+        static final Set<Integer> transientErrorCodes = new C03411();
 
-        final class C02821 extends HashSet<Integer> {
-            C02821() {
+        final class C03411 extends HashSet<Integer> {
+            C03411() {
                 add(Integer.valueOf(1363011));
             }
         }
@@ -214,10 +215,10 @@ public class VideoUploader {
     }
 
     private static class StartUploadWorkItem extends UploadWorkItemBase {
-        static final Set<Integer> transientErrorCodes = new C02831();
+        static final Set<Integer> transientErrorCodes = new C03421();
 
-        final class C02831 extends HashSet<Integer> {
-            C02831() {
+        final class C03421 extends HashSet<Integer> {
+            C03421() {
                 add(Integer.valueOf(6000));
             }
         }
@@ -254,12 +255,12 @@ public class VideoUploader {
     }
 
     private static class TransferChunkWorkItem extends UploadWorkItemBase {
-        static final Set<Integer> transientErrorCodes = new C02841();
+        static final Set<Integer> transientErrorCodes = new C03431();
         private String chunkEnd;
         private String chunkStart;
 
-        final class C02841 extends HashSet<Integer> {
-            C02841() {
+        final class C03431 extends HashSet<Integer> {
+            C03431() {
                 add(Integer.valueOf(1363019));
                 add(Integer.valueOf(1363021));
                 add(Integer.valueOf(1363030));
@@ -338,6 +339,15 @@ public class VideoUploader {
             this.graphNode = str;
             this.callback = facebookCallback;
             this.params = shareVideoContent.getVideo().getParameters();
+            if (!Utility.isNullOrEmpty(shareVideoContent.getPeopleIds())) {
+                this.params.putString("tags", TextUtils.join(", ", shareVideoContent.getPeopleIds()));
+            }
+            if (!Utility.isNullOrEmpty(shareVideoContent.getPlaceId())) {
+                this.params.putString("place", shareVideoContent.getPlaceId());
+            }
+            if (!Utility.isNullOrEmpty(shareVideoContent.getRef())) {
+                this.params.putString(VideoUploader.PARAM_REF, shareVideoContent.getRef());
+            }
         }
 
         private void initialize() {
@@ -440,7 +450,7 @@ public class VideoUploader {
     }
 
     private static void registerAccessTokenTracker() {
-        accessTokenTracker = new C02811();
+        accessTokenTracker = new C03401();
     }
 
     private static synchronized void removePendingUpload(UploadContext uploadContext) {

@@ -23,13 +23,18 @@ import com.facebook.internal.Logger;
 import com.facebook.internal.ServerProtocol;
 import com.facebook.internal.Utility;
 import com.facebook.internal.Validate;
+import com.facebook.share.internal.OpenGraphJSONUtility;
+import com.facebook.share.internal.OpenGraphJSONUtility.PhotoJSONProcessor;
 import com.facebook.share.internal.ShareConstants;
+import com.facebook.share.model.ShareOpenGraphObject;
+import com.facebook.share.model.SharePhoto;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,11 +50,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPOutputStream;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GraphRequest {
     private static final String ACCEPT_LANGUAGE_HEADER = "Accept-Language";
-    private static final String ACCESS_TOKEN_PARAM = "access_token";
+    public static final String ACCESS_TOKEN_PARAM = "access_token";
     private static final String ATTACHED_FILES_PARAM = "attached_files";
     private static final String ATTACHMENT_FILENAME_PREFIX = "file";
     private static final String BATCH_APP_ID_PARAM = "batch_app_id";
@@ -74,6 +80,7 @@ public class GraphRequest {
     public static final String FIELDS_PARAM = "fields";
     private static final String FORMAT_JSON = "json";
     private static final String FORMAT_PARAM = "format";
+    private static final String GRAPH_PATH_FORMAT = "%s/%s";
     private static final String ISO_8601_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ssZ";
     public static final int MAXIMUM_BATCH_SIZE = 50;
     private static final String ME = "me";
@@ -178,6 +185,22 @@ public class GraphRequest {
         void writeString(String str, String str2);
     }
 
+    final class C01907 implements PhotoJSONProcessor {
+        C01907() {
+        }
+
+        public final JSONObject toJSONObject(SharePhoto sharePhoto) {
+            Uri imageUrl = sharePhoto.getImageUrl();
+            JSONObject jSONObject = new JSONObject();
+            try {
+                jSONObject.put("url", imageUrl.toString());
+                return jSONObject;
+            } catch (Throwable e) {
+                throw new FacebookException("Unable to attach images", e);
+            }
+        }
+    }
+
     private static class Attachment {
         private final GraphRequest request;
         private final Object value;
@@ -209,12 +232,12 @@ public class GraphRequest {
     }
 
     public static class ParcelableResourceWithMimeType<RESOURCE extends Parcelable> implements Parcelable {
-        public static final Creator<ParcelableResourceWithMimeType> CREATOR = new C01901();
+        public static final Creator<ParcelableResourceWithMimeType> CREATOR = new C01911();
         private final String mimeType;
         private final RESOURCE resource;
 
-        final class C01901 implements Creator<ParcelableResourceWithMimeType> {
-            C01901() {
+        final class C01911 implements Creator<ParcelableResourceWithMimeType> {
+            C01911() {
             }
 
             public final ParcelableResourceWithMimeType createFromParcel(Parcel parcel) {
@@ -326,12 +349,11 @@ public class GraphRequest {
                 str2 = "content/unknown";
             }
             writeContentDisposition(str, str, str2);
-            InputStream openInputStream = FacebookSdk.getApplicationContext().getContentResolver().openInputStream(uri);
             if (this.outputStream instanceof ProgressNoopOutputStream) {
                 ((ProgressNoopOutputStream) this.outputStream).addProgress(Utility.getContentSize(uri));
                 i = 0;
             } else {
-                i = Utility.copyAndCloseInputStream(openInputStream, this.outputStream) + 0;
+                i = Utility.copyAndCloseInputStream(FacebookSdk.getApplicationContext().getContentResolver().openInputStream(uri), this.outputStream) + 0;
             }
             writeLine("", new Object[0]);
             writeRecordBoundary();
@@ -470,7 +492,7 @@ public class GraphRequest {
             this.parameters = new Bundle();
         }
         if (this.version == null) {
-            this.version = ServerProtocol.getAPIVersion();
+            this.version = FacebookSdk.getGraphApiVersion();
         }
     }
 
@@ -510,19 +532,19 @@ public class GraphRequest {
     }
 
     private String appendParametersToBaseUrl(String str) {
-        Builder encodedPath = new Builder().encodedPath(str);
+        Builder buildUpon = Uri.parse(str).buildUpon();
         for (String str2 : this.parameters.keySet()) {
             Object obj = this.parameters.get(str2);
             if (obj == null) {
                 obj = "";
             }
             if (isSupportedParameterType(obj)) {
-                encodedPath.appendQueryParameter(str2, parameterToString(obj).toString());
+                buildUpon.appendQueryParameter(str2, parameterToString(obj).toString());
             } else if (this.httpMethod == HttpMethod.GET) {
                 throw new IllegalArgumentException(String.format(Locale.US, "Unsupported parameter type for GET request: %s", new Object[]{obj.getClass().getSimpleName()}));
             }
         }
-        return encodedPath.toString();
+        return buildUpon.toString();
     }
 
     private static HttpURLConnection createConnection(URL url) {
@@ -531,6 +553,21 @@ public class GraphRequest {
         httpURLConnection.setRequestProperty(ACCEPT_LANGUAGE_HEADER, Locale.getDefault().toString());
         httpURLConnection.setChunkedStreamingMode(0);
         return httpURLConnection;
+    }
+
+    public static GraphRequest createOpenGraphObject(ShareOpenGraphObject shareOpenGraphObject) {
+        String string = shareOpenGraphObject.getString("type");
+        if ((string == null ? shareOpenGraphObject.getString("og:type") : string) == null) {
+            throw new FacebookException("Open graph object type cannot be null");
+        }
+        try {
+            JSONObject jSONObject = (JSONObject) OpenGraphJSONUtility.toJSONValue(shareOpenGraphObject, new C01907());
+            Bundle bundle = new Bundle();
+            bundle.putString("object", jSONObject.toString());
+            return new GraphRequest(AccessToken.getCurrentAccessToken(), String.format(Locale.ROOT, GRAPH_PATH_FORMAT, new Object[]{ME, "objects/" + r1}), bundle, HttpMethod.POST);
+        } catch (JSONException e) {
+            throw new FacebookException(e.getMessage());
+        }
     }
 
     public static GraphResponse executeAndWait(GraphRequest graphRequest) {
@@ -542,14 +579,19 @@ public class GraphRequest {
     }
 
     public static List<GraphResponse> executeBatchAndWait(GraphRequestBatch graphRequestBatch) {
+        List<GraphResponse> executeConnectionAndWait;
+        URLConnection uRLConnection = null;
         Validate.notEmptyAndContainsNoNulls(graphRequestBatch, "requests");
         try {
-            return executeConnectionAndWait(toHttpConnection(graphRequestBatch), graphRequestBatch);
+            uRLConnection = toHttpConnection(graphRequestBatch);
+            executeConnectionAndWait = executeConnectionAndWait((HttpURLConnection) uRLConnection, graphRequestBatch);
         } catch (Throwable e) {
-            List<GraphResponse> constructErrorResponses = GraphResponse.constructErrorResponses(graphRequestBatch.getRequests(), null, new FacebookException(e));
-            runCallbacks(graphRequestBatch, constructErrorResponses);
-            return constructErrorResponses;
+            executeConnectionAndWait = GraphResponse.constructErrorResponses(graphRequestBatch.getRequests(), null, new FacebookException(e));
+            runCallbacks(graphRequestBatch, executeConnectionAndWait);
+        } finally {
+            Utility.disconnectQuietly(uRLConnection);
         }
+        return executeConnectionAndWait;
     }
 
     public static List<GraphResponse> executeBatchAndWait(Collection<GraphRequest> collection) {
@@ -564,7 +606,7 @@ public class GraphRequest {
     public static GraphRequestAsyncTask executeBatchAsync(GraphRequestBatch graphRequestBatch) {
         Validate.notEmptyAndContainsNoNulls(graphRequestBatch, "requests");
         GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequestAsyncTask(graphRequestBatch);
-        graphRequestAsyncTask.executeOnSettingsExecutor();
+        graphRequestAsyncTask.executeOnExecutor(FacebookSdk.getExecutor(), new Void[0]);
         return graphRequestAsyncTask;
     }
 
@@ -596,7 +638,7 @@ public class GraphRequest {
         Validate.notNull(httpURLConnection, "connection");
         GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequestAsyncTask(httpURLConnection, graphRequestBatch);
         graphRequestBatch.setCallbackHandler(handler);
-        graphRequestAsyncTask.executeOnSettingsExecutor();
+        graphRequestAsyncTask.executeOnExecutor(FacebookSdk.getExecutor(), new Void[0]);
         return graphRequestAsyncTask;
     }
 
@@ -633,7 +675,7 @@ public class GraphRequest {
         if (versionPattern.matcher(this.graphPath).matches()) {
             return this.graphPath;
         }
-        return String.format("%s/%s", new Object[]{this.version, this.graphPath});
+        return String.format(GRAPH_PATH_FORMAT, new Object[]{this.version, this.graphPath});
     }
 
     private static String getMimeContentType() {
@@ -644,7 +686,7 @@ public class GraphRequest {
         if (userAgent == null) {
             userAgent = String.format("%s.%s", new Object[]{USER_AGENT_BASE, FacebookSdkVersion.BUILD});
             if (!Utility.isNullOrEmpty(InternalSettings.getCustomUserAgent())) {
-                userAgent = String.format(Locale.ROOT, "%s/%s", new Object[]{userAgent, InternalSettings.getCustomUserAgent()});
+                userAgent = String.format(Locale.ROOT, GRAPH_PATH_FORMAT, new Object[]{userAgent, r0});
             }
         }
         return userAgent;
@@ -710,12 +752,15 @@ public class GraphRequest {
         AttributionIdentifiers attributionIdentifiers = AttributionIdentifiers.getAttributionIdentifiers(context);
         Bundle bundle = new Bundle();
         if (accessToken == null) {
+            if (attributionIdentifiers == null) {
+                throw new FacebookException("There is no access token and attribution identifiers could not be retrieved");
+            }
             applicationId = attributionIdentifiers.getAttributionId() != null ? attributionIdentifiers.getAttributionId() : attributionIdentifiers.getAndroidAdvertiserId();
             if (attributionIdentifiers.getAttributionId() != null) {
                 bundle.putString("udid", applicationId);
             }
         }
-        if (FacebookSdk.getLimitEventAndDataUsage(context) || attributionIdentifiers.isTrackingLimited()) {
+        if (FacebookSdk.getLimitEventAndDataUsage(context) || (attributionIdentifiers != null && attributionIdentifiers.isTrackingLimited())) {
             bundle.putString("limit_event_usage", AppEventsConstants.EVENT_PARAM_VALUE_YES);
         }
         return new GraphRequest(accessToken, str2, bundle, HttpMethod.GET, callback);
@@ -742,7 +787,7 @@ public class GraphRequest {
             throw new FacebookException("Either location or searchText must be specified.");
         }
         Bundle bundle = new Bundle(5);
-        bundle.putString(DEBUG_MESSAGE_TYPE_KEY, "place");
+        bundle.putString("type", "place");
         bundle.putInt("limit", i2);
         if (location != null) {
             bundle.putString("center", String.format(Locale.US, "%f,%f", new Object[]{Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude())}));
@@ -783,6 +828,9 @@ public class GraphRequest {
                 bundle2.putAll(bundle);
             }
             bundle2.putParcelable("picture", uri);
+            if (!(str2 == null || str2.isEmpty())) {
+                bundle2.putString("caption", str2);
+            }
             return new GraphRequest(accessToken, defaultPhotoPathIfNull, bundle2, HttpMethod.POST, callback);
         } else {
             throw new FacebookException("The photo Uri must be either a file:// or content:// Uri");
@@ -1040,8 +1088,8 @@ public class GraphRequest {
         if (this.batchEntryDependsOn != null) {
             jSONObject.put(BATCH_ENTRY_DEPENDS_ON_PARAM, this.batchEntryDependsOn);
         }
-        String urlForBatchedRequest = getUrlForBatchedRequest();
-        jSONObject.put(BATCH_RELATIVE_URL_PARAM, urlForBatchedRequest);
+        String relativeUrlForBatchedRequest = getRelativeUrlForBatchedRequest();
+        jSONObject.put(BATCH_RELATIVE_URL_PARAM, relativeUrlForBatchedRequest);
         jSONObject.put(BATCH_METHOD_PARAM, this.httpMethod);
         if (this.accessToken != null) {
             Logger.registerAccessToken(this.accessToken.getToken());
@@ -1060,7 +1108,7 @@ public class GraphRequest {
         }
         if (this.graphObject != null) {
             final Iterable arrayList2 = new ArrayList();
-            processGraphObject(this.graphObject, urlForBatchedRequest, new KeyValueSerializer() {
+            processGraphObject(this.graphObject, relativeUrlForBatchedRequest, new KeyValueSerializer() {
                 public void writeString(String str, String str2) {
                     arrayList2.add(String.format(Locale.US, "%s=%s", new Object[]{str, URLEncoder.encode(str2, "UTF-8")}));
                 }
@@ -1071,6 +1119,7 @@ public class GraphRequest {
     }
 
     static final void serializeToUrlConnection(GraphRequestBatch graphRequestBatch, HttpURLConnection httpURLConnection) {
+        OutputStream bufferedOutputStream;
         Throwable th;
         Logger logger = new Logger(LoggingBehavior.REQUESTS, "Request");
         int size = graphRequestBatch.size();
@@ -1089,7 +1138,6 @@ public class GraphRequest {
         httpURLConnection.setReadTimeout(graphRequestBatch.getTimeout());
         if (httpMethod == HttpMethod.POST) {
             httpURLConnection.setDoOutput(true);
-            OutputStream bufferedOutputStream;
             try {
                 OutputStream progressNoopOutputStream;
                 bufferedOutputStream = new BufferedOutputStream(httpURLConnection.getOutputStream());
@@ -1162,19 +1210,25 @@ public class GraphRequest {
     }
 
     public static HttpURLConnection toHttpConnection(GraphRequestBatch graphRequestBatch) {
+        Throwable e;
         validateFieldsParamForGetRequests(graphRequestBatch);
         try {
+            URLConnection uRLConnection = null;
             try {
-                HttpURLConnection createConnection = createConnection(graphRequestBatch.size() == 1 ? new URL(graphRequestBatch.get(0).getUrlForSingleRequest()) : new URL(ServerProtocol.getGraphUrlBase()));
-                serializeToUrlConnection(graphRequestBatch, createConnection);
-                return createConnection;
-            } catch (Throwable e) {
+                uRLConnection = createConnection(graphRequestBatch.size() == 1 ? new URL(graphRequestBatch.get(0).getUrlForSingleRequest()) : new URL(ServerProtocol.getGraphUrlBase()));
+                serializeToUrlConnection(graphRequestBatch, uRLConnection);
+                return uRLConnection;
+            } catch (IOException e2) {
+                e = e2;
+                Utility.disconnectQuietly(uRLConnection);
                 throw new FacebookException("could not construct request body", e);
-            } catch (Throwable e2) {
-                throw new FacebookException("could not construct request body", e2);
+            } catch (JSONException e3) {
+                e = e3;
+                Utility.disconnectQuietly(uRLConnection);
+                throw new FacebookException("could not construct request body", e);
             }
-        } catch (Throwable e22) {
-            throw new FacebookException("could not construct URL for request", e22);
+        } catch (Throwable e4) {
+            throw new FacebookException("could not construct URL for request", e4);
         }
     }
 
@@ -1244,17 +1298,18 @@ public class GraphRequest {
         return this.parameters;
     }
 
-    public final Object getTag() {
-        return this.tag;
-    }
-
-    final String getUrlForBatchedRequest() {
+    final String getRelativeUrlForBatchedRequest() {
         if (this.overriddenURL != null) {
             throw new FacebookException("Can't override URL for a batch request");
         }
-        String graphPathWithVersion = getGraphPathWithVersion();
+        String format = String.format(GRAPH_PATH_FORMAT, new Object[]{ServerProtocol.getGraphUrlBase(), getGraphPathWithVersion()});
         addCommonParameters();
-        return appendParametersToBaseUrl(graphPathWithVersion);
+        Uri parse = Uri.parse(appendParametersToBaseUrl(format));
+        return String.format("%s?%s", new Object[]{parse.getPath(), parse.getQuery()});
+    }
+
+    public final Object getTag() {
+        return this.tag;
     }
 
     final String getUrlForSingleRequest() {
@@ -1262,7 +1317,7 @@ public class GraphRequest {
             return this.overriddenURL.toString();
         }
         String graphVideoUrlBase = (getHttpMethod() == HttpMethod.POST && this.graphPath != null && this.graphPath.endsWith(VIDEOS_SUFFIX)) ? ServerProtocol.getGraphVideoUrlBase() : ServerProtocol.getGraphUrlBase();
-        graphVideoUrlBase = String.format("%s/%s", new Object[]{graphVideoUrlBase, getGraphPathWithVersion()});
+        graphVideoUrlBase = String.format(GRAPH_PATH_FORMAT, new Object[]{graphVideoUrlBase, getGraphPathWithVersion()});
         addCommonParameters();
         return appendParametersToBaseUrl(graphVideoUrlBase);
     }
@@ -1298,7 +1353,7 @@ public class GraphRequest {
                         for (int i = 0; i < optJSONArray.length(); i++) {
                             JSONObject optJSONObject = optJSONArray.optJSONObject(i);
                             String optString = optJSONObject != null ? optJSONObject.optString("message") : null;
-                            String optString2 = optJSONObject != null ? optJSONObject.optString(GraphRequest.DEBUG_MESSAGE_TYPE_KEY) : null;
+                            String optString2 = optJSONObject != null ? optJSONObject.optString("type") : null;
                             String optString3 = optJSONObject != null ? optJSONObject.optString("link") : null;
                             if (!(optString == null || optString2 == null)) {
                                 LoggingBehavior loggingBehavior = LoggingBehavior.GRAPH_API_DEBUG_INFO;

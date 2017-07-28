@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import com.facebook.AccessToken.AccessTokenRefreshCallback;
 import com.facebook.GraphRequest.Callback;
 import com.facebook.internal.AnalyticsEvents;
 import com.facebook.internal.Utility;
@@ -17,7 +18,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import p000c.p001m.p002x.p003a.gv.at;
+import p000c.p001m.p002x.p003a.gv.ax;
 
 final class AccessTokenManager {
     static final String ACTION_CURRENT_ACCESS_TOKEN_CHANGED = "com.facebook.sdk.ACTION_CURRENT_ACCESS_TOKEN_CHANGED";
@@ -33,17 +34,8 @@ final class AccessTokenManager {
     private final AccessTokenCache accessTokenCache;
     private AccessToken currentAccessToken;
     private Date lastAttemptedTokenExtendDate = new Date(0);
-    private final at localBroadcastManager;
+    private final ax localBroadcastManager;
     private AtomicBoolean tokenRefreshInProgress = new AtomicBoolean(false);
-
-    class C01621 implements Runnable {
-        C01621() {
-        }
-
-        public void run() {
-            AccessTokenManager.this.refreshCurrentAccessTokenImpl();
-        }
-    }
 
     private static class RefreshResult {
         public String accessToken;
@@ -53,10 +45,10 @@ final class AccessTokenManager {
         }
     }
 
-    AccessTokenManager(at atVar, AccessTokenCache accessTokenCache) {
-        Validate.notNull(atVar, "localBroadcastManager");
+    AccessTokenManager(ax axVar, AccessTokenCache accessTokenCache) {
+        Validate.notNull(axVar, "localBroadcastManager");
         Validate.notNull(accessTokenCache, "accessTokenCache");
-        this.localBroadcastManager = atVar;
+        this.localBroadcastManager = axVar;
         this.accessTokenCache = accessTokenCache;
     }
 
@@ -74,17 +66,20 @@ final class AccessTokenManager {
         if (instance == null) {
             synchronized (AccessTokenManager.class) {
                 if (instance == null) {
-                    instance = new AccessTokenManager(at.m70a(FacebookSdk.getApplicationContext()), new AccessTokenCache());
+                    instance = new AccessTokenManager(ax.m123a(FacebookSdk.getApplicationContext()), new AccessTokenCache());
                 }
             }
         }
         return instance;
     }
 
-    private void refreshCurrentAccessTokenImpl() {
+    private void refreshCurrentAccessTokenImpl(AccessTokenRefreshCallback accessTokenRefreshCallback) {
         final AccessToken accessToken = this.currentAccessToken;
-        if (accessToken != null && this.tokenRefreshInProgress.compareAndSet(false, true)) {
-            Validate.runningOnUiThread();
+        if (accessToken == null) {
+            if (accessTokenRefreshCallback != null) {
+                accessTokenRefreshCallback.OnTokenRefreshFailed(new FacebookException("No current access token to refresh"));
+            }
+        } else if (this.tokenRefreshInProgress.compareAndSet(false, true)) {
             this.lastAttemptedTokenExtendDate = new Date();
             final Set hashSet = new HashSet();
             final Set hashSet2 = new HashSet();
@@ -126,21 +121,56 @@ final class AccessTokenManager {
                     }
                 }
             }));
+            final AccessTokenRefreshCallback accessTokenRefreshCallback2 = accessTokenRefreshCallback;
             graphRequestBatch.addCallback(new GraphRequestBatch.Callback() {
                 public void onBatchCompleted(GraphRequestBatch graphRequestBatch) {
-                    if (AccessTokenManager.getInstance().getCurrentAccessToken() != null && AccessTokenManager.getInstance().getCurrentAccessToken().getUserId() == accessToken.getUserId()) {
-                        try {
-                            if (atomicBoolean.get() || refreshResult.accessToken != null || refreshResult.expiresAt != 0) {
-                                AccessTokenManager.getInstance().setCurrentAccessToken(new AccessToken(refreshResult.accessToken != null ? refreshResult.accessToken : accessToken.getToken(), accessToken.getApplicationId(), accessToken.getUserId(), atomicBoolean.get() ? hashSet : accessToken.getPermissions(), atomicBoolean.get() ? hashSet2 : accessToken.getDeclinedPermissions(), accessToken.getSource(), refreshResult.expiresAt != 0 ? new Date(((long) refreshResult.expiresAt) * 1000) : accessToken.getExpires(), new Date()));
-                                AccessTokenManager.this.tokenRefreshInProgress.set(false);
+                    AccessToken accessToken;
+                    Throwable th;
+                    try {
+                        AccessTokenRefreshCallback accessTokenRefreshCallback;
+                        if (AccessTokenManager.getInstance().getCurrentAccessToken() == null || AccessTokenManager.getInstance().getCurrentAccessToken().getUserId() != accessToken.getUserId()) {
+                            if (accessTokenRefreshCallback2 != null) {
+                                accessTokenRefreshCallback2.OnTokenRefreshFailed(new FacebookException("No current access token to refresh"));
                             }
-                        } finally {
                             AccessTokenManager.this.tokenRefreshInProgress.set(false);
+                            accessTokenRefreshCallback = accessTokenRefreshCallback2;
+                        } else if (!atomicBoolean.get() && refreshResult.accessToken == null && refreshResult.expiresAt == 0) {
+                            if (accessTokenRefreshCallback2 != null) {
+                                accessTokenRefreshCallback2.OnTokenRefreshFailed(new FacebookException("Failed to refresh access token"));
+                            }
+                            AccessTokenManager.this.tokenRefreshInProgress.set(false);
+                            accessTokenRefreshCallback = accessTokenRefreshCallback2;
+                        } else {
+                            AccessToken accessToken2 = new AccessToken(refreshResult.accessToken != null ? refreshResult.accessToken : accessToken.getToken(), accessToken.getApplicationId(), accessToken.getUserId(), atomicBoolean.get() ? hashSet : accessToken.getPermissions(), atomicBoolean.get() ? hashSet2 : accessToken.getDeclinedPermissions(), accessToken.getSource(), refreshResult.expiresAt != 0 ? new Date(((long) refreshResult.expiresAt) * 1000) : accessToken.getExpires(), new Date());
+                            try {
+                                AccessTokenManager.getInstance().setCurrentAccessToken(accessToken2);
+                                AccessTokenManager.this.tokenRefreshInProgress.set(false);
+                                if (accessTokenRefreshCallback2 != null) {
+                                    accessTokenRefreshCallback2.OnTokenRefreshed(accessToken2);
+                                }
+                            } catch (Throwable th2) {
+                                Throwable th3 = th2;
+                                accessToken = accessToken2;
+                                th = th3;
+                                AccessTokenManager.this.tokenRefreshInProgress.set(false);
+                                accessTokenRefreshCallback2.OnTokenRefreshed(accessToken);
+                                throw th;
+                            }
                         }
+                    } catch (Throwable th4) {
+                        th = th4;
+                        accessToken = null;
+                        AccessTokenManager.this.tokenRefreshInProgress.set(false);
+                        if (!(accessTokenRefreshCallback2 == null || accessToken == null)) {
+                            accessTokenRefreshCallback2.OnTokenRefreshed(accessToken);
+                        }
+                        throw th;
                     }
                 }
             });
             graphRequestBatch.executeAsync();
+        } else if (accessTokenRefreshCallback != null) {
+            accessTokenRefreshCallback.OnTokenRefreshFailed(new FacebookException("Refresh already in progress"));
         }
     }
 
@@ -148,7 +178,7 @@ final class AccessTokenManager {
         Intent intent = new Intent(ACTION_CURRENT_ACCESS_TOKEN_CHANGED);
         intent.putExtra(EXTRA_OLD_ACCESS_TOKEN, accessToken);
         intent.putExtra(EXTRA_NEW_ACCESS_TOKEN, accessToken2);
-        this.localBroadcastManager.m74a(intent);
+        this.localBroadcastManager.m127a(intent);
     }
 
     private void setCurrentAccessToken(AccessToken accessToken, boolean z) {
@@ -179,7 +209,7 @@ final class AccessTokenManager {
 
     final void extendAccessTokenIfNeeded() {
         if (shouldExtendAccessToken()) {
-            refreshCurrentAccessToken();
+            refreshCurrentAccessToken(null);
         }
     }
 
@@ -196,11 +226,15 @@ final class AccessTokenManager {
         return true;
     }
 
-    final void refreshCurrentAccessToken() {
+    final void refreshCurrentAccessToken(final AccessTokenRefreshCallback accessTokenRefreshCallback) {
         if (Looper.getMainLooper().equals(Looper.myLooper())) {
-            refreshCurrentAccessTokenImpl();
+            refreshCurrentAccessTokenImpl(accessTokenRefreshCallback);
         } else {
-            new Handler(Looper.getMainLooper()).post(new C01621());
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                public void run() {
+                    AccessTokenManager.this.refreshCurrentAccessTokenImpl(accessTokenRefreshCallback);
+                }
+            });
         }
     }
 

@@ -1,34 +1,22 @@
 package p000c.p001m.p002x.p003a.gv;
 
-import android.content.Context;
-import android.os.Parcelable;
-import android.util.SparseArray;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.FrameLayout;
+import android.graphics.Rect;
+import android.transition.Transition;
+import android.transition.Transition.EpicenterCallback;
+import p000c.p001m.p002x.p003a.gv.al.C0014a;
 
-final class ao extends FrameLayout {
-    private ao(Context context) {
-        super(context);
+final class ao extends EpicenterCallback {
+    final /* synthetic */ C0014a f71a;
+    private Rect f72b;
+
+    ao(C0014a c0014a) {
+        this.f71a = c0014a;
     }
 
-    static ViewGroup m55a(View view) {
-        ViewGroup aoVar = new ao(view.getContext());
-        LayoutParams layoutParams = view.getLayoutParams();
-        if (layoutParams != null) {
-            aoVar.setLayoutParams(layoutParams);
+    public final Rect onGetEpicenter(Transition transition) {
+        if (this.f72b == null && this.f71a.f62a != null) {
+            this.f72b = al.m88b(this.f71a.f62a);
         }
-        view.setLayoutParams(new FrameLayout.LayoutParams(-1, -1));
-        aoVar.addView(view);
-        return aoVar;
-    }
-
-    protected final void dispatchRestoreInstanceState(SparseArray<Parcelable> sparseArray) {
-        dispatchThawSelfOnly(sparseArray);
-    }
-
-    protected final void dispatchSaveInstanceState(SparseArray<Parcelable> sparseArray) {
-        dispatchFreezeSelfOnly(sparseArray);
+        return this.f72b;
     }
 }

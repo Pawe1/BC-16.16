@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import com.facebook.internal.Validate;
-import p000c.p001m.p002x.p003a.gv.at;
+import p000c.p001m.p002x.p003a.gv.ax;
 
 public abstract class ProfileTracker {
-    private final at broadcastManager;
+    private final ax broadcastManager;
     private boolean isTracking = false;
     private final BroadcastReceiver receiver;
 
@@ -26,14 +26,14 @@ public abstract class ProfileTracker {
     public ProfileTracker() {
         Validate.sdkInitialized();
         this.receiver = new ProfileBroadcastReceiver();
-        this.broadcastManager = at.m70a(FacebookSdk.getApplicationContext());
+        this.broadcastManager = ax.m123a(FacebookSdk.getApplicationContext());
         startTracking();
     }
 
     private void addBroadcastReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.facebook.sdk.ACTION_CURRENT_PROFILE_CHANGED");
-        this.broadcastManager.m73a(this.receiver, intentFilter);
+        this.broadcastManager.m126a(this.receiver, intentFilter);
     }
 
     public boolean isTracking() {
@@ -51,7 +51,7 @@ public abstract class ProfileTracker {
 
     public void stopTracking() {
         if (this.isTracking) {
-            this.broadcastManager.m72a(this.receiver);
+            this.broadcastManager.m125a(this.receiver);
             this.isTracking = false;
         }
     }

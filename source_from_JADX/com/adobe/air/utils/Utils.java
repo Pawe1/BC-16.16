@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.os.Process;
 import android.view.LayoutInflater;
 import android.view.View;
+import com.adobe.air.AndroidActivityWrapper;
 import com.facebook.share.internal.ShareConstants;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -167,6 +168,26 @@ public class Utils {
         return null;
     }
 
+    public static View GetLayoutView(String str, Resources resources, LayoutInflater layoutInflater) {
+        int identifier = resources.getIdentifier(str, "layout", AndroidActivityWrapper.GetAndroidActivityWrapper().getActivity().getPackageName());
+        if (identifier != 0) {
+            return layoutInflater.inflate(identifier, null);
+        }
+        return null;
+    }
+
+    public static View GetWidgetInViewByNameFromPackage(String str, Resources resources, View view) {
+        return view.findViewById(resources.getIdentifier(str, ShareConstants.WEB_DIALOG_PARAM_ID, AndroidActivityWrapper.GetAndroidActivityWrapper().getActivity().getPackageName()));
+    }
+
+    public static View GetWidgetInView(String str, Resources resources, View view) {
+        return view.findViewById(resources.getIdentifier(str, ShareConstants.WEB_DIALOG_PARAM_ID, AndroidActivityWrapper.GetAndroidActivityWrapper().getActivity().getPackageName()));
+    }
+
+    public static String GetResourceString(String str, Resources resources) {
+        return resources.getString(resources.getIdentifier(str, "string", AndroidActivityWrapper.GetAndroidActivityWrapper().getActivity().getPackageName()));
+    }
+
     public static String GetExternalStorageDirectory() {
         return Environment.getExternalStorageDirectory().getAbsolutePath();
     }
@@ -199,10 +220,23 @@ public class Utils {
     }
 
     public static String GetNativeExtensionPath(Context context, String str) {
-        String str2;
         try {
-            str2 = ApplicationInfo.class.getField("nativeLibraryDir") != null ? ((String) ApplicationInfo.class.getField("sourceDir").get(context.getPackageManager().getApplicationInfo(sRuntimePackageName, 0))).startsWith("/system/app/") ? new String("/system/lib/" + sRuntimePackageName + "/" + str) : new String("/data/data/" + context.getPackageName() + "/lib/" + str) : null;
-        } catch (Exception e) {
+            File file;
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(sRuntimePackageName, 0);
+            Field field = ApplicationInfo.class.getField("nativeLibraryDir");
+            Field field2 = ApplicationInfo.class.getField("sourceDir");
+            try {
+                file = new File(applicationInfo.nativeLibraryDir, str);
+            } catch (Exception e) {
+                file = null;
+            }
+            if (file != null) {
+                if (file.exists()) {
+                    return file.getAbsolutePath();
+                }
+            }
+            String str2 = field != null ? ((String) field2.get(applicationInfo)).startsWith("/system/app/") ? new String("/system/lib/" + sRuntimePackageName + "/" + str) : new String("/data/data/" + context.getPackageName() + "/lib/" + str) : null;
+        } catch (Exception e2) {
             str2 = null;
         }
         if (str2 == null) {
@@ -212,14 +246,14 @@ public class Utils {
     }
 
     public static String GetTelemetrySettings(Context context, String str, String str2) {
-        ByteArrayOutputStream byteArrayOutputStream;
+        InputStream open;
         Object obj;
         Object obj2;
         String string;
         Throwable th;
         Throwable th2;
         InputStream inputStream = null;
-        InputStream open;
+        ByteArrayOutputStream byteArrayOutputStream;
         try {
             open = context.getResources().getAssets().open(str, 1);
             try {

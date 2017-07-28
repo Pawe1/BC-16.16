@@ -15,8 +15,8 @@ import com.adobe.air.AndroidLocale.STRING_ID;
 public final class RemoteDebuggerDialog {
     private final Activity mActivity;
 
-    class C01272 implements OnClickListener {
-        C01272() {
+    class C01362 implements OnClickListener {
+        C01362() {
         }
 
         public void onClick(DialogInterface dialogInterface, int i) {
@@ -24,8 +24,8 @@ public final class RemoteDebuggerDialog {
         }
     }
 
-    class C01283 implements OnCancelListener {
-        C01283() {
+    class C01373 implements OnCancelListener {
+        C01373() {
         }
 
         public void onCancel(DialogInterface dialogInterface) {
@@ -63,8 +63,8 @@ public final class RemoteDebuggerDialog {
                 RemoteDebuggerDialog.this.gotResultFromDialog(true, editText.getText().toString());
             }
         });
-        builder.setNegativeButton(AndroidLocale.GetLocalizedString(STRING_ID.IDA_CANCEL), new C01272());
-        builder.setOnCancelListener(new C01283());
+        builder.setNegativeButton(AndroidLocale.GetLocalizedString(STRING_ID.IDA_CANCEL), new C01362());
+        builder.setOnCancelListener(new C01373());
         builder.show();
     }
 

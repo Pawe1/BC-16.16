@@ -26,9 +26,11 @@ class LoginLogger {
     static final String EVENT_EXTRAS_TRY_LOGIN_ACTIVITY = "try_login_activity";
     static final String EVENT_NAME_LOGIN_COMPLETE = "fb_mobile_login_complete";
     static final String EVENT_NAME_LOGIN_METHOD_COMPLETE = "fb_mobile_login_method_complete";
+    static final String EVENT_NAME_LOGIN_METHOD_NOT_TRIED = "fb_mobile_login_method_not_tried";
     static final String EVENT_NAME_LOGIN_METHOD_START = "fb_mobile_login_method_start";
     static final String EVENT_NAME_LOGIN_START = "fb_mobile_login_start";
     static final String EVENT_PARAM_AUTH_LOGGER_ID = "0_auth_logger_id";
+    static final String EVENT_PARAM_CHALLENGE = "7_challenge";
     static final String EVENT_PARAM_ERROR_CODE = "4_error_code";
     static final String EVENT_PARAM_ERROR_MESSAGE = "5_error_message";
     static final String EVENT_PARAM_EXTRAS = "6_extras";
@@ -88,6 +90,12 @@ class LoginLogger {
         }
         newAuthorizationLoggingBundle.putString(EVENT_PARAM_METHOD, str2);
         this.appEventsLogger.logSdkEvent(EVENT_NAME_LOGIN_METHOD_COMPLETE, null, newAuthorizationLoggingBundle);
+    }
+
+    public void logAuthorizationMethodNotTried(String str, String str2) {
+        Bundle newAuthorizationLoggingBundle = newAuthorizationLoggingBundle(str);
+        newAuthorizationLoggingBundle.putString(EVENT_PARAM_METHOD, str2);
+        this.appEventsLogger.logSdkEvent(EVENT_NAME_LOGIN_METHOD_NOT_TRIED, null, newAuthorizationLoggingBundle);
     }
 
     public void logAuthorizationMethodStart(String str, String str2) {

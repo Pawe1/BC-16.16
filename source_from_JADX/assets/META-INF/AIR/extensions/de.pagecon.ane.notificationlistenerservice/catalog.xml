@@ -2,15 +2,15 @@
 <swc xmlns="http://www.adobe.com/flash/swccatalog/9">
     <versions>
         <swc version="1.2"/>
-        <flex version="4.7.0" build="354194" minimumSupportedVersion="3.0.0"/>
-        <compiler name="ActionScript Compiler" version="2.0.0" build="354194"/>
+        <flex version="4.7.0" build="354193" minimumSupportedVersion="3.0.0"/>
+        <compiler name="ActionScript Compiler" version="2.0.0" build="354193"/>
     </versions>
     <features>
         <feature-script-deps/>
     </features>
     <libraries>
         <library path="library.swf">
-            <script name="de/pagecon/ane/notificationlistenerservice/NotificationServiceController" mod="1481811674000">
+            <script name="de/pagecon/ane/notificationlistenerservice/NotificationServiceController" mod="1489490819000">
                 <def id="de.pagecon.ane.notificationlistenerservice:NotificationServiceController"/>
                 <dep id="Array" type="e"/>
                 <dep id="Boolean" type="s"/>
@@ -32,13 +32,6 @@
                 <dep id="int" type="s"/>
                 <dep id="uint" type="e"/>
             </script>
-            <script name="de/pagecon/ane/notificationlistenerservice/data/NotificationMsg" mod="1476196011000">
-                <def id="de.pagecon.ane.notificationlistenerservice.data:NotificationMsg"/>
-                <dep id="Number" type="s"/>
-                <dep id="Object" type="i"/>
-                <dep id="String" type="s"/>
-                <dep id="uint" type="s"/>
-            </script>
             <script name="de/pagecon/ane/notificationlistenerservice/debug/Debug" mod="1476197764000">
                 <def id="de.pagecon.ane.notificationlistenerservice.debug:Debug"/>
                 <dep id="Array" type="s"/>
@@ -53,9 +46,8 @@
                 <dep id="trace" type="e"/>
                 <dep id="uint" type="e"/>
             </script>
-            <script name="de/pagecon/ane/notificationlistenerservice/events/ApplicationStateChangedEvent" mod="1481811191000">
+            <script name="de/pagecon/ane/notificationlistenerservice/events/ApplicationStateChangedEvent" mod="1489490886000">
                 <def id="de.pagecon.ane.notificationlistenerservice.events:ApplicationStateChangedEvent"/>
-                <dep id="Boolean" type="s"/>
                 <dep id="JSON" type="e"/>
                 <dep id="String" type="s"/>
                 <dep id="flash.events:Event" type="i"/>
@@ -79,7 +71,7 @@
                 <dep id="flash.events:Event" type="i"/>
             </script>
             <digests>
-                <digest type="SHA-256" signed="false" value="2da41f94e121edd8b83ab00aed5c0d89825f1cef7901e81088e094e888a065c5"/>
+                <digest type="SHA-256" signed="false" value="2536d6205b82d87b98a2f9ca4bf9e7fc37008e04d263242f7eff53e47b099b2a"/>
             </digests>
         </library>
     </libraries>

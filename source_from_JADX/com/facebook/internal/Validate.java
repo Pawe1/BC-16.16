@@ -2,23 +2,42 @@ package com.facebook.internal;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Looper;
 import android.util.Log;
+import com.facebook.CustomTabActivity;
 import com.facebook.FacebookActivity;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.FacebookSdkNotInitializedException;
 import java.util.Collection;
+import java.util.List;
 
 public final class Validate {
     private static final String CONTENT_PROVIDER_BASE = "com.facebook.app.FacebookContentProvider";
     private static final String CONTENT_PROVIDER_NOT_FOUND_REASON = "A ContentProvider for this app was not set up in the AndroidManifest.xml, please add %s as a provider to your AndroidManifest.xml file. See https://developers.facebook.com/docs/sharing/android for more info.";
+    private static final String CUSTOM_TAB_REDIRECT_ACTIVITY_NOT_FOUND_REASON = "FacebookActivity is declared incorrectly in the AndroidManifest.xml, please add com.facebook.FacebookActivity to your AndroidManifest.xml file. See https://developers.facebook.com/docs/android/getting-started for more info.";
     private static final String FACEBOOK_ACTIVITY_NOT_FOUND_REASON = "FacebookActivity is not declared in the AndroidManifest.xml, please add com.facebook.FacebookActivity to your AndroidManifest.xml file. See https://developers.facebook.com/docs/android/getting-started for more info.";
     private static final String NO_INTERNET_PERMISSION_REASON = "No internet permissions granted for the app, please add <uses-permission android:name=\"android.permission.INTERNET\" /> to your AndroidManifest.xml.";
     private static final String TAG = Validate.class.getName();
+
+    public static void checkCustomTabRedirectActivity(Context context) {
+        checkCustomTabRedirectActivity(context, true);
+    }
+
+    public static void checkCustomTabRedirectActivity(Context context, boolean z) {
+        if (!hasCustomTabRedirectActivity(context)) {
+            if (z) {
+                throw new IllegalStateException(CUSTOM_TAB_REDIRECT_ACTIVITY_NOT_FOUND_REASON);
+            }
+            Log.w(TAG, CUSTOM_TAB_REDIRECT_ACTIVITY_NOT_FOUND_REASON);
+        }
+    }
 
     public static void containsNoNullOrEmpty(Collection<String> collection, String str) {
         notNull(collection, str);
@@ -48,6 +67,14 @@ public final class Validate {
         throw new IllegalStateException("No App ID found, please set the App ID.");
     }
 
+    public static String hasClientToken() {
+        String clientToken = FacebookSdk.getClientToken();
+        if (clientToken != null) {
+            return clientToken;
+        }
+        throw new IllegalStateException("No Client Token found, please set the Client Token.");
+    }
+
     public static void hasContentProvider(Context context) {
         notNull(context, "context");
         String hasAppID = hasAppID();
@@ -57,6 +84,33 @@ public final class Validate {
                 throw new IllegalStateException(String.format(CONTENT_PROVIDER_NOT_FOUND_REASON, new Object[]{hasAppID}));
             }
         }
+    }
+
+    public static boolean hasCustomTabRedirectActivity(Context context) {
+        boolean z;
+        notNull(context, "context");
+        PackageManager packageManager = context.getPackageManager();
+        List list = null;
+        if (packageManager != null) {
+            Intent intent = new Intent();
+            intent.setAction("android.intent.action.VIEW");
+            intent.addCategory("android.intent.category.DEFAULT");
+            intent.addCategory("android.intent.category.BROWSABLE");
+            intent.setData(Uri.parse("fb" + FacebookSdk.getApplicationId() + "://authorize"));
+            list = packageManager.queryIntentActivities(intent, 64);
+        }
+        if (r0 != null) {
+            z = false;
+            for (ResolveInfo resolveInfo : r0) {
+                if (!resolveInfo.activityInfo.name.equals(CustomTabActivity.class.getName())) {
+                    return false;
+                }
+                z = true;
+            }
+        } else {
+            z = false;
+        }
+        return z;
     }
 
     public static void hasFacebookActivity(Context context) {

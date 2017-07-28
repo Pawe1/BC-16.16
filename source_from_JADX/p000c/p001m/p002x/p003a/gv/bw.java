@@ -1,26 +1,34 @@
 package p000c.p001m.p002x.p003a.gv;
 
-import android.content.Intent;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
+import java.util.concurrent.CancellationException;
+import p000c.p001m.p002x.p003a.gv.bt.C0051a;
 
-final class bw implements InvocationHandler {
-    final /* synthetic */ by f182a;
-    final /* synthetic */ bv f183b;
+final class bw implements Runnable {
+    final /* synthetic */ br f208a;
+    final /* synthetic */ C0051a f209b;
+    final /* synthetic */ bs f210c;
+    final /* synthetic */ bt f211d;
 
-    bw(bv bvVar, by byVar) {
-        this.f183b = bvVar;
-        this.f182a = byVar;
+    bw(br brVar, C0051a c0051a, bs bsVar, bt btVar) {
+        this.f208a = brVar;
+        this.f209b = c0051a;
+        this.f210c = bsVar;
+        this.f211d = btVar;
     }
 
-    public final Object invoke(Object obj, Method method, Object[] objArr) {
-        String name = method.getName();
-        if (name.equals("onActivityResult")) {
-            this.f182a.mo286a(((Integer) objArr[0]).intValue(), ((Integer) objArr[1]).intValue(), (Intent) objArr[2]);
-        } else if (name.equals("equals")) {
-            bw bwVar = objArr[0];
-            return bwVar == null ? Boolean.valueOf(false) : bwVar == this ? Boolean.valueOf(true) : Boolean.valueOf(false);
+    public final void run() {
+        if (this.f208a == null || !this.f208a.m208a()) {
+            try {
+                this.f209b.m214a(this.f210c.then(this.f211d));
+                return;
+            } catch (CancellationException e) {
+                this.f209b.m215b();
+                return;
+            } catch (Exception e2) {
+                this.f209b.m213a(e2);
+                return;
+            }
         }
-        return null;
+        this.f209b.m215b();
     }
 }

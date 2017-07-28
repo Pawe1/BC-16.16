@@ -13,8 +13,8 @@ public class VideoViewAIR extends VideoView {
     protected AndroidActivityWrapper mActivityWrapper;
     private FlashEGL mVideoFlashEGL = null;
 
-    class C01571 implements Callback {
-        C01571() {
+    class C01661 implements Callback {
+        C01661() {
         }
 
         public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
@@ -37,7 +37,7 @@ public class VideoViewAIR extends VideoView {
         this.mActivityWrapper = androidActivityWrapper;
         this.mActivityWrapper.registerPlane(this, 7);
         this.mActivityWrapper.planeStepCascade();
-        getHolder().addCallback(new C01571());
+        getHolder().addCallback(new C01661());
     }
 
     public FlashEGL getVideoEgl() {

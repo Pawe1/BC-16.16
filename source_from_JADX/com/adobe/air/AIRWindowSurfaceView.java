@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -22,7 +23,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.ResultReceiver;
 import android.provider.Settings.System;
-import android.support.v7.appcompat.C0004R;
 import android.text.ClipboardManager;
 import android.text.util.Linkify;
 import android.view.ContextMenu;
@@ -53,6 +53,7 @@ import com.adobe.air.utils.AIRLogger;
 import com.adobe.air.utils.Utils;
 import com.adobe.flashruntime.air.VideoViewAIR;
 import com.adobe.flashruntime.shared.VideoView;
+import com.sigmasport.misc.Constant;
 
 public class AIRWindowSurfaceView extends SurfaceView implements Callback {
     static final int CURSOR_POS_END_DOCUMENT = 3;
@@ -140,8 +141,8 @@ public class AIRWindowSurfaceView extends SurfaceView implements Callback {
     private int mWd;
     private boolean mWindowHasFocus;
 
-    class C00934 implements OnClickListener {
-        C00934() {
+    class C00984 implements OnClickListener {
+        C00984() {
         }
 
         public void onClick(DialogInterface dialogInterface, int i) {
@@ -350,11 +351,11 @@ public class AIRWindowSurfaceView extends SurfaceView implements Callback {
             }
             this.mHideSoftKeyboardOnWindowFocusChange = false;
         }
+        if (this.mIsFullScreen) {
+            HideSystemUI();
+        }
         if (z) {
             this.mContextMenuVisible = false;
-            if (this.mIsFullScreen && VERSION.SDK_INT >= 19) {
-                setSystemUiVisibility(5894);
-            }
         }
     }
 
@@ -415,7 +416,7 @@ public class AIRWindowSurfaceView extends SurfaceView implements Callback {
     }
 
     protected void onFocusChanged(boolean z, int i, Rect rect) {
-        AIRLogger.m363d(LOG_TAG, "*** *** onFocusChanged: AIR");
+        AIRLogger.m376d(LOG_TAG, "*** *** onFocusChanged: AIR");
         if (!(!z || this.mFocusedStageText == null || this.inTouch)) {
             this.mDispatchUserTriggeredSkDeactivate = true;
             forceSoftKeyboardDown();
@@ -970,8 +971,14 @@ public class AIRWindowSurfaceView extends SurfaceView implements Callback {
 
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
         Display defaultDisplay = ((WindowManager) this.mActivityWrapper.getActivity().getSystemService("window")).getDefaultDisplay();
-        this.mBoundHeight = defaultDisplay.getHeight();
-        this.mBoundWidth = defaultDisplay.getWidth();
+        Point point = new Point();
+        if (!this.mIsFullScreen || VERSION.SDK_INT < 17) {
+            defaultDisplay.getSize(point);
+        } else {
+            defaultDisplay.getRealSize(point);
+        }
+        this.mBoundHeight = point.y;
+        this.mBoundWidth = point.x;
         this.mVisibleBoundHeight = i3;
         this.mVisibleBoundWidth = i2;
         nativeOnFormatChangeListener(i);
@@ -1035,7 +1042,7 @@ public class AIRWindowSurfaceView extends SurfaceView implements Callback {
     }
 
     public void showSoftKeyboard(boolean z, View view) {
-        AIRLogger.m363d(LOG_TAG, "showSoftKeyboard show: " + z);
+        AIRLogger.m376d(LOG_TAG, "showSoftKeyboard show: " + z);
         InputMethodManager inputMethodManager = getInputMethodManager();
         if (z) {
             inputMethodManager.showSoftInput(view, 0, this.mInputMethodReceiver);
@@ -1339,34 +1346,38 @@ public class AIRWindowSurfaceView extends SurfaceView implements Callback {
         return rect.top > 0;
     }
 
+    private void HideSystemUI() {
+        if (supportsSystemUiVisibilityAPI()) {
+            DoSetOnSystemUiVisibilityChangeListener();
+            if (supportsSystemUiFlags()) {
+            }
+            if (VERSION.SDK_INT >= 19) {
+                setSystemUiVisibility(5895);
+            }
+        }
+    }
+
     private void DoSetOnSystemUiVisibilityChangeListener() {
         setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener() {
             public void onSystemUiVisibilityChange(int i) {
                 this.setOnSystemUiVisibilityChangeListener(null);
                 if (this.getIsFullScreen()) {
+                    AIRWindowSurfaceView.this.HideSystemUI();
                     this.nativeDispatchFullScreenEvent(true);
-                } else {
-                    this.nativeDispatchFullScreenEvent(false);
+                    return;
                 }
+                this.nativeDispatchFullScreenEvent(false);
             }
         });
     }
 
     public void setFullScreen() {
-        int i = 1;
         if (!this.mIsFullScreen) {
             this.mIsFullScreen = true;
             this.mActivityWrapper.setIsFullScreen(this.mIsFullScreen);
             if (supportsSystemUiVisibilityAPI()) {
-                if (supportsSystemUiFlags()) {
-                    DoSetOnSystemUiVisibilityChangeListener();
-                } else {
-                    DoSetOnSystemUiVisibilityChangeListener();
-                }
-                if (VERSION.SDK_INT >= 19) {
-                    i = 4103;
-                }
-                setSystemUiVisibility(i);
+                DoSetOnSystemUiVisibilityChangeListener();
+                HideSystemUI();
             }
             this.mActivityWrapper.planeBreakCascade();
         }
@@ -1444,7 +1455,7 @@ public class AIRWindowSurfaceView extends SurfaceView implements Callback {
             Linkify.addLinks(textView, 1);
             builder.setView(textView);
             builder.setTitle("Action Script 2.0");
-            builder.setNeutralButton("OK", new C00934());
+            builder.setNeutralButton("OK", new C00984());
             builder.show();
         }
     }
@@ -1460,6 +1471,7 @@ public class AIRWindowSurfaceView extends SurfaceView implements Callback {
     public InputConnection onCreateInputConnection(EditorInfo editorInfo) {
         if (this.mActivityWrapper.isApplicationLaunched() && nativeIsEditable()) {
             editorInfo.imeOptions |= 1073741824;
+            editorInfo.imeOptions |= 268435456;
             editorInfo.imeOptions |= 6;
             int nativeGetSoftKeyboardType = nativeGetSoftKeyboardType();
             editorInfo.inputType |= 1;
@@ -1718,15 +1730,15 @@ public class AIRWindowSurfaceView extends SurfaceView implements Callback {
 
     private void HandleMetaKeyAction(KeyEvent keyEvent) {
         switch (keyEvent.getKeyCode()) {
-            case C0004R.styleable.Theme_activityChooserViewStyle /*57*/:
-            case C0004R.styleable.Theme_toolbarStyle /*58*/:
+            case 57:
+            case 58:
                 if (keyEvent.getRepeatCount() == 0) {
                     this.mMetaAltState = GetMetaKeyState(this.mMetaAltState, keyEvent.isAltPressed(), false);
                     return;
                 }
                 return;
-            case C0004R.styleable.Theme_toolbarNavigationButtonStyle /*59*/:
-            case C0004R.styleable.Theme_popupMenuStyle /*60*/:
+            case 59:
+            case 60:
                 if (keyEvent.getRepeatCount() == 0) {
                     this.mMetaShiftState = GetMetaKeyState(this.mMetaShiftState, keyEvent.isShiftPressed(), false);
                     return;
@@ -1780,9 +1792,9 @@ public class AIRWindowSurfaceView extends SurfaceView implements Callback {
 
     private boolean AllowOSToHandleKeys(int i) {
         switch (i) {
-            case 24:
-            case 25:
-            case 26:
+            case Constant.EEPROM_USER_DATA_ADDR_1D /*24*/:
+            case Constant.EEPROM_USER_DATA_ADDR_1E /*25*/:
+            case Constant.EEPROM_USER_DATA_ADDR_1F /*26*/:
                 return true;
             default:
                 return false;
@@ -1805,19 +1817,19 @@ public class AIRWindowSurfaceView extends SurfaceView implements Callback {
             return false;
         } else {
             switch (i) {
-                case 19:
+                case Constant.EEPROM_USER_DATA_ADDR_18 /*19*/:
                     nativeMoveCursor(2);
                     return true;
                 case 20:
                     nativeMoveCursor(3);
                     return true;
-                case 21:
+                case Constant.EEPROM_USER_DATA_ADDR_1A /*21*/:
                     nativeMoveCursor(0);
                     return true;
                 case 22:
                     nativeMoveCursor(1);
                     return true;
-                case C0004R.styleable.Theme_searchViewStyle /*67*/:
+                case 67:
                     nativeDeleteTextLine();
                     return true;
                 default:
@@ -1861,11 +1873,14 @@ public class AIRWindowSurfaceView extends SurfaceView implements Callback {
     }
 
     public void DispatchSoftKeyboardEventOnBackKey() {
-        if ((this.mIsFullScreen && !this.mSurfaceChangedForSoftKeyboard) || this.mFlashEGL != null || IsIMEInFullScreen() || (!this.mSurfaceChangedForSoftKeyboard && !nativeIsEditable())) {
+        if ((this.mIsFullScreen && !this.mSurfaceChangedForSoftKeyboard) || this.mFlashEGL != null || IsIMEInFullScreen() || !(this.mSurfaceChangedForSoftKeyboard || nativeIsEditable())) {
             nativeDispatchUserTriggeredSkDeactivateEvent();
-            if (!this.mSurfaceChangedForSoftKeyboard && !nativeIsEditable()) {
+            if (!(this.mSurfaceChangedForSoftKeyboard || nativeIsEditable())) {
                 nativeShowOriginalRect();
             }
+        }
+        if (this.mIsFullScreen) {
+            HideSystemUI();
         }
     }
 

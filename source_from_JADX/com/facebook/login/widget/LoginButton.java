@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
-import com.facebook.C0253R;
+import com.facebook.C0196R;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookButtonBase;
 import com.facebook.FacebookCallback;
@@ -22,9 +22,10 @@ import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.internal.AnalyticsEvents;
 import com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
+import com.facebook.internal.FetchedAppSettings;
+import com.facebook.internal.FetchedAppSettingsManager;
 import com.facebook.internal.LoginAuthorizationType;
 import com.facebook.internal.Utility;
-import com.facebook.internal.Utility.FetchedAppSettings;
 import com.facebook.login.DefaultAudience;
 import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
@@ -50,8 +51,77 @@ public class LoginButton extends FacebookButtonBase {
     private ToolTipPopup toolTipPopup;
     private Style toolTipStyle = Style.BLUE;
 
-    class C02422 extends AccessTokenTracker {
-        C02422() {
+    protected class LoginClickListener implements OnClickListener {
+        protected LoginClickListener() {
+        }
+
+        protected LoginManager getLoginManager() {
+            LoginManager instance = LoginManager.getInstance();
+            instance.setDefaultAudience(LoginButton.this.getDefaultAudience());
+            instance.setLoginBehavior(LoginButton.this.getLoginBehavior());
+            return instance;
+        }
+
+        public void onClick(View view) {
+            LoginButton.this.callExternalOnClickListener(view);
+            AccessToken currentAccessToken = AccessToken.getCurrentAccessToken();
+            if (currentAccessToken != null) {
+                performLogout(LoginButton.this.getContext());
+            } else {
+                performLogin();
+            }
+            AppEventsLogger newLogger = AppEventsLogger.newLogger(LoginButton.this.getContext());
+            Bundle bundle = new Bundle();
+            bundle.putInt("logging_in", currentAccessToken != null ? 0 : 1);
+            newLogger.logSdkEvent(LoginButton.this.loginLogoutEventName, null, bundle);
+        }
+
+        protected void performLogin() {
+            LoginManager loginManager = getLoginManager();
+            if (LoginAuthorizationType.PUBLISH.equals(LoginButton.this.properties.authorizationType)) {
+                if (LoginButton.this.getFragment() != null) {
+                    loginManager.logInWithPublishPermissions(LoginButton.this.getFragment(), LoginButton.this.properties.permissions);
+                } else if (LoginButton.this.getNativeFragment() != null) {
+                    loginManager.logInWithPublishPermissions(LoginButton.this.getNativeFragment(), LoginButton.this.properties.permissions);
+                } else {
+                    loginManager.logInWithPublishPermissions(LoginButton.this.getActivity(), LoginButton.this.properties.permissions);
+                }
+            } else if (LoginButton.this.getFragment() != null) {
+                loginManager.logInWithReadPermissions(LoginButton.this.getFragment(), LoginButton.this.properties.permissions);
+            } else if (LoginButton.this.getNativeFragment() != null) {
+                loginManager.logInWithReadPermissions(LoginButton.this.getNativeFragment(), LoginButton.this.properties.permissions);
+            } else {
+                loginManager.logInWithReadPermissions(LoginButton.this.getActivity(), LoginButton.this.properties.permissions);
+            }
+        }
+
+        protected void performLogout(Context context) {
+            final LoginManager loginManager = getLoginManager();
+            if (LoginButton.this.confirmLogout) {
+                CharSequence string;
+                CharSequence string2 = LoginButton.this.getResources().getString(C0196R.string.com_facebook_loginview_log_out_action);
+                CharSequence string3 = LoginButton.this.getResources().getString(C0196R.string.com_facebook_loginview_cancel_action);
+                Profile currentProfile = Profile.getCurrentProfile();
+                if (currentProfile == null || currentProfile.getName() == null) {
+                    string = LoginButton.this.getResources().getString(C0196R.string.com_facebook_loginview_logged_in_using_facebook);
+                } else {
+                    string = String.format(LoginButton.this.getResources().getString(C0196R.string.com_facebook_loginview_logged_in_as), new Object[]{currentProfile.getName()});
+                }
+                Builder builder = new Builder(context);
+                builder.setMessage(string).setCancelable(true).setPositiveButton(string2, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        loginManager.logOut();
+                    }
+                }).setNegativeButton(string3, null);
+                builder.create().show();
+                return;
+            }
+            loginManager.logOut();
+        }
+    }
+
+    class C02912 extends AccessTokenTracker {
+        C02912() {
         }
 
         protected void onCurrentAccessTokenChanged(AccessToken accessToken, AccessToken accessToken2) {
@@ -113,57 +183,6 @@ public class LoginButton extends FacebookButtonBase {
         }
     }
 
-    private class LoginClickListener implements OnClickListener {
-
-        class C02441 implements DialogInterface.OnClickListener {
-            C02441() {
-            }
-
-            public void onClick(DialogInterface dialogInterface, int i) {
-                LoginButton.this.getLoginManager().logOut();
-            }
-        }
-
-        private LoginClickListener() {
-        }
-
-        public void onClick(View view) {
-            LoginButton.this.callExternalOnClickListener(view);
-            Context context = LoginButton.this.getContext();
-            AccessToken currentAccessToken = AccessToken.getCurrentAccessToken();
-            if (currentAccessToken == null) {
-                LoginManager loginManager = LoginButton.this.getLoginManager();
-                loginManager.setDefaultAudience(LoginButton.this.getDefaultAudience());
-                loginManager.setLoginBehavior(LoginButton.this.getLoginBehavior());
-                if (LoginAuthorizationType.PUBLISH.equals(LoginButton.this.properties.authorizationType)) {
-                    if (LoginButton.this.getFragment() != null) {
-                        loginManager.logInWithPublishPermissions(LoginButton.this.getFragment(), LoginButton.this.properties.permissions);
-                    } else {
-                        loginManager.logInWithPublishPermissions(LoginButton.this.getActivity(), LoginButton.this.properties.permissions);
-                    }
-                } else if (LoginButton.this.getFragment() != null) {
-                    loginManager.logInWithReadPermissions(LoginButton.this.getFragment(), LoginButton.this.properties.permissions);
-                } else {
-                    loginManager.logInWithReadPermissions(LoginButton.this.getActivity(), LoginButton.this.properties.permissions);
-                }
-            } else if (LoginButton.this.confirmLogout) {
-                CharSequence string = LoginButton.this.getResources().getString(C0253R.string.com_facebook_loginview_log_out_action);
-                CharSequence string2 = LoginButton.this.getResources().getString(C0253R.string.com_facebook_loginview_cancel_action);
-                Profile currentProfile = Profile.getCurrentProfile();
-                CharSequence string3 = (currentProfile == null || currentProfile.getName() == null) ? LoginButton.this.getResources().getString(C0253R.string.com_facebook_loginview_logged_in_using_facebook) : String.format(LoginButton.this.getResources().getString(C0253R.string.com_facebook_loginview_logged_in_as), new Object[]{currentProfile.getName()});
-                Builder builder = new Builder(context);
-                builder.setMessage(string3).setCancelable(true).setPositiveButton(string, new C02441()).setNegativeButton(string2, null);
-                builder.create().show();
-            } else {
-                LoginButton.this.getLoginManager().logOut();
-            }
-            AppEventsLogger newLogger = AppEventsLogger.newLogger(LoginButton.this.getContext());
-            Bundle bundle = new Bundle();
-            bundle.putInt("logging_in", currentAccessToken != null ? 0 : 1);
-            newLogger.logSdkEvent(LoginButton.this.loginLogoutEventName, null, bundle);
-        }
-    }
-
     public enum ToolTipMode {
         AUTOMATIC(AnalyticsEvents.PARAMETER_SHARE_DIALOG_SHOW_AUTOMATIC, 0),
         DISPLAY_ALWAYS("display_always", 1),
@@ -218,7 +237,7 @@ public class LoginButton extends FacebookButtonBase {
                 final String metadataApplicationId = Utility.getMetadataApplicationId(getContext());
                 FacebookSdk.getExecutor().execute(new Runnable() {
                     public void run() {
-                        final FetchedAppSettings queryAppSettings = Utility.queryAppSettings(metadataApplicationId, false);
+                        final FetchedAppSettings queryAppSettings = FetchedAppSettingsManager.queryAppSettings(metadataApplicationId, false);
                         LoginButton.this.getActivity().runOnUiThread(new Runnable() {
                             public void run() {
                                 LoginButton.this.showToolTipPerSettings(queryAppSettings);
@@ -228,7 +247,7 @@ public class LoginButton extends FacebookButtonBase {
                 });
                 return;
             case DISPLAY_ALWAYS:
-                displayToolTip(getResources().getString(C0253R.string.com_facebook_tooltip_default));
+                displayToolTip(getResources().getString(C0196R.string.com_facebook_tooltip_default));
                 return;
             default:
                 return;
@@ -248,12 +267,12 @@ public class LoginButton extends FacebookButtonBase {
 
     private void parseLoginButtonAttributes(Context context, AttributeSet attributeSet, int i, int i2) {
         this.toolTipMode = ToolTipMode.DEFAULT;
-        TypedArray obtainStyledAttributes = context.getTheme().obtainStyledAttributes(attributeSet, C0253R.styleable.com_facebook_login_view, i, i2);
+        TypedArray obtainStyledAttributes = context.getTheme().obtainStyledAttributes(attributeSet, C0196R.styleable.com_facebook_login_view, i, i2);
         try {
-            this.confirmLogout = obtainStyledAttributes.getBoolean(C0253R.styleable.com_facebook_login_view_com_facebook_confirm_logout, true);
-            this.loginText = obtainStyledAttributes.getString(C0253R.styleable.com_facebook_login_view_com_facebook_login_text);
-            this.logoutText = obtainStyledAttributes.getString(C0253R.styleable.com_facebook_login_view_com_facebook_logout_text);
-            this.toolTipMode = ToolTipMode.fromInt(obtainStyledAttributes.getInt(C0253R.styleable.com_facebook_login_view_com_facebook_tooltip_mode, ToolTipMode.DEFAULT.getValue()));
+            this.confirmLogout = obtainStyledAttributes.getBoolean(C0196R.styleable.com_facebook_login_view_com_facebook_confirm_logout, true);
+            this.loginText = obtainStyledAttributes.getString(C0196R.styleable.com_facebook_login_view_com_facebook_login_text);
+            this.logoutText = obtainStyledAttributes.getString(C0196R.styleable.com_facebook_login_view_com_facebook_logout_text);
+            this.toolTipMode = ToolTipMode.fromInt(obtainStyledAttributes.getInt(C0196R.styleable.com_facebook_login_view_com_facebook_tooltip_mode, ToolTipMode.DEFAULT.getValue()));
         } finally {
             obtainStyledAttributes.recycle();
         }
@@ -262,14 +281,14 @@ public class LoginButton extends FacebookButtonBase {
     private void setButtonText() {
         Resources resources = getResources();
         if (!isInEditMode() && AccessToken.getCurrentAccessToken() != null) {
-            setText(this.logoutText != null ? this.logoutText : resources.getString(C0253R.string.com_facebook_loginview_log_out_button));
+            setText(this.logoutText != null ? this.logoutText : resources.getString(C0196R.string.com_facebook_loginview_log_out_button));
         } else if (this.loginText != null) {
             setText(this.loginText);
         } else {
-            CharSequence string = resources.getString(C0253R.string.com_facebook_loginview_log_in_button_long);
+            CharSequence string = resources.getString(C0196R.string.com_facebook_loginview_log_in_button_continue);
             int width = getWidth();
             if (width != 0 && measureButtonWidth(string) > width) {
-                string = resources.getString(C0253R.string.com_facebook_loginview_log_in_button);
+                string = resources.getString(C0196R.string.com_facebook_loginview_log_in_button);
             }
             setText(string);
         }
@@ -287,13 +306,13 @@ public class LoginButton extends FacebookButtonBase {
 
     protected void configureButton(Context context, AttributeSet attributeSet, int i, int i2) {
         super.configureButton(context, attributeSet, i, i2);
-        setInternalOnClickListener(new LoginClickListener());
+        setInternalOnClickListener(getNewLoginClickListener());
         parseLoginButtonAttributes(context, attributeSet, i, i2);
         if (isInEditMode()) {
-            setBackgroundColor(getResources().getColor(C0253R.color.com_facebook_blue));
-            this.loginText = "Log in with Facebook";
+            setBackgroundColor(getResources().getColor(C0196R.color.com_facebook_blue));
+            this.loginText = "Continue with Facebook";
         } else {
-            this.accessTokenTracker = new C02422();
+            this.accessTokenTracker = new C02912();
         }
         setButtonText();
     }
@@ -314,7 +333,7 @@ public class LoginButton extends FacebookButtonBase {
     }
 
     protected int getDefaultStyleResource() {
-        return C0253R.style.com_facebook_loginview_default_style;
+        return C0196R.style.com_facebook_loginview_default_style;
     }
 
     public LoginBehavior getLoginBehavior() {
@@ -326,6 +345,10 @@ public class LoginButton extends FacebookButtonBase {
             this.loginManager = LoginManager.getInstance();
         }
         return this.loginManager;
+    }
+
+    protected LoginClickListener getNewLoginClickListener() {
+        return new LoginClickListener();
     }
 
     List<String> getPermissions() {
@@ -376,16 +399,16 @@ public class LoginButton extends FacebookButtonBase {
         Resources resources = getResources();
         String str = this.loginText;
         if (str == null) {
-            str = resources.getString(C0253R.string.com_facebook_loginview_log_in_button_long);
+            str = resources.getString(C0196R.string.com_facebook_loginview_log_in_button_continue);
             measureButtonWidth = measureButtonWidth(str);
             if (resolveSize(measureButtonWidth, i) < measureButtonWidth) {
-                str = resources.getString(C0253R.string.com_facebook_loginview_log_in_button);
+                str = resources.getString(C0196R.string.com_facebook_loginview_log_in_button);
             }
         }
         measureButtonWidth = measureButtonWidth(str);
         str = this.logoutText;
         if (str == null) {
-            str = resources.getString(C0253R.string.com_facebook_loginview_log_out_button);
+            str = resources.getString(C0196R.string.com_facebook_loginview_log_out_button);
         }
         setMeasuredDimension(resolveSize(Math.max(measureButtonWidth, measureButtonWidth(str)), i), compoundPaddingBottom);
     }

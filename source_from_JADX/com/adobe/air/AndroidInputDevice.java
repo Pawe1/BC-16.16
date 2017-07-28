@@ -5,6 +5,7 @@ import android.view.InputDevice.MotionRange;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import com.sigmasport.misc.Constant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,11 +52,11 @@ class AndroidInputDevice {
 
     private static boolean isGameKey(int i) {
         switch (i) {
-            case 19:
+            case Constant.EEPROM_USER_DATA_ADDR_18 /*19*/:
             case 20:
-            case 21:
+            case Constant.EEPROM_USER_DATA_ADDR_1A /*21*/:
             case 22:
-            case 23:
+            case Constant.EEPROM_USER_DATA_ADDR_1C /*23*/:
                 return true;
             default:
                 return KeyEvent.isGamepadButton(i);

@@ -14,7 +14,7 @@ public class Automation {
         try {
             aIRWindowSurfaceView.onTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), i, f, f2, i3));
         } catch (Exception e) {
-            AIRLogger.m363d("Automation", "[JP] dispatchTouchEvent caught " + e);
+            AIRLogger.m376d("Automation", "[JP] dispatchTouchEvent caught " + e);
         }
         return true;
     }
@@ -41,7 +41,7 @@ public class Automation {
                 aIRWindowSurfaceView.onKeyUp(i2, keyEvent);
             }
         } catch (Exception e) {
-            AIRLogger.m363d("Automation", "[JP] dispatchKeyEvent caught " + e);
+            AIRLogger.m376d("Automation", "[JP] dispatchKeyEvent caught " + e);
         }
         return true;
     }

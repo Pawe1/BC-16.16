@@ -1,35 +1,25 @@
 package p000c.p001m.p002x.p003a.gv;
 
-import android.net.Uri;
-import java.util.Collections;
-import java.util.List;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.LayoutInflater.Factory;
+import android.view.View;
 
-public final class bj {
-    private Uri f137a;
-    private List<C0041a> f138b;
-    private Uri f139c;
+final class bj {
 
-    public static class C0041a {
-        private final Uri f133a;
-        private final String f134b;
-        private final String f135c;
-        private final String f136d;
+    static class C0033a implements Factory {
+        final bl f165a;
 
-        public C0041a(String str, String str2, Uri uri, String str3) {
-            this.f134b = str;
-            this.f135c = str2;
-            this.f133a = uri;
-            this.f136d = str3;
+        C0033a(bl blVar) {
+            this.f165a = blVar;
         }
-    }
 
-    public bj(Uri uri, List<C0041a> list, Uri uri2) {
-        List emptyList;
-        this.f137a = uri;
-        if (list == null) {
-            emptyList = Collections.emptyList();
+        public View onCreateView(String str, Context context, AttributeSet attributeSet) {
+            return this.f165a.mo23a(null, str, context, attributeSet);
         }
-        this.f138b = emptyList;
-        this.f139c = uri2;
+
+        public final String toString() {
+            return getClass().getName() + "{" + this.f165a + "}";
+        }
     }
 }

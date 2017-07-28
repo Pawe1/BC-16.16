@@ -11,13 +11,13 @@ class ConfigDownloadListener {
     private static String LOG_TAG = "ConfigDownloadListener";
     private static ConfigDownloadListener sListener = null;
     private long lastPauseTime = SystemClock.uptimeMillis();
-    private StateChangeCallback mActivityStateCB = new C01122();
-    private BroadcastReceiver mDownloadConfigRecv = new C01111();
+    private StateChangeCallback mActivityStateCB = new C01212();
+    private BroadcastReceiver mDownloadConfigRecv = new C01201();
 
-    class C01111 extends BroadcastReceiver {
+    class C01201 extends BroadcastReceiver {
         private String LOG_TAG = "ConfigDownloadListenerBR";
 
-        C01111() {
+        C01201() {
         }
 
         /* JADX WARNING: inconsistent code. */
@@ -61,8 +61,8 @@ class ConfigDownloadListener {
         }
     }
 
-    class C01122 implements StateChangeCallback {
-        C01122() {
+    class C01212 implements StateChangeCallback {
+        C01212() {
         }
 
         public void onActivityStateChanged(ActivityState activityState) {

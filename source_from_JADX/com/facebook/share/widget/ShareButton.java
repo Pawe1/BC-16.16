@@ -2,24 +2,14 @@ package com.facebook.share.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.View.OnClickListener;
-import com.facebook.C0253R;
+import com.facebook.C0196R;
 import com.facebook.internal.AnalyticsEvents;
 import com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
+import com.facebook.internal.FacebookDialogBase;
+import com.facebook.share.Sharer.Result;
+import com.facebook.share.model.ShareContent;
 
 public final class ShareButton extends ShareButtonBase {
-
-    class C03221 implements OnClickListener {
-        C03221() {
-        }
-
-        public void onClick(View view) {
-            ShareButton.this.callExternalOnClickListener(view);
-            (ShareButton.this.getFragment() != null ? new ShareDialog(ShareButton.this.getFragment(), ShareButton.this.getRequestCode()) : new ShareDialog(ShareButton.this.getActivity(), ShareButton.this.getRequestCode())).show(ShareButton.this.getShareContent());
-        }
-    }
-
     public ShareButton(Context context) {
         super(context, null, 0, AnalyticsEvents.EVENT_SHARE_BUTTON_CREATE, AnalyticsEvents.EVENT_SHARE_BUTTON_DID_TAP);
     }
@@ -37,10 +27,10 @@ public final class ShareButton extends ShareButtonBase {
     }
 
     protected final int getDefaultStyleResource() {
-        return C0253R.style.com_facebook_button_share;
+        return C0196R.style.com_facebook_button_share;
     }
 
-    protected final OnClickListener getShareOnClickListener() {
-        return new C03221();
+    protected final FacebookDialogBase<ShareContent, Result> getDialog() {
+        return getFragment() != null ? new ShareDialog(getFragment(), getRequestCode()) : getNativeFragment() != null ? new ShareDialog(getNativeFragment(), getRequestCode()) : new ShareDialog(getActivity(), getRequestCode());
     }
 }

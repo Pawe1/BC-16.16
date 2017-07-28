@@ -21,10 +21,10 @@ public class Manager implements SigmaDeviceListener {
     private ManagerListener mListener;
     private UsbManager mManager;
     private PendingIntent mPermissionIntent;
-    private final BroadcastReceiver mUsbReceiver = new C04411();
+    private final BroadcastReceiver mUsbReceiver = new C04821();
 
-    class C04411 extends BroadcastReceiver {
-        C04411() {
+    class C04821 extends BroadcastReceiver {
+        C04821() {
         }
 
         public void onReceive(Context context, Intent intent) {

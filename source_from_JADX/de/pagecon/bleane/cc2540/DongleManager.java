@@ -275,7 +275,7 @@ public class DongleManager implements UsbManagerListener {
                         if (eventCode == (byte) -1) {
                             new HciEvent(type, eventCode, data).handle();
                         } else if (eventCode == NfcProprietaryCmd.SET_AS3953_NDEF_MSG_RQST_CMD) {
-                            if (dataLength >= (byte) 4 && data[0] == (byte) 1 && data[1] == (byte) 16 && data[2] == (byte) 32) {
+                            if (dataLength >= (byte) 4 && data[0] == (byte) 1 && data[1] == (byte) 16 && data[2] == DongleManager.HCI_PageScanRepetitionModeChangeEvent) {
                                 if (data[3] != (byte) 0) {
                                     DongleManager.this.whiteList.clear();
                                 } else if (DongleManager.this.whiteList.getSize() > 0) {
@@ -459,7 +459,7 @@ public class DongleManager implements UsbManagerListener {
                     addrStr = BleDevice.byteArrayToAddressString(new byte[]{this.data[4], this.data[5], this.data[6], this.data[7], this.data[8], this.data[9]});
                     connHandle = getValueFromUInt16(this.data[10], this.data[11]);
                     Manager.cLog("packetType: " + this.type + ", eventCode: " + this.eventCode + " dataLength: " + this.dataLength + "\n" + "event: " + ((String) DongleManager.this.gHciStringConstantsMap.get(event)) + "\n" + "devAddr: " + addrStr + "\n" + "connHandle: " + DongleManager.dataToFormattedHexString(new byte[]{this.data[10], this.data[11]}) + "\n" + "Status: " + ((String) DongleManager.this.gHostErrorCodesMap.get(status)));
-                    if (status == 49) {
+                    if (status == DongleManager.HCI_IOCapabilityRequestEvent) {
                         DongleManager.this.notifyConnectionRequestsCanceled();
                         return;
                     } else if (status != 0) {
@@ -741,47 +741,47 @@ public class DongleManager implements UsbManagerListener {
         this.gHciStringConstantsMap.put(24, "HCI_LinkKeyNotificationEvent");
         this.gHciStringConstantsMap.put(25, "HCI_LoopbackCommandEvent");
         this.gHciStringConstantsMap.put(26, "HCI_DataBufferOverflowEvent");
-        this.gHciStringConstantsMap.put(27, "HCI_MaxSlotsChangeEvent");
-        this.gHciStringConstantsMap.put(28, "HCI_ReadClockOffsetCompleteEvent");
-        this.gHciStringConstantsMap.put(29, "HCI_ConnectionPacketTypeChangedEvent");
+        this.gHciStringConstantsMap.put(HCI_MaxSlotsChangeEvent, "HCI_MaxSlotsChangeEvent");
+        this.gHciStringConstantsMap.put(HCI_ReadClockOffsetCompleteEvent, "HCI_ReadClockOffsetCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_ConnectionPacketTypeChangedEvent, "HCI_ConnectionPacketTypeChangedEvent");
         this.gHciStringConstantsMap.put(30, "HCI_QoSViolationEvent");
         this.gHciStringConstantsMap.put(31, "HCI_PageScanModeChangeEvent");
-        this.gHciStringConstantsMap.put(32, "HCI_PageScanRepetitionModeChangeEvent");
-        this.gHciStringConstantsMap.put(33, "HCI_FlowSpecificationCompleteEvent");
-        this.gHciStringConstantsMap.put(34, "HCI_InquiryResultWithRSSIEvent");
-        this.gHciStringConstantsMap.put(35, "HCI_ReadRemoteExtendedFeaturesCompleteEvent");
-        this.gHciStringConstantsMap.put(44, "HCI_SynchronousConnectionCompleteEvent");
-        this.gHciStringConstantsMap.put(45, "HCI_SynchronousConnectionChangedEvent");
-        this.gHciStringConstantsMap.put(46, "HCI_SniffSubratingEvent");
-        this.gHciStringConstantsMap.put(47, "HCI_ExtendedInquiryResultEvent");
-        this.gHciStringConstantsMap.put(48, "HCI_EncryptionKeyRefreshCompleteEvent");
-        this.gHciStringConstantsMap.put(49, "HCI_IOCapabilityRequestEvent");
+        this.gHciStringConstantsMap.put(HCI_PageScanRepetitionModeChangeEvent, "HCI_PageScanRepetitionModeChangeEvent");
+        this.gHciStringConstantsMap.put(HCI_FlowSpecificationCompleteEvent, "HCI_FlowSpecificationCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_InquiryResultWithRSSIEvent, "HCI_InquiryResultWithRSSIEvent");
+        this.gHciStringConstantsMap.put(HCI_ReadRemoteExtendedFeaturesCompleteEvent, "HCI_ReadRemoteExtendedFeaturesCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_SynchronousConnectionCompleteEvent, "HCI_SynchronousConnectionCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_SynchronousConnectionChangedEvent, "HCI_SynchronousConnectionChangedEvent");
+        this.gHciStringConstantsMap.put(HCI_SniffSubratingEvent, "HCI_SniffSubratingEvent");
+        this.gHciStringConstantsMap.put(HCI_ExtendedInquiryResultEvent, "HCI_ExtendedInquiryResultEvent");
+        this.gHciStringConstantsMap.put(HCI_EncryptionKeyRefreshCompleteEvent, "HCI_EncryptionKeyRefreshCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_IOCapabilityRequestEvent, "HCI_IOCapabilityRequestEvent");
         this.gHciStringConstantsMap.put(50, "HCI_IOCapabilityResponseEvent");
-        this.gHciStringConstantsMap.put(51, "HCI_UserConfirmationRequestEvent");
-        this.gHciStringConstantsMap.put(52, "HCI_UserPasskeyRequestEvent");
-        this.gHciStringConstantsMap.put(53, "HCI_RemoteOOBDataRequestEvent");
-        this.gHciStringConstantsMap.put(54, "HCI_SimplePairingCompleteEvent");
-        this.gHciStringConstantsMap.put(55, "HCI_RemoteOobResponseEvent");
-        this.gHciStringConstantsMap.put(56, "HCI_LinkSupervisionTimeoutChangedEvent");
-        this.gHciStringConstantsMap.put(57, "HCI_EnhancedFlushCompleteEvent");
-        this.gHciStringConstantsMap.put(58, "HCI_SniffRequestEvent");
-        this.gHciStringConstantsMap.put(59, "HCI_UserPasskeyNotificationEvent");
-        this.gHciStringConstantsMap.put(60, "HCI_KeypressNotificationEvent");
-        this.gHciStringConstantsMap.put(61, "HCI_RemoteHostSupportedFeaturesNotificationEvent");
-        this.gHciStringConstantsMap.put(64, "HCI_PhysicalLinkCompleteEvent");
-        this.gHciStringConstantsMap.put(65, "HCI_ChannelSelectedEvent");
-        this.gHciStringConstantsMap.put(66, "HCI_DisconnectionPhysicalLinkCompleteEvent");
-        this.gHciStringConstantsMap.put(67, "HCI_PhysicalLinkLossEarlyWarningEvent");
-        this.gHciStringConstantsMap.put(68, "HCI_PhysicalLinkRecoveryEvent");
-        this.gHciStringConstantsMap.put(69, "HCI_LogicalLinkCompleteEvent");
-        this.gHciStringConstantsMap.put(70, "HCI_DisconnectionLogicalLinkCompleteEvent");
-        this.gHciStringConstantsMap.put(71, "HCI_FlowSpecModifyCompleteEvent");
-        this.gHciStringConstantsMap.put(72, "HCI_NumberOfCompletedDataBlocksEvent");
-        this.gHciStringConstantsMap.put(76, "HCI_ShortRangeModeChangeCompleteEvent");
-        this.gHciStringConstantsMap.put(77, "HCI_AMP_StatusChangeEvent");
-        this.gHciStringConstantsMap.put(73, "HCI_AMP_StartTestEvent");
-        this.gHciStringConstantsMap.put(74, "HCI_AMP_TestEndEvent");
-        this.gHciStringConstantsMap.put(75, "HCI_AMP_ReceiverReportEvent");
+        this.gHciStringConstantsMap.put(HCI_UserConfirmationRequestEvent, "HCI_UserConfirmationRequestEvent");
+        this.gHciStringConstantsMap.put(HCI_UserPasskeyRequestEvent, "HCI_UserPasskeyRequestEvent");
+        this.gHciStringConstantsMap.put(HCI_RemoteOOBDataRequestEvent, "HCI_RemoteOOBDataRequestEvent");
+        this.gHciStringConstantsMap.put(HCI_SimplePairingCompleteEvent, "HCI_SimplePairingCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_RemoteOobResponseEvent, "HCI_RemoteOobResponseEvent");
+        this.gHciStringConstantsMap.put(HCI_LinkSupervisionTimeoutChangedEvent, "HCI_LinkSupervisionTimeoutChangedEvent");
+        this.gHciStringConstantsMap.put(HCI_EnhancedFlushCompleteEvent, "HCI_EnhancedFlushCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_SniffRequestEvent, "HCI_SniffRequestEvent");
+        this.gHciStringConstantsMap.put(HCI_UserPasskeyNotificationEvent, "HCI_UserPasskeyNotificationEvent");
+        this.gHciStringConstantsMap.put(HCI_KeypressNotificationEvent, "HCI_KeypressNotificationEvent");
+        this.gHciStringConstantsMap.put(HCI_RemoteHostSupportedFeaturesNotificationEvent, "HCI_RemoteHostSupportedFeaturesNotificationEvent");
+        this.gHciStringConstantsMap.put(HCI_PhysicalLinkCompleteEvent, "HCI_PhysicalLinkCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_ChannelSelectedEvent, "HCI_ChannelSelectedEvent");
+        this.gHciStringConstantsMap.put(HCI_DisconnectionPhysicalLinkCompleteEvent, "HCI_DisconnectionPhysicalLinkCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_PhysicalLinkLossEarlyWarningEvent, "HCI_PhysicalLinkLossEarlyWarningEvent");
+        this.gHciStringConstantsMap.put(HCI_PhysicalLinkRecoveryEvent, "HCI_PhysicalLinkRecoveryEvent");
+        this.gHciStringConstantsMap.put(HCI_LogicalLinkCompleteEvent, "HCI_LogicalLinkCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_DisconnectionLogicalLinkCompleteEvent, "HCI_DisconnectionLogicalLinkCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_FlowSpecModifyCompleteEvent, "HCI_FlowSpecModifyCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_NumberOfCompletedDataBlocksEvent, "HCI_NumberOfCompletedDataBlocksEvent");
+        this.gHciStringConstantsMap.put(HCI_ShortRangeModeChangeCompleteEvent, "HCI_ShortRangeModeChangeCompleteEvent");
+        this.gHciStringConstantsMap.put(HCI_AMP_StatusChangeEvent, "HCI_AMP_StatusChangeEvent");
+        this.gHciStringConstantsMap.put(HCI_AMP_StartTestEvent, "HCI_AMP_StartTestEvent");
+        this.gHciStringConstantsMap.put(HCI_AMP_TestEndEvent, "HCI_AMP_TestEndEvent");
+        this.gHciStringConstantsMap.put(HCI_AMP_ReceiverReportEvent, "HCI_AMP_ReceiverReportEvent");
         this.gHciStringConstantsMap.put(62, "HCI_LE_ConnectionCompleteEvent");
         this.gHciStringConstantsMap.put(62, "HCI_LE_AdvertisingReportEvent");
         this.gHciStringConstantsMap.put(62, "HCI_LE_ConnectionUpdateCompleteEvent");
@@ -964,13 +964,13 @@ public class DongleManager implements UsbManagerListener {
         this.gHostErrorCodesMap.put(24, "bleInvalidRange");
         this.gHostErrorCodesMap.put(25, "bleLinkEncrypted");
         this.gHostErrorCodesMap.put(26, "bleProcedureComplete");
-        this.gHostErrorCodesMap.put(48, "bleGAPUserCanceled");
-        this.gHostErrorCodesMap.put(49, "bleGAPConnNotAcceptable");
+        this.gHostErrorCodesMap.put(HCI_EncryptionKeyRefreshCompleteEvent, "bleGAPUserCanceled");
+        this.gHostErrorCodesMap.put(HCI_IOCapabilityRequestEvent, "bleGAPConnNotAcceptable");
         this.gHostErrorCodesMap.put(50, "bleGAPBondRejected");
-        this.gHostErrorCodesMap.put(64, "bleInvalidPDU");
-        this.gHostErrorCodesMap.put(65, "bleInsufficientAuthen");
-        this.gHostErrorCodesMap.put(66, "bleInsufficientEncrypt");
-        this.gHostErrorCodesMap.put(67, "bleInsufficientKeySize");
+        this.gHostErrorCodesMap.put(HCI_PhysicalLinkCompleteEvent, "bleInvalidPDU");
+        this.gHostErrorCodesMap.put(HCI_ChannelSelectedEvent, "bleInsufficientAuthen");
+        this.gHostErrorCodesMap.put(HCI_DisconnectionPhysicalLinkCompleteEvent, "bleInsufficientEncrypt");
+        this.gHostErrorCodesMap.put(HCI_PhysicalLinkLossEarlyWarningEvent, "bleInsufficientKeySize");
         this.gHostErrorCodesMap.put(HCI_LE_ExtEvent, "INVALID_TASK_ID");
     }
 
@@ -1097,7 +1097,7 @@ public class DongleManager implements UsbManagerListener {
         String s2 = uuidString.substring(8, 12);
         String s3 = uuidString.substring(12, 16);
         String s4 = uuidString.substring(16, 20);
-        return new StringBuilder(String.valueOf(s1)).append("-").append(s2).append("-").append(s3).append("-").append(s4).append("-").append(uuidString.substring(20, 32)).toString();
+        return new StringBuilder(String.valueOf(s1)).append("-").append(s2).append("-").append(s3).append("-").append(s4).append("-").append(uuidString.substring(20, HCI_PageScanRepetitionModeChangeEvent)).toString();
     }
 
     public static String dataToFormattedHexString(byte[] data) {

@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import com.facebook.C0253R;
+import com.facebook.C0196R;
 import java.lang.ref.WeakReference;
 
 public class ToolTipPopup {
@@ -21,12 +21,12 @@ public class ToolTipPopup {
     private long mNuxDisplayTime = DEFAULT_POPUP_DISPLAY_TIME;
     private PopupContentView mPopupContent;
     private PopupWindow mPopupWindow;
-    private final OnScrollChangedListener mScrollListener = new C02461();
+    private final OnScrollChangedListener mScrollListener = new C02951();
     private Style mStyle = Style.BLUE;
     private final String mText;
 
-    class C02461 implements OnScrollChangedListener {
-        C02461() {
+    class C02951 implements OnScrollChangedListener {
+        C02951() {
         }
 
         public void onScrollChanged() {
@@ -40,8 +40,8 @@ public class ToolTipPopup {
         }
     }
 
-    class C02472 implements Runnable {
-        C02472() {
+    class C02962 implements Runnable {
+        C02962() {
         }
 
         public void run() {
@@ -49,8 +49,8 @@ public class ToolTipPopup {
         }
     }
 
-    class C02483 implements OnClickListener {
-        C02483() {
+    class C02973 implements OnClickListener {
+        C02973() {
         }
 
         public void onClick(View view) {
@@ -70,11 +70,11 @@ public class ToolTipPopup {
         }
 
         private void init() {
-            LayoutInflater.from(getContext()).inflate(C0253R.layout.com_facebook_tooltip_bubble, this);
-            this.topArrow = (ImageView) findViewById(C0253R.id.com_facebook_tooltip_bubble_view_top_pointer);
-            this.bottomArrow = (ImageView) findViewById(C0253R.id.com_facebook_tooltip_bubble_view_bottom_pointer);
-            this.bodyFrame = findViewById(C0253R.id.com_facebook_body_frame);
-            this.xOut = (ImageView) findViewById(C0253R.id.com_facebook_button_xout);
+            LayoutInflater.from(getContext()).inflate(C0196R.layout.com_facebook_tooltip_bubble, this);
+            this.topArrow = (ImageView) findViewById(C0196R.id.com_facebook_tooltip_bubble_view_top_pointer);
+            this.bottomArrow = (ImageView) findViewById(C0196R.id.com_facebook_tooltip_bubble_view_bottom_pointer);
+            this.bodyFrame = findViewById(C0196R.id.com_facebook_body_frame);
+            this.xOut = (ImageView) findViewById(C0196R.id.com_facebook_button_xout);
         }
 
         public void showBottomArrow() {
@@ -140,17 +140,17 @@ public class ToolTipPopup {
     public void show() {
         if (this.mAnchorViewRef.get() != null) {
             this.mPopupContent = new PopupContentView(this.mContext);
-            ((TextView) this.mPopupContent.findViewById(C0253R.id.com_facebook_tooltip_bubble_view_text_body)).setText(this.mText);
+            ((TextView) this.mPopupContent.findViewById(C0196R.id.com_facebook_tooltip_bubble_view_text_body)).setText(this.mText);
             if (this.mStyle == Style.BLUE) {
-                this.mPopupContent.bodyFrame.setBackgroundResource(C0253R.drawable.com_facebook_tooltip_blue_background);
-                this.mPopupContent.bottomArrow.setImageResource(C0253R.drawable.com_facebook_tooltip_blue_bottomnub);
-                this.mPopupContent.topArrow.setImageResource(C0253R.drawable.com_facebook_tooltip_blue_topnub);
-                this.mPopupContent.xOut.setImageResource(C0253R.drawable.com_facebook_tooltip_blue_xout);
+                this.mPopupContent.bodyFrame.setBackgroundResource(C0196R.drawable.com_facebook_tooltip_blue_background);
+                this.mPopupContent.bottomArrow.setImageResource(C0196R.drawable.com_facebook_tooltip_blue_bottomnub);
+                this.mPopupContent.topArrow.setImageResource(C0196R.drawable.com_facebook_tooltip_blue_topnub);
+                this.mPopupContent.xOut.setImageResource(C0196R.drawable.com_facebook_tooltip_blue_xout);
             } else {
-                this.mPopupContent.bodyFrame.setBackgroundResource(C0253R.drawable.com_facebook_tooltip_black_background);
-                this.mPopupContent.bottomArrow.setImageResource(C0253R.drawable.com_facebook_tooltip_black_bottomnub);
-                this.mPopupContent.topArrow.setImageResource(C0253R.drawable.com_facebook_tooltip_black_topnub);
-                this.mPopupContent.xOut.setImageResource(C0253R.drawable.com_facebook_tooltip_black_xout);
+                this.mPopupContent.bodyFrame.setBackgroundResource(C0196R.drawable.com_facebook_tooltip_black_background);
+                this.mPopupContent.bottomArrow.setImageResource(C0196R.drawable.com_facebook_tooltip_black_bottomnub);
+                this.mPopupContent.topArrow.setImageResource(C0196R.drawable.com_facebook_tooltip_black_topnub);
+                this.mPopupContent.xOut.setImageResource(C0196R.drawable.com_facebook_tooltip_black_xout);
             }
             View decorView = ((Activity) this.mContext).getWindow().getDecorView();
             int width = decorView.getWidth();
@@ -161,10 +161,10 @@ public class ToolTipPopup {
             this.mPopupWindow.showAsDropDown((View) this.mAnchorViewRef.get());
             updateArrows();
             if (this.mNuxDisplayTime > 0) {
-                this.mPopupContent.postDelayed(new C02472(), this.mNuxDisplayTime);
+                this.mPopupContent.postDelayed(new C02962(), this.mNuxDisplayTime);
             }
             this.mPopupWindow.setTouchable(true);
-            this.mPopupContent.setOnClickListener(new C02483());
+            this.mPopupContent.setOnClickListener(new C02973());
         }
     }
 }

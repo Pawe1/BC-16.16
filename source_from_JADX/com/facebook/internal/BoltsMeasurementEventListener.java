@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import com.facebook.appevents.AppEventsLogger;
-import p000c.p001m.p002x.p003a.gv.at;
+import p000c.p001m.p002x.p003a.gv.ax;
 
 public class BoltsMeasurementEventListener extends BroadcastReceiver {
     private static final String BOLTS_MEASUREMENT_EVENT_PREFIX = "bf_";
@@ -21,7 +21,7 @@ public class BoltsMeasurementEventListener extends BroadcastReceiver {
     }
 
     private void close() {
-        at.m70a(this.applicationContext).m72a((BroadcastReceiver) this);
+        ax.m123a(this.applicationContext).m125a((BroadcastReceiver) this);
     }
 
     public static BoltsMeasurementEventListener getInstance(Context context) {
@@ -35,7 +35,7 @@ public class BoltsMeasurementEventListener extends BroadcastReceiver {
     }
 
     private void open() {
-        at.m70a(this.applicationContext).m73a(this, new IntentFilter(MEASUREMENT_EVENT_NOTIFICATION_NAME));
+        ax.m123a(this.applicationContext).m126a(this, new IntentFilter(MEASUREMENT_EVENT_NOTIFICATION_NAME));
     }
 
     protected void finalize() {

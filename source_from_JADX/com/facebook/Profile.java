@@ -12,7 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public final class Profile implements Parcelable {
-    public static final Creator<Profile> CREATOR = new C02502();
+    public static final Creator<Profile> CREATOR = new C01932();
     private static final String FIRST_NAME_KEY = "first_name";
     private static final String ID_KEY = "id";
     private static final String LAST_NAME_KEY = "last_name";
@@ -26,8 +26,8 @@ public final class Profile implements Parcelable {
     private final String middleName;
     private final String name;
 
-    final class C02491 implements GraphMeRequestWithCacheCallback {
-        C02491() {
+    final class C01921 implements GraphMeRequestWithCacheCallback {
+        C01921() {
         }
 
         public final void onFailure(FacebookException facebookException) {
@@ -42,8 +42,8 @@ public final class Profile implements Parcelable {
         }
     }
 
-    final class C02502 implements Creator {
-        C02502() {
+    final class C01932 implements Creator {
+        C01932() {
         }
 
         public final Profile createFromParcel(Parcel parcel) {
@@ -94,7 +94,7 @@ public final class Profile implements Parcelable {
         if (currentAccessToken == null) {
             ProfileManager.getInstance().setCurrentProfile(null);
         } else {
-            Utility.getGraphMeRequestWithCacheAsync(currentAccessToken.getToken(), new C02491());
+            Utility.getGraphMeRequestWithCacheAsync(currentAccessToken.getToken(), new C01921());
         }
     }
 

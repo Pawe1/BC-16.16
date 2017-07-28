@@ -7,6 +7,7 @@ import android.util.Log;
 import com.facebook.FacebookContentProvider;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.share.internal.ShareConstants;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,7 +45,7 @@ public final class NativeAppCallAttachmentStore {
                 String scheme = uri.getScheme();
                 if ("content".equalsIgnoreCase(scheme)) {
                     this.isContentUri = true;
-                    if (uri.getAuthority() == null || uri.getAuthority().startsWith("media")) {
+                    if (uri.getAuthority() == null || uri.getAuthority().startsWith(ShareConstants.WEB_DIALOG_PARAM_MEDIA)) {
                         z = false;
                     }
                     this.shouldCreateFile = z;

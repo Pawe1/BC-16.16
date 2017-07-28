@@ -9,38 +9,39 @@ import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import de.pagecon.ane.functions.AskForNfc;
 import de.pagecon.ane.functions.CloseNfcTag;
+import de.pagecon.ane.functions.GetNativeNfcAneVersion;
+import de.pagecon.ane.functions.HandleNxpTag;
 import de.pagecon.ane.functions.IsNfcEnabled;
 import de.pagecon.ane.functions.IsNfcSupported;
-import de.pagecon.ane.functions.NDEFIntentFunction;
 import de.pagecon.ane.functions.PauseFunction;
 import de.pagecon.ane.functions.ReadNfcEeprom;
 import de.pagecon.ane.functions.ReadNfcFlash;
 import de.pagecon.ane.functions.ResumeFunction;
 import de.pagecon.ane.functions.SetDebugMode;
 import de.pagecon.ane.functions.WriteNfcEeprom;
+import de.pagecon.ane.functions.WriteNfcFlash;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.json.JSONObject;
 
 public class ExtensionContext extends FREContext implements ManagerListener {
-    private static final String CTX_NAME = "ExtensionContext";
     public static final String EVENT_NFC_CLOSE_TAG_READY = "eventNfcCloseTagReady";
     public static final String EVENT_NFC_ERROR = "eventNfcError";
+    public static final String EVENT_NFC_NXPTAG_RESULT = "eventNfcNxpTagResult";
     public static final String EVENT_NFC_READ_EEPROM_READY = "eventNfcReadEepromReady";
     public static final String EVENT_NFC_READ_FLASH_READY = "eventNfcReadFlashReady";
     public static final String EVENT_NFC_STATUS_CHANGED = "eventNfcStatusChanged";
     public static final String EVENT_NFC_STEP_RESULT_READY = "eventNfcStepResultReady";
+    public static final String EVENT_NFC_STEP_RESULT_RESET = "eventNfcStepResultReset";
     public static final String EVENT_NFC_WRITE_EEPROM_READY = "eventNfcWriteEepromReady";
-    public static String NFC_FOREGROUND_DISPATCH_INTENT_KEY = "NFC_FOREGROUND_DISPATCH__INTENT_KEY";
-    public static String NFC_FOREGROUND_DISPATCH_INTENT_VALUE = "NFC_FOREGROUND_DISPATCH__INTENT_VALUE";
-    private Map<String, FREFunction> functionMap;
+    public static final String EVENT_NFC_WRITE_FLASH_READY = "eventNfcWriteFlashReady";
+    private Map<String, FREFunction> functionMap = new HashMap();
     private ExtensionContext instance = this;
     private Boolean isInitialized = Boolean.valueOf(false);
-    private String tag;
 
-    class C03771 implements FREFunction {
-        C03771() {
+    class C04291 implements FREFunction {
+        C04291() {
         }
 
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -71,20 +72,20 @@ public class ExtensionContext extends FREContext implements ManagerListener {
     }
 
     public ExtensionContext(String extensionName) {
-        this.tag = new StringBuilder(String.valueOf(extensionName)).append(".").append(CTX_NAME).toString();
-        this.functionMap = new HashMap();
-        this.functionMap.put("initNfc", new C03771());
+        this.functionMap.put("initNfc", new C04291());
         this.functionMap.put("nativePause", new PauseFunction());
         this.functionMap.put("nativeResume", new ResumeFunction());
-        this.functionMap.put("intent", new NDEFIntentFunction());
         this.functionMap.put("isNfcSupported", new IsNfcSupported());
         this.functionMap.put("isNfcEnabled", new IsNfcEnabled());
         this.functionMap.put("readNfcEeprom", new ReadNfcEeprom());
         this.functionMap.put("readNfcFlash", new ReadNfcFlash());
         this.functionMap.put("writeNfcEeprom", new WriteNfcEeprom());
+        this.functionMap.put("writeNfcFlash", new WriteNfcFlash());
         this.functionMap.put("setDebugMode", new SetDebugMode());
         this.functionMap.put("closeNfcTag", new CloseNfcTag());
         this.functionMap.put("askForNfc", new AskForNfc());
+        this.functionMap.put("handleNxpTag", new HandleNxpTag());
+        this.functionMap.put("getNativeNfcAneVersion", new GetNativeNfcAneVersion());
         for (Entry<String, FREFunction> entry : this.functionMap.entrySet()) {
             Manager.cLog("+++ ExtensionContext functionMap: " + ((String) entry.getKey()) + " / " + ((FREFunction) entry.getValue()).toString());
         }
@@ -99,10 +100,6 @@ public class ExtensionContext extends FREContext implements ManagerListener {
         return this.functionMap;
     }
 
-    public String getIdentifier() {
-        return this.tag;
-    }
-
     public void nfcStatusChanged(Boolean status) {
         Manager.cLog("nfcStatusChanged: " + status.toString());
         try {
@@ -115,7 +112,6 @@ public class ExtensionContext extends FREContext implements ManagerListener {
     }
 
     public void dispatchNfcResult(String json, String eventType) {
-        Manager.cLog("[NFC EVENT=" + eventType + "]: " + json);
         try {
             dispatchStatusEventAsync(eventType, json);
         } catch (Exception e) {

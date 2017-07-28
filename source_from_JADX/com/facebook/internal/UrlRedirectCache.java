@@ -78,12 +78,12 @@ class UrlRedirectCache {
     }
 
     static Uri getRedirectedUri(Uri uri) {
-        Closeable inputStreamReader;
         Throwable th;
         Uri uri2 = null;
         Object obj = null;
         if (uri != null) {
             String uri3 = uri.toString();
+            Closeable inputStreamReader;
             try {
                 FileLruCache cache = getCache();
                 String str = uri3;

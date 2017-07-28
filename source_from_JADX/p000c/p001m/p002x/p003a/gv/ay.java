@@ -1,21 +1,25 @@
 package p000c.p001m.p002x.p003a.gv;
 
-public final class ay {
-    public static void m113a(Object obj, StringBuilder stringBuilder) {
-        if (obj == null) {
-            stringBuilder.append("null");
-            return;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+
+final class ay extends Handler {
+    final /* synthetic */ ax f128a;
+
+    ay(ax axVar, Looper looper) {
+        this.f128a = axVar;
+        super(looper);
+    }
+
+    public final void handleMessage(Message message) {
+        switch (message.what) {
+            case 1:
+                ax.m124a(this.f128a);
+                return;
+            default:
+                super.handleMessage(message);
+                return;
         }
-        String simpleName = obj.getClass().getSimpleName();
-        if (simpleName == null || simpleName.length() <= 0) {
-            simpleName = obj.getClass().getName();
-            int lastIndexOf = simpleName.lastIndexOf(46);
-            if (lastIndexOf > 0) {
-                simpleName = simpleName.substring(lastIndexOf + 1);
-            }
-        }
-        stringBuilder.append(simpleName);
-        stringBuilder.append('{');
-        stringBuilder.append(Integer.toHexString(System.identityHashCode(obj)));
     }
 }

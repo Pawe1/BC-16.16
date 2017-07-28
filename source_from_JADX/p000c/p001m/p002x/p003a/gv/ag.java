@@ -1,13 +1,28 @@
 package p000c.p001m.p002x.p003a.gv;
 
-public abstract class ag {
-    public abstract int mo23a();
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 
-    public abstract ag mo24a(int i, C0058n c0058n, String str);
+final class ag implements Parcelable {
+    public static final Creator<ag> CREATOR = new ah();
+    ai[] f48a;
+    int[] f49b;
+    C0067k[] f50c;
 
-    public abstract ag mo25a(C0058n c0058n);
+    public ag(Parcel parcel) {
+        this.f48a = (ai[]) parcel.createTypedArray(ai.CREATOR);
+        this.f49b = parcel.createIntArray();
+        this.f50c = (C0067k[]) parcel.createTypedArray(C0067k.CREATOR);
+    }
 
-    public abstract ag mo26a(C0058n c0058n, String str);
+    public final int describeContents() {
+        return 0;
+    }
 
-    public abstract int mo27b();
+    public final void writeToParcel(Parcel parcel, int i) {
+        parcel.writeTypedArray(this.f48a, i);
+        parcel.writeIntArray(this.f49b);
+        parcel.writeTypedArray(this.f50c, i);
+    }
 }

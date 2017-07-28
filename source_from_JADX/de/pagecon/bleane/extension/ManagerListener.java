@@ -17,6 +17,10 @@ public interface ManagerListener {
 
     void deviceDiscovered(String str, String str2, String str3);
 
+    void deviceNotPaired(String str, String str2);
+
+    void devicePaired(String str, String str2);
+
     void error(int i, String str, String str2, String str3, String str4);
 
     void idsChecked(List<String> list);

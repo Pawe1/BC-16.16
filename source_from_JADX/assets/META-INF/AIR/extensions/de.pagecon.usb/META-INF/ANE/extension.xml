@@ -1,5 +1,5 @@
 <extension 
-	xmlns="http://ns.adobe.com/air/extension/21.0">
+	xmlns="http://ns.adobe.com/air/extension/23.0">
 	<id>de.pagecon.usb</id>
 	<versionNumber>1</versionNumber>
 	<platforms>

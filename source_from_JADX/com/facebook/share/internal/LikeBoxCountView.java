@@ -9,7 +9,7 @@ import android.graphics.RectF;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.TextView;
-import com.facebook.C0253R;
+import com.facebook.C0196R;
 
 public class LikeBoxCountView extends FrameLayout {
     private int additionalTextPadding;
@@ -69,12 +69,12 @@ public class LikeBoxCountView extends FrameLayout {
 
     private void initialize(Context context) {
         setWillNotDraw(false);
-        this.caretHeight = getResources().getDimension(C0253R.dimen.com_facebook_likeboxcountview_caret_height);
-        this.caretWidth = getResources().getDimension(C0253R.dimen.com_facebook_likeboxcountview_caret_width);
-        this.borderRadius = getResources().getDimension(C0253R.dimen.com_facebook_likeboxcountview_border_radius);
+        this.caretHeight = getResources().getDimension(C0196R.dimen.com_facebook_likeboxcountview_caret_height);
+        this.caretWidth = getResources().getDimension(C0196R.dimen.com_facebook_likeboxcountview_caret_width);
+        this.borderRadius = getResources().getDimension(C0196R.dimen.com_facebook_likeboxcountview_border_radius);
         this.borderPaint = new Paint();
-        this.borderPaint.setColor(getResources().getColor(C0253R.color.com_facebook_likeboxcountview_border_color));
-        this.borderPaint.setStrokeWidth(getResources().getDimension(C0253R.dimen.com_facebook_likeboxcountview_border_width));
+        this.borderPaint.setColor(getResources().getColor(C0196R.color.com_facebook_likeboxcountview_border_color));
+        this.borderPaint.setStrokeWidth(getResources().getDimension(C0196R.dimen.com_facebook_likeboxcountview_border_width));
         this.borderPaint.setStyle(Style.STROKE);
         initializeLikeCountLabel(context);
         addView(this.likeCountLabel);
@@ -85,10 +85,10 @@ public class LikeBoxCountView extends FrameLayout {
         this.likeCountLabel = new TextView(context);
         this.likeCountLabel.setLayoutParams(new LayoutParams(-1, -1));
         this.likeCountLabel.setGravity(17);
-        this.likeCountLabel.setTextSize(0, getResources().getDimension(C0253R.dimen.com_facebook_likeboxcountview_text_size));
-        this.likeCountLabel.setTextColor(getResources().getColor(C0253R.color.com_facebook_likeboxcountview_text_color));
-        this.textPadding = getResources().getDimensionPixelSize(C0253R.dimen.com_facebook_likeboxcountview_text_padding);
-        this.additionalTextPadding = getResources().getDimensionPixelSize(C0253R.dimen.com_facebook_likeboxcountview_caret_height);
+        this.likeCountLabel.setTextSize(0, getResources().getDimension(C0196R.dimen.com_facebook_likeboxcountview_text_size));
+        this.likeCountLabel.setTextColor(getResources().getColor(C0196R.color.com_facebook_likeboxcountview_text_color));
+        this.textPadding = getResources().getDimensionPixelSize(C0196R.dimen.com_facebook_likeboxcountview_text_padding);
+        this.additionalTextPadding = getResources().getDimensionPixelSize(C0196R.dimen.com_facebook_likeboxcountview_caret_height);
     }
 
     private void setAdditionalTextPadding(int i, int i2, int i3, int i4) {

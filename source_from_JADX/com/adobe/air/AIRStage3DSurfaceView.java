@@ -20,8 +20,8 @@ public class AIRStage3DSurfaceView extends SurfaceView implements Callback {
     private int mYmin = 0;
     private OnGlobalLayoutListener m_layOutListener = null;
 
-    class C00871 implements OnGlobalLayoutListener {
-        C00871() {
+    class C00921 implements OnGlobalLayoutListener {
+        C00921() {
         }
 
         public void onGlobalLayout() {
@@ -96,7 +96,7 @@ public class AIRStage3DSurfaceView extends SurfaceView implements Callback {
         ViewTreeObserver viewTreeObserver = getViewTreeObserver();
         if (viewTreeObserver.isAlive()) {
             if (this.m_layOutListener == null) {
-                this.m_layOutListener = new C00871();
+                this.m_layOutListener = new C00921();
             }
             if (this.m_layOutListener != null) {
                 viewTreeObserver.addOnGlobalLayoutListener(this.m_layOutListener);

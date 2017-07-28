@@ -9,7 +9,7 @@ public class MobileAEC {
     private SamplingFrequency mSampFreq = null;
 
     public class AecmConfig {
-        private short mAecmMode = ((short) AggressiveMode.MOST_AGGRESSIVE.getMode());
+        private short mAecmMode = ((short) AggressiveMode.AGGRESSIVE.getMode());
         private short mCngMode = (short) 1;
     }
 
@@ -94,10 +94,6 @@ public class MobileAEC {
         }
         this.mAecmConfig.mAecmMode = (short) aggressiveMode.getMode();
         return this;
-    }
-
-    public short getAecmMode() {
-        return this.mAecmConfig.mAecmMode;
     }
 
     public MobileAEC prepare() {

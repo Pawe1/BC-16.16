@@ -1,17 +1,21 @@
 package com.facebook;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
+import android.os.Build.VERSION;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import com.facebook.appevents.AppEventsLogger;
-import p000c.p001m.p002x.p003a.gv.C0058n;
+import com.facebook.internal.FragmentWrapper;
+import p000c.p001m.p002x.p003a.gv.C0073r;
 
 public abstract class FacebookButtonBase extends Button {
     private String analyticsButtonCreatedEventName;
@@ -21,10 +25,10 @@ public abstract class FacebookButtonBase extends Button {
     private boolean overrideCompoundPadding;
     private int overrideCompoundPaddingLeft;
     private int overrideCompoundPaddingRight;
-    private C0058n parentFragment;
+    private FragmentWrapper parentFragment;
 
-    class C01791 implements OnClickListener {
-        C01791() {
+    class C01781 implements OnClickListener {
+        C01781() {
         }
 
         public void onClick(View view) {
@@ -41,11 +45,13 @@ public abstract class FacebookButtonBase extends Button {
         super(context, attributeSet, 0);
         int defaultStyleResource = i2 == 0 ? getDefaultStyleResource() : i2;
         if (defaultStyleResource == 0) {
-            defaultStyleResource = C0253R.style.com_facebook_button;
+            defaultStyleResource = C0196R.style.com_facebook_button;
         }
         configureButton(context, attributeSet, i, defaultStyleResource);
         this.analyticsButtonCreatedEventName = str;
         this.analyticsButtonTappedEventName = str2;
+        setClickable(true);
+        setFocusable(true);
     }
 
     private void logButtonCreated(Context context) {
@@ -60,15 +66,17 @@ public abstract class FacebookButtonBase extends Button {
         if (!isInEditMode()) {
             TypedArray obtainStyledAttributes = context.getTheme().obtainStyledAttributes(attributeSet, new int[]{16842964}, i, i2);
             try {
+                int resourceId;
                 if (obtainStyledAttributes.hasValue(0)) {
-                    int resourceId = obtainStyledAttributes.getResourceId(0, 0);
+                    resourceId = obtainStyledAttributes.getResourceId(0, 0);
                     if (resourceId != 0) {
                         setBackgroundResource(resourceId);
                     } else {
                         setBackgroundColor(obtainStyledAttributes.getColor(0, 0));
                     }
                 } else {
-                    setBackgroundColor(obtainStyledAttributes.getColor(0, C0253R.color.com_facebook_blue));
+                    resourceId = C0196R.color.com_facebook_blue;
+                    setBackgroundColor(VERSION.SDK_INT >= 23 ? context.getColor(resourceId) : context.getResources().getColor(resourceId));
                 }
                 obtainStyledAttributes.recycle();
             } catch (Throwable th) {
@@ -77,6 +85,7 @@ public abstract class FacebookButtonBase extends Button {
         }
     }
 
+    @SuppressLint({"ResourceType"})
     private void parseCompoundDrawableAttributes(Context context, AttributeSet attributeSet, int i, int i2) {
         TypedArray obtainStyledAttributes = context.getTheme().obtainStyledAttributes(attributeSet, new int[]{16843119, 16843117, 16843120, 16843118, 16843121}, i, i2);
         try {
@@ -99,7 +108,7 @@ public abstract class FacebookButtonBase extends Button {
     private void parseTextAttributes(Context context, AttributeSet attributeSet, int i, int i2) {
         TypedArray obtainStyledAttributes = context.getTheme().obtainStyledAttributes(attributeSet, new int[]{16842904}, i, i2);
         try {
-            setTextColor(obtainStyledAttributes.getColor(0, -1));
+            setTextColor(obtainStyledAttributes.getColorStateList(0));
             obtainStyledAttributes = context.getTheme().obtainStyledAttributes(attributeSet, new int[]{16842927}, i, i2);
             try {
                 setGravity(obtainStyledAttributes.getInt(0, 17));
@@ -120,7 +129,7 @@ public abstract class FacebookButtonBase extends Button {
     }
 
     private void setupOnClickListener() {
-        super.setOnClickListener(new C01791());
+        super.setOnClickListener(new C01781());
     }
 
     protected void callExternalOnClickListener(View view) {
@@ -162,8 +171,12 @@ public abstract class FacebookButtonBase extends Button {
         return 0;
     }
 
-    public C0058n getFragment() {
-        return this.parentFragment;
+    public C0073r getFragment() {
+        return this.parentFragment != null ? this.parentFragment.getSupportFragment() : null;
+    }
+
+    public Fragment getNativeFragment() {
+        return this.parentFragment != null ? this.parentFragment.getNativeFragment() : null;
     }
 
     public int getRequestCode() {
@@ -194,8 +207,12 @@ public abstract class FacebookButtonBase extends Button {
         this.overrideCompoundPadding = false;
     }
 
-    public void setFragment(C0058n c0058n) {
-        this.parentFragment = c0058n;
+    public void setFragment(Fragment fragment) {
+        this.parentFragment = new FragmentWrapper(fragment);
+    }
+
+    public void setFragment(C0073r c0073r) {
+        this.parentFragment = new FragmentWrapper(c0073r);
     }
 
     protected void setInternalOnClickListener(OnClickListener onClickListener) {

@@ -132,27 +132,33 @@ public class AttributionIdentifiers {
                 throw new FacebookException("getAndroidId cannot be called on the main thread.");
             }
             Method methodQuietly = Utility.getMethodQuietly("com.google.android.gms.common.GooglePlayServicesUtil", "isGooglePlayServicesAvailable", Context.class);
-            if (methodQuietly != null) {
-                Object invokeMethodQuietly = Utility.invokeMethodQuietly(null, methodQuietly, context);
-                if ((invokeMethodQuietly instanceof Integer) && ((Integer) invokeMethodQuietly).intValue() == 0) {
-                    methodQuietly = Utility.getMethodQuietly("com.google.android.gms.ads.identifier.AdvertisingIdClient", "getAdvertisingIdInfo", Context.class);
-                    if (methodQuietly != null) {
-                        Object invokeMethodQuietly2 = Utility.invokeMethodQuietly(null, methodQuietly, context);
-                        if (invokeMethodQuietly2 != null) {
-                            methodQuietly = Utility.getMethodQuietly(invokeMethodQuietly2.getClass(), "getId", new Class[0]);
-                            Method methodQuietly2 = Utility.getMethodQuietly(invokeMethodQuietly2.getClass(), "isLimitAdTrackingEnabled", new Class[0]);
-                            if (!(methodQuietly == null || methodQuietly2 == null)) {
-                                AttributionIdentifiers attributionIdentifiers = new AttributionIdentifiers();
-                                attributionIdentifiers.androidAdvertiserId = (String) Utility.invokeMethodQuietly(invokeMethodQuietly2, methodQuietly, new Object[0]);
-                                attributionIdentifiers.limitTracking = ((Boolean) Utility.invokeMethodQuietly(invokeMethodQuietly2, methodQuietly2, new Object[0])).booleanValue();
-                            }
-                        }
-                    }
-                }
+            if (methodQuietly == null) {
+                return null;
             }
-            return null;
+            Object invokeMethodQuietly = Utility.invokeMethodQuietly(null, methodQuietly, context);
+            if (!(invokeMethodQuietly instanceof Integer) || ((Integer) invokeMethodQuietly).intValue() != 0) {
+                return null;
+            }
+            methodQuietly = Utility.getMethodQuietly("com.google.android.gms.ads.identifier.AdvertisingIdClient", "getAdvertisingIdInfo", Context.class);
+            if (methodQuietly == null) {
+                return null;
+            }
+            Object invokeMethodQuietly2 = Utility.invokeMethodQuietly(null, methodQuietly, context);
+            if (invokeMethodQuietly2 == null) {
+                return null;
+            }
+            methodQuietly = Utility.getMethodQuietly(invokeMethodQuietly2.getClass(), "getId", new Class[0]);
+            Method methodQuietly2 = Utility.getMethodQuietly(invokeMethodQuietly2.getClass(), "isLimitAdTrackingEnabled", new Class[0]);
+            if (methodQuietly == null || methodQuietly2 == null) {
+                return null;
+            }
+            AttributionIdentifiers attributionIdentifiers = new AttributionIdentifiers();
+            attributionIdentifiers.androidAdvertiserId = (String) Utility.invokeMethodQuietly(invokeMethodQuietly2, methodQuietly, new Object[0]);
+            attributionIdentifiers.limitTracking = ((Boolean) Utility.invokeMethodQuietly(invokeMethodQuietly2, methodQuietly2, new Object[0])).booleanValue();
+            return attributionIdentifiers;
         } catch (Exception e) {
             Utility.logd("android_id", e);
+            return null;
         }
     }
 
@@ -181,6 +187,9 @@ public class AttributionIdentifiers {
     public static AttributionIdentifiers getAttributionIdentifiers(Context context) {
         Exception e;
         Throwable th;
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            Log.e(TAG, "getAttributionIdentifiers should not be called from the main thread");
+        }
         if (recentlyFetchedIdentifiers != null && System.currentTimeMillis() - recentlyFetchedIdentifiers.fetchTime < IDENTIFIER_REFRESH_INTERVAL_MILLIS) {
             return recentlyFetchedIdentifiers;
         }

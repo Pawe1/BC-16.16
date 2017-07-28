@@ -1,6 +1,5 @@
 package de.pagecon.ane.services;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Intent;
@@ -10,7 +9,6 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import de.pagecon.ane.notificationlistenerservice.Manager;
 
-@TargetApi(21)
 public class MyNLNotificationService extends NotificationListenerService {
     private final MyActivityLifecycleCallbacks mCallbacks = new MyActivityLifecycleCallbacks();
 
@@ -25,44 +23,51 @@ public class MyNLNotificationService extends NotificationListenerService {
         public static String APPLICATION_STATE_UNKNOWN = "unknown";
 
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            Manager.cLog("[NotificationService] onActivityCreated" + activity.getLocalClassName());
             if (Manager.instance != null && Manager.instance.managerListener != null) {
-                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_CREATE);
+                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_CREATE, activity.getLocalClassName());
             }
         }
 
         public void onActivityStarted(Activity activity) {
+            Manager.cLog("[NotificationService] onActivityStarted" + activity.getLocalClassName());
             if (Manager.instance != null && Manager.instance.managerListener != null) {
-                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_START);
+                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_START, activity.getLocalClassName());
             }
         }
 
         public void onActivityResumed(Activity activity) {
+            Manager.cLog("[NotificationService] onActivityResumed" + activity.getLocalClassName());
             if (Manager.instance != null && Manager.instance.managerListener != null) {
-                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_RESUME);
+                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_RESUME, activity.getLocalClassName());
             }
         }
 
         public void onActivityPaused(Activity activity) {
+            Manager.cLog("[NotificationService] onActivityPaused" + activity.getLocalClassName());
             if (Manager.instance != null && Manager.instance.managerListener != null) {
-                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_PAUSE);
+                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_PAUSE, activity.getLocalClassName());
             }
         }
 
         public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+            Manager.cLog("[NotificationService] onActivitySaveInstanceState" + activity.getLocalClassName());
             if (Manager.instance != null && Manager.instance.managerListener != null) {
-                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_SAVEINSTANCE);
+                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_SAVEINSTANCE, activity.getLocalClassName());
             }
         }
 
         public void onActivityStopped(Activity activity) {
+            Manager.cLog("[NotificationService] onActivityStopped" + activity.getLocalClassName());
             if (Manager.instance != null && Manager.instance.managerListener != null) {
-                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_STOP);
+                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_STOP, activity.getLocalClassName());
             }
         }
 
         public void onActivityDestroyed(Activity activity) {
+            Manager.cLog("[NotificationService] onActivityDestroyed" + activity.getLocalClassName());
             if (Manager.instance != null && Manager.instance.managerListener != null) {
-                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_DESTROY);
+                Manager.instance.managerListener.dispatchNativeApplicationState(APPLICATION_STATE_DESTROY, activity.getLocalClassName());
             }
         }
     }
@@ -80,20 +85,23 @@ public class MyNLNotificationService extends NotificationListenerService {
     }
 
     public void onCreate() {
+        Manager.cLog("[NotificationService] onCreate 1");
         getApplication().registerActivityLifecycleCallbacks(this.mCallbacks);
         super.onCreate();
-        Manager.cLog("[NotificationService] onCreate");
+        Manager.cLog("[NotificationService] onCreate 2");
         Manager.refreshNotificationsEnabled();
     }
 
     public void onDestroy() {
+        Manager.cLog("[NotificationService] onDestroy 1");
         super.onDestroy();
         getApplication().unregisterActivityLifecycleCallbacks(this.mCallbacks);
-        Manager.cLog("[NotificationService] onDestroy");
+        Manager.cLog("[NotificationService] onDestroy 2");
         Manager.refreshNotificationsEnabled();
     }
 
     public void onNotificationPosted(StatusBarNotification sbn) {
+        Manager.cLog("[NotificationService] onNotificationPosted");
         try {
             if (Manager.instance == null) {
                 Manager.cLog("ERROR: Manager.instance is null");

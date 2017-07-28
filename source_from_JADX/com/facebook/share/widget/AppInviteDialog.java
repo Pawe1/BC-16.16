@@ -1,9 +1,10 @@
 package com.facebook.share.widget;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
-import android.os.Build.VERSION;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import com.facebook.FacebookCallback;
 import com.facebook.internal.AppCall;
@@ -14,6 +15,7 @@ import com.facebook.internal.DialogFeature;
 import com.facebook.internal.DialogPresenter;
 import com.facebook.internal.DialogPresenter.ParameterProvider;
 import com.facebook.internal.FacebookDialogBase;
+import com.facebook.internal.FragmentWrapper;
 import com.facebook.share.internal.AppInviteDialogFeature;
 import com.facebook.share.internal.ResultProcessor;
 import com.facebook.share.internal.ShareConstants;
@@ -21,7 +23,9 @@ import com.facebook.share.internal.ShareInternalUtility;
 import com.facebook.share.model.AppInviteContent;
 import java.util.ArrayList;
 import java.util.List;
-import p000c.p001m.p002x.p003a.gv.C0058n;
+import org.json.JSONException;
+import org.json.JSONObject;
+import p000c.p001m.p002x.p003a.gv.C0073r;
 
 public class AppInviteDialog extends FacebookDialogBase<AppInviteContent, Result> {
     private static final int DEFAULT_REQUEST_CODE = RequestCodeOffset.AppInvite.toRequestCode();
@@ -32,7 +36,7 @@ public class AppInviteDialog extends FacebookDialogBase<AppInviteContent, Result
             super();
         }
 
-        public boolean canShow(AppInviteContent appInviteContent) {
+        public boolean canShow(AppInviteContent appInviteContent, boolean z) {
             return AppInviteDialog.canShowNativeDialog();
         }
 
@@ -69,7 +73,7 @@ public class AppInviteDialog extends FacebookDialogBase<AppInviteContent, Result
             super();
         }
 
-        public boolean canShow(AppInviteContent appInviteContent) {
+        public boolean canShow(AppInviteContent appInviteContent, boolean z) {
             return AppInviteDialog.canShowWebFallback();
         }
 
@@ -84,8 +88,16 @@ public class AppInviteDialog extends FacebookDialogBase<AppInviteContent, Result
         super(activity, DEFAULT_REQUEST_CODE);
     }
 
-    public AppInviteDialog(C0058n c0058n) {
-        super(c0058n, DEFAULT_REQUEST_CODE);
+    public AppInviteDialog(Fragment fragment) {
+        this(new FragmentWrapper(fragment));
+    }
+
+    public AppInviteDialog(C0073r c0073r) {
+        this(new FragmentWrapper(c0073r));
+    }
+
+    private AppInviteDialog(FragmentWrapper fragmentWrapper) {
+        super(fragmentWrapper, DEFAULT_REQUEST_CODE);
     }
 
     public static boolean canShow() {
@@ -93,17 +105,35 @@ public class AppInviteDialog extends FacebookDialogBase<AppInviteContent, Result
     }
 
     private static boolean canShowNativeDialog() {
-        return VERSION.SDK_INT >= 14 && DialogPresenter.canPresentNativeDialogWithFeature(getFeature());
+        return DialogPresenter.canPresentNativeDialogWithFeature(getFeature());
     }
 
     private static boolean canShowWebFallback() {
-        return VERSION.SDK_INT >= 14 && DialogPresenter.canPresentWebFallbackDialogWithFeature(getFeature());
+        return DialogPresenter.canPresentWebFallbackDialogWithFeature(getFeature());
     }
 
     private static Bundle createParameters(AppInviteContent appInviteContent) {
         Bundle bundle = new Bundle();
         bundle.putString(ShareConstants.APPLINK_URL, appInviteContent.getApplinkUrl());
         bundle.putString(ShareConstants.PREVIEW_IMAGE_URL, appInviteContent.getPreviewImageUrl());
+        bundle.putString(ShareConstants.DESTINATION, appInviteContent.getDestination().toString());
+        String promotionCode = appInviteContent.getPromotionCode();
+        if (promotionCode == null) {
+            promotionCode = "";
+        }
+        Object promotionText = appInviteContent.getPromotionText();
+        if (!TextUtils.isEmpty(promotionText)) {
+            try {
+                JSONObject jSONObject = new JSONObject();
+                jSONObject.put(ShareConstants.PROMO_CODE, promotionCode);
+                jSONObject.put(ShareConstants.PROMO_TEXT, promotionText);
+                bundle.putString(ShareConstants.DEEPLINK_CONTEXT, jSONObject.toString());
+                bundle.putString(ShareConstants.PROMO_CODE, promotionCode);
+                bundle.putString(ShareConstants.PROMO_TEXT, promotionText);
+            } catch (JSONException e) {
+                Log.e(TAG, "Json Exception in creating deeplink context");
+            }
+        }
         return bundle;
     }
 
@@ -115,8 +145,16 @@ public class AppInviteDialog extends FacebookDialogBase<AppInviteContent, Result
         new AppInviteDialog(activity).show(appInviteContent);
     }
 
-    public static void show(C0058n c0058n, AppInviteContent appInviteContent) {
-        new AppInviteDialog(c0058n).show(appInviteContent);
+    public static void show(Fragment fragment, AppInviteContent appInviteContent) {
+        show(new FragmentWrapper(fragment), appInviteContent);
+    }
+
+    public static void show(C0073r c0073r, AppInviteContent appInviteContent) {
+        show(new FragmentWrapper(c0073r), appInviteContent);
+    }
+
+    private static void show(FragmentWrapper fragmentWrapper, AppInviteContent appInviteContent) {
+        new AppInviteDialog(fragmentWrapper).show(appInviteContent);
     }
 
     protected AppCall createBaseAppCall() {
@@ -131,7 +169,7 @@ public class AppInviteDialog extends FacebookDialogBase<AppInviteContent, Result
     }
 
     protected void registerCallbackImpl(CallbackManagerImpl callbackManagerImpl, final FacebookCallback<Result> facebookCallback) {
-        final ResultProcessor c03081 = facebookCallback == null ? null : new ResultProcessor(facebookCallback) {
+        final ResultProcessor c03601 = facebookCallback == null ? null : new ResultProcessor(facebookCallback) {
             public void onSuccess(AppCall appCall, Bundle bundle) {
                 if ("cancel".equalsIgnoreCase(ShareInternalUtility.getNativeDialogCompletionGesture(bundle))) {
                     facebookCallback.onCancel();
@@ -142,7 +180,7 @@ public class AppInviteDialog extends FacebookDialogBase<AppInviteContent, Result
         };
         callbackManagerImpl.registerCallback(getRequestCode(), new Callback() {
             public boolean onActivityResult(int i, Intent intent) {
-                return ShareInternalUtility.handleActivityResult(AppInviteDialog.this.getRequestCode(), i, intent, c03081);
+                return ShareInternalUtility.handleActivityResult(AppInviteDialog.this.getRequestCode(), i, intent, c03601);
             }
         });
     }

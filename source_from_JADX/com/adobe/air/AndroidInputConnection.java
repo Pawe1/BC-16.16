@@ -30,13 +30,13 @@ public class AndroidInputConnection extends BaseInputConnection {
     public boolean deleteSurroundingText(int i, int i2) {
         int i3;
         for (i3 = 0; i3 < i2; i3++) {
-            AIRLogger.m363d(LOG_TAG, "[JP] deleteSurroundingText ");
+            AIRLogger.m376d(LOG_TAG, "[JP] deleteSurroundingText ");
             this.mWindowSurfaceView.nativeOnKeyListener(0, 22, 0, false, false, false);
             this.mWindowSurfaceView.nativeOnKeyListener(1, 22, 0, false, false, false);
         }
         i3 = i2 + i;
         for (int i4 = 0; i4 < i3; i4++) {
-            AIRLogger.m363d(LOG_TAG, "[JP] deleteSurroundingText 2 ");
+            AIRLogger.m376d(LOG_TAG, "[JP] deleteSurroundingText 2 ");
             this.mWindowSurfaceView.nativeOnKeyListener(0, 67, 0, false, false, false);
             this.mWindowSurfaceView.nativeOnKeyListener(1, 67, 0, false, false, false);
         }
@@ -153,21 +153,21 @@ public class AndroidInputConnection extends BaseInputConnection {
             }
         }
         if (charSequence != null) {
-            AIRLogger.m363d(LOG_TAG, "[JP] setComposingText " + charSequence);
+            AIRLogger.m376d(LOG_TAG, "[JP] setComposingText " + charSequence);
             writeText(charSequence);
             this.mComposedText = charSequence;
             int i2;
             if (i <= 0) {
                 int length2 = charSequence.length() + Math.abs(i);
                 for (i2 = 0; i2 < length2; i2++) {
-                    AIRLogger.m363d(LOG_TAG, "[JP] setComposingText " + charSequence);
+                    AIRLogger.m376d(LOG_TAG, "[JP] setComposingText " + charSequence);
                     this.mWindowSurfaceView.nativeOnKeyListener(0, 21, 0, false, false, false);
                     this.mWindowSurfaceView.nativeOnKeyListener(1, 21, 0, false, false, false);
                 }
             } else if (i > 1) {
                 i2 = i - 1;
                 for (int i3 = 0; i3 < i2; i3++) {
-                    AIRLogger.m363d(LOG_TAG, "[JP] setComposingText 2 " + charSequence);
+                    AIRLogger.m376d(LOG_TAG, "[JP] setComposingText 2 " + charSequence);
                     this.mWindowSurfaceView.nativeOnKeyListener(0, 22, 0, false, false, false);
                     this.mWindowSurfaceView.nativeOnKeyListener(1, 22, 0, false, false, false);
                 }
@@ -190,7 +190,7 @@ public class AndroidInputConnection extends BaseInputConnection {
     }
 
     public boolean commitText(CharSequence charSequence, int i) {
-        AIRLogger.m363d(LOG_TAG, "[JP] setComposingText " + charSequence);
+        AIRLogger.m376d(LOG_TAG, "[JP] setComposingText " + charSequence);
         writeText(charSequence);
         this.mComposedText = null;
         return true;
@@ -207,7 +207,7 @@ public class AndroidInputConnection extends BaseInputConnection {
                 i++;
             }
             for (int i2 = i; i2 < length2; i2++) {
-                AIRLogger.m363d(LOG_TAG, "[JP] writeText " + charSequence);
+                AIRLogger.m376d(LOG_TAG, "[JP] writeText " + charSequence);
                 this.mWindowSurfaceView.nativeOnKeyListener(0, 67, 0, false, false, false);
                 this.mWindowSurfaceView.nativeOnKeyListener(1, 67, 0, false, false, false);
             }
@@ -215,7 +215,7 @@ public class AndroidInputConnection extends BaseInputConnection {
             i = 0;
         }
         while (i < length) {
-            AIRLogger.m363d(LOG_TAG, "[JP] writeText 2 " + charSequence);
+            AIRLogger.m376d(LOG_TAG, "[JP] writeText 2 " + charSequence);
             this.mWindowSurfaceView.nativeOnKeyListener(0, 0, charSequence.charAt(i), false, false, false);
             this.mWindowSurfaceView.nativeOnKeyListener(1, 0, charSequence.charAt(i), false, false, false);
             i++;

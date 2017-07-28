@@ -1,6 +1,7 @@
 package com.facebook.share.widget;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import com.facebook.FacebookCallback;
@@ -10,6 +11,7 @@ import com.facebook.internal.CallbackManagerImpl.Callback;
 import com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
 import com.facebook.internal.DialogPresenter;
 import com.facebook.internal.FacebookDialogBase;
+import com.facebook.internal.FragmentWrapper;
 import com.facebook.share.internal.GameRequestValidation;
 import com.facebook.share.internal.ResultProcessor;
 import com.facebook.share.internal.ShareConstants;
@@ -18,7 +20,7 @@ import com.facebook.share.internal.WebDialogParameters;
 import com.facebook.share.model.GameRequestContent;
 import java.util.ArrayList;
 import java.util.List;
-import p000c.p001m.p002x.p003a.gv.C0058n;
+import p000c.p001m.p002x.p003a.gv.C0073r;
 
 public class GameRequestDialog extends FacebookDialogBase<GameRequestContent, Result> {
     private static final int DEFAULT_REQUEST_CODE = RequestCodeOffset.GameRequest.toRequestCode();
@@ -60,7 +62,7 @@ public class GameRequestDialog extends FacebookDialogBase<GameRequestContent, Re
             super();
         }
 
-        public boolean canShow(GameRequestContent gameRequestContent) {
+        public boolean canShow(GameRequestContent gameRequestContent, boolean z) {
             return true;
         }
 
@@ -76,8 +78,16 @@ public class GameRequestDialog extends FacebookDialogBase<GameRequestContent, Re
         super(activity, DEFAULT_REQUEST_CODE);
     }
 
-    public GameRequestDialog(C0058n c0058n) {
-        super(c0058n, DEFAULT_REQUEST_CODE);
+    public GameRequestDialog(Fragment fragment) {
+        this(new FragmentWrapper(fragment));
+    }
+
+    public GameRequestDialog(C0073r c0073r) {
+        this(new FragmentWrapper(c0073r));
+    }
+
+    private GameRequestDialog(FragmentWrapper fragmentWrapper) {
+        super(fragmentWrapper, DEFAULT_REQUEST_CODE);
     }
 
     public static boolean canShow() {
@@ -88,8 +98,16 @@ public class GameRequestDialog extends FacebookDialogBase<GameRequestContent, Re
         new GameRequestDialog(activity).show(gameRequestContent);
     }
 
-    public static void show(C0058n c0058n, GameRequestContent gameRequestContent) {
-        new GameRequestDialog(c0058n).show(gameRequestContent);
+    public static void show(Fragment fragment, GameRequestContent gameRequestContent) {
+        show(new FragmentWrapper(fragment), gameRequestContent);
+    }
+
+    public static void show(C0073r c0073r, GameRequestContent gameRequestContent) {
+        show(new FragmentWrapper(c0073r), gameRequestContent);
+    }
+
+    private static void show(FragmentWrapper fragmentWrapper, GameRequestContent gameRequestContent) {
+        new GameRequestDialog(fragmentWrapper).show(gameRequestContent);
     }
 
     protected AppCall createBaseAppCall() {
@@ -103,7 +121,7 @@ public class GameRequestDialog extends FacebookDialogBase<GameRequestContent, Re
     }
 
     protected void registerCallbackImpl(CallbackManagerImpl callbackManagerImpl, final FacebookCallback<Result> facebookCallback) {
-        final ResultProcessor c03131 = facebookCallback == null ? null : new ResultProcessor(facebookCallback) {
+        final ResultProcessor c03661 = facebookCallback == null ? null : new ResultProcessor(facebookCallback) {
             public void onSuccess(AppCall appCall, Bundle bundle) {
                 if (bundle != null) {
                     facebookCallback.onSuccess(new Result(bundle));
@@ -114,7 +132,7 @@ public class GameRequestDialog extends FacebookDialogBase<GameRequestContent, Re
         };
         callbackManagerImpl.registerCallback(getRequestCode(), new Callback() {
             public boolean onActivityResult(int i, Intent intent) {
-                return ShareInternalUtility.handleActivityResult(GameRequestDialog.this.getRequestCode(), i, intent, c03131);
+                return ShareInternalUtility.handleActivityResult(GameRequestDialog.this.getRequestCode(), i, intent, c03661);
             }
         });
     }

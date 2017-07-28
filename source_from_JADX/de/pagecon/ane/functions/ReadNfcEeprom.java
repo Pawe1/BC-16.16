@@ -12,6 +12,7 @@ import com.adobe.fre.FRETypeMismatchException;
 import com.adobe.fre.FREWrongThreadException;
 import com.sigmasport.EepromRecords;
 import com.sigmasport.nfctag.NfcTag;
+import de.pagecon.ane.ErrorCodes;
 import de.pagecon.ane.nfc.ExtensionContext;
 import de.pagecon.ane.nfc.Manager;
 import java.io.IOException;
@@ -49,12 +50,14 @@ public class ReadNfcEeprom implements FREFunction {
                         Manager.dispatchNfcResult(eepromRecord, ExtensionContext.EVENT_NFC_READ_EEPROM_READY);
                     } else {
                         eepromRecord.errorMessage = "Wrong manufacturer...";
+                        eepromRecord.errorCode = ErrorCodes.ERR_WRONG_MANUFACTURER;
                         Manager.dispatchNfcError(eepromRecord);
                     }
                     ReadNfcEeprom.this.mNfcTag.close();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     eepromRecord.errorMessage = e.getMessage();
+                    eepromRecord.errorCode = 102;
                     Manager.dispatchNfcError(eepromRecord);
                 }
             } catch (IOException e2) {
@@ -62,6 +65,7 @@ public class ReadNfcEeprom implements FREFunction {
                 ReadNfcEeprom.this.mNfcTag = null;
                 ReadNfcEeprom.this.mTag = null;
                 eepromRecord.errorMessage = e2.getMessage();
+                eepromRecord.errorCode = 100;
                 Manager.dispatchNfcError(eepromRecord);
             }
             return null;
@@ -85,6 +89,7 @@ public class ReadNfcEeprom implements FREFunction {
                             IllegalStateException e2 = e;
                             eepromRecords = eepromRecords2;
                             eepromRecords.errorMessage = e2.getMessage();
+                            eepromRecords.errorCode = 10;
                             Manager.dispatchNfcError(eepromRecords);
                             e2.printStackTrace();
                             return null;
@@ -92,6 +97,7 @@ public class ReadNfcEeprom implements FREFunction {
                             FRETypeMismatchException e4 = e3;
                             eepromRecords = eepromRecords2;
                             eepromRecords.errorMessage = e4.getMessage();
+                            eepromRecords.errorCode = 11;
                             Manager.dispatchNfcError(eepromRecords);
                             e4.printStackTrace();
                             return null;
@@ -99,6 +105,7 @@ public class ReadNfcEeprom implements FREFunction {
                             FREInvalidObjectException e6 = e5;
                             eepromRecords = eepromRecords2;
                             eepromRecords.errorMessage = e6.getMessage();
+                            eepromRecords.errorCode = 12;
                             Manager.dispatchNfcError(eepromRecords);
                             e6.printStackTrace();
                             return null;
@@ -106,6 +113,7 @@ public class ReadNfcEeprom implements FREFunction {
                             FREWrongThreadException e8 = e7;
                             eepromRecords = eepromRecords2;
                             eepromRecords.errorMessage = e8.getMessage();
+                            eepromRecords.errorCode = 13;
                             Manager.dispatchNfcError(eepromRecords);
                             e8.printStackTrace();
                             return null;
@@ -115,24 +123,28 @@ public class ReadNfcEeprom implements FREFunction {
             } catch (IllegalStateException e9) {
                 e2 = e9;
                 eepromRecords.errorMessage = e2.getMessage();
+                eepromRecords.errorCode = 10;
                 Manager.dispatchNfcError(eepromRecords);
                 e2.printStackTrace();
                 return null;
             } catch (FRETypeMismatchException e10) {
                 e4 = e10;
                 eepromRecords.errorMessage = e4.getMessage();
+                eepromRecords.errorCode = 11;
                 Manager.dispatchNfcError(eepromRecords);
                 e4.printStackTrace();
                 return null;
             } catch (FREInvalidObjectException e11) {
                 e6 = e11;
                 eepromRecords.errorMessage = e6.getMessage();
+                eepromRecords.errorCode = 12;
                 Manager.dispatchNfcError(eepromRecords);
                 e6.printStackTrace();
                 return null;
             } catch (FREWrongThreadException e12) {
                 e8 = e12;
                 eepromRecords.errorMessage = e8.getMessage();
+                eepromRecords.errorCode = 13;
                 Manager.dispatchNfcError(eepromRecords);
                 e8.printStackTrace();
                 return null;

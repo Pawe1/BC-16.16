@@ -4,10 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable.Creator;
 
 public final class ShareOpenGraphAction extends ShareOpenGraphValueContainer<ShareOpenGraphAction, Builder> {
-    public static final Creator<ShareOpenGraphAction> CREATOR = new C02911();
+    public static final Creator<ShareOpenGraphAction> CREATOR = new C03531();
 
-    final class C02911 implements Creator<ShareOpenGraphAction> {
-        C02911() {
+    final class C03531 implements Creator<ShareOpenGraphAction> {
+        C03531() {
         }
 
         public final ShareOpenGraphAction createFromParcel(Parcel parcel) {
@@ -26,7 +26,7 @@ public final class ShareOpenGraphAction extends ShareOpenGraphValueContainer<Sha
             return new ShareOpenGraphAction();
         }
 
-        public final Builder readFrom(Parcel parcel) {
+        final Builder readFrom(Parcel parcel) {
             return readFrom((ShareOpenGraphAction) parcel.readParcelable(ShareOpenGraphAction.class.getClassLoader()));
         }
 

@@ -29,8 +29,8 @@ public final class FacebookRequestErrorClassification {
     private final Map<Integer, Set<Integer>> transientErrors;
     private final String transientRecoveryMessage;
 
-    final class C02041 extends HashMap<Integer, Set<Integer>> {
-        C02041() {
+    final class C02381 extends HashMap<Integer, Set<Integer>> {
+        C02381() {
             put(Integer.valueOf(2), null);
             put(Integer.valueOf(4), null);
             put(Integer.valueOf(9), null);
@@ -39,8 +39,8 @@ public final class FacebookRequestErrorClassification {
         }
     }
 
-    final class C02052 extends HashMap<Integer, Set<Integer>> {
-        C02052() {
+    final class C02392 extends HashMap<Integer, Set<Integer>> {
+        C02392() {
             put(Integer.valueOf(102), null);
             put(Integer.valueOf(FacebookRequestErrorClassification.EC_INVALID_TOKEN), null);
         }
@@ -98,7 +98,7 @@ public final class FacebookRequestErrorClassification {
     }
 
     private static FacebookRequestErrorClassification getDefaultErrorClassificationImpl() {
-        return new FacebookRequestErrorClassification(null, new C02041(), new C02052(), null, null, null);
+        return new FacebookRequestErrorClassification(null, new C02381(), new C02392(), null, null, null);
     }
 
     private static Map<Integer, Set<Integer>> parseJSONDefinition(JSONObject jSONObject) {

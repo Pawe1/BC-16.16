@@ -9,27 +9,35 @@ public class FlashRecords extends RecordsBase {
     public static final String FIELD_CMD = "cmd";
     public static final String FIELD_COMMANDBYTESTRING = "commandByteString";
     public static final String FIELD_DATALENGTH = "dataLength";
+    public static final String FIELD_FIFO_BIT = "fifoBit";
+    public static final String FIELD_READ_DELAY = "readDelay";
     public int cmd;
     protected String commandByteString = "";
     private String commandString = "";
     public int dataLength = 0;
+    public int fifoBit;
+    public int readBlockDelay;
+    public int readDelay;
 
-    public FlashRecords(int startAddr, int endAddr, String commandString) {
+    public FlashRecords(int startAddr, int endAddr, String commandString, Boolean autoInit) {
         super(startAddr, endAddr);
-        Manager.cLog("new FlashRecords(" + startAddr + ", " + endAddr + ", " + commandString + ")");
         if (this.endAddr > this.startAddr) {
             this.dataLength = (this.endAddr - this.startAddr) + 1;
         }
         if (this.startAddr > 0 && this.endAddr == 0) {
             this.dataLength = this.startAddr;
         }
-        Manager.cLog("FlashRecords dataLength: " + this.dataLength);
         if (commandString.length() != 0) {
             this.commandString = commandString.trim();
-            this.cmd = Integer.valueOf(commandString.split(" ")[1]).intValue();
-            Manager.cLog("FlashRecords.cmd: " + this.cmd);
-            setCommandByteString(RecordsBase.convertIntToHexByteString(commandString));
+            if (autoInit.booleanValue()) {
+                init();
+            }
         }
+    }
+
+    public void init() {
+        this.cmd = Integer.valueOf(this.commandString.split(" ")[1]).intValue();
+        setCommandByteString(RecordsBase.convertIntToHexByteString(this.commandString));
     }
 
     public String getCommandString() {
@@ -52,9 +60,11 @@ public class FlashRecords extends RecordsBase {
             json.put(FIELD_DATALENGTH, this.dataLength);
             json.put(FIELD_COMMANDBYTESTRING, this.commandByteString);
             json.put(FIELD_CMD, this.cmd);
+            json.put(FIELD_READ_DELAY, this.readDelay);
+            json.put(FIELD_FIFO_BIT, this.fifoBit);
             json.put(RecordsBase.FIELD_BYTESTRING, this.byteString.trim());
-            json.put("errorMessage", this.errorMessage.trim());
-            json.put("errorCode", this.errorCode);
+            json.put(RecordsBase.FIELD_ERRORMESSAGE, this.errorMessage.trim());
+            json.put(RecordsBase.FIELD_ERRORCODE, this.errorCode);
         } catch (JSONException e) {
             Manager.cLog("EepromRecords.toJson() Error: " + e.getMessage());
             e.printStackTrace();

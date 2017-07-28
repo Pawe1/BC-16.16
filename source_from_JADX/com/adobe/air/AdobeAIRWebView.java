@@ -23,8 +23,8 @@ public class AdobeAIRWebView {
     private boolean mOffline = false;
     private WebView mWebView = null;
 
-    class C00791 extends WebViewClient {
-        C00791() {
+    class C01011 extends WebViewClient {
+        C01011() {
         }
 
         public boolean shouldOverrideUrlLoading(WebView webView, String str) {
@@ -68,8 +68,8 @@ public class AdobeAIRWebView {
         }
     }
 
-    class C00802 extends WebViewClient {
-        C00802() {
+    class C01022 extends WebViewClient {
+        C01022() {
         }
 
         public boolean shouldOverrideUrlLoading(WebView webView, String str) {
@@ -82,10 +82,10 @@ public class AdobeAIRWebView {
     }
 
     public void create() {
-        WebViewClient c00791 = new C00791();
+        WebViewClient c01011 = new C01011();
         this.mWebView = new WebView(this.mCurrentContext);
         this.mWebView.setScrollBarStyle(0);
-        this.mWebView.setWebViewClient(c00791);
+        this.mWebView.setWebViewClient(c01011);
         this.mWebView.getSettings().setJavaScriptEnabled(true);
         this.mWebView.getSettings().setBuiltInZoomControls(true);
         this.mWebView.getSettings().setDomStorageEnabled(true);
@@ -108,7 +108,7 @@ public class AdobeAIRWebView {
             this.mHiddenWebView.getSettings().setDatabasePath(this.mCurrentContext.getApplicationContext().getFilesDir().getPath() + "/databases/");
         } catch (Exception e) {
         }
-        this.mHiddenWebView.setWebViewClient(new C00802());
+        this.mHiddenWebView.setWebViewClient(new C01022());
     }
 
     public void loadUrl(String str) {

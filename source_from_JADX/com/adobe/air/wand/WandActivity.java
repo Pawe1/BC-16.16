@@ -3,7 +3,6 @@ package com.adobe.air.wand;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.appcompat.C0004R;
 import com.adobe.air.wand.connection.WandWebSocket;
 import com.adobe.air.wand.view.WandView;
 
@@ -16,14 +15,14 @@ public class WandActivity extends Activity {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         getWindow().setFormat(1);
-        setContentView(C0004R.layout.wand_main);
+        setContentView(2130903235);
         initialize();
     }
 
     private void initialize() {
         try {
             this.mWandWebSocket = new WandWebSocket(this);
-            this.mWandManager = new WandManager(this, (WandView) findViewById(C0004R.id.wandView), this.mWandWebSocket);
+            this.mWandManager = new WandManager(this, (WandView) findViewById(2131558933), this.mWandWebSocket);
         } catch (Exception e) {
         }
     }

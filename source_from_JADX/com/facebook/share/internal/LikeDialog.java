@@ -1,8 +1,8 @@
 package com.facebook.share.internal;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
-import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.util.Log;
 import com.facebook.FacebookCallback;
@@ -14,9 +14,10 @@ import com.facebook.internal.DialogFeature;
 import com.facebook.internal.DialogPresenter;
 import com.facebook.internal.DialogPresenter.ParameterProvider;
 import com.facebook.internal.FacebookDialogBase;
+import com.facebook.internal.FragmentWrapper;
 import java.util.ArrayList;
 import java.util.List;
-import p000c.p001m.p002x.p003a.gv.C0058n;
+import p000c.p001m.p002x.p003a.gv.C0073r;
 
 public class LikeDialog extends FacebookDialogBase<LikeContent, Result> {
     private static final int DEFAULT_REQUEST_CODE = RequestCodeOffset.Like.toRequestCode();
@@ -27,7 +28,7 @@ public class LikeDialog extends FacebookDialogBase<LikeContent, Result> {
             super();
         }
 
-        public boolean canShow(LikeContent likeContent) {
+        public boolean canShow(LikeContent likeContent, boolean z) {
             return likeContent != null && LikeDialog.canShowNativeDialog();
         }
 
@@ -64,7 +65,7 @@ public class LikeDialog extends FacebookDialogBase<LikeContent, Result> {
             super();
         }
 
-        public boolean canShow(LikeContent likeContent) {
+        public boolean canShow(LikeContent likeContent, boolean z) {
             return likeContent != null && LikeDialog.canShowWebFallback();
         }
 
@@ -79,16 +80,24 @@ public class LikeDialog extends FacebookDialogBase<LikeContent, Result> {
         super(activity, DEFAULT_REQUEST_CODE);
     }
 
-    public LikeDialog(C0058n c0058n) {
-        super(c0058n, DEFAULT_REQUEST_CODE);
+    public LikeDialog(Fragment fragment) {
+        this(new FragmentWrapper(fragment));
+    }
+
+    public LikeDialog(C0073r c0073r) {
+        this(new FragmentWrapper(c0073r));
+    }
+
+    public LikeDialog(FragmentWrapper fragmentWrapper) {
+        super(fragmentWrapper, DEFAULT_REQUEST_CODE);
     }
 
     public static boolean canShowNativeDialog() {
-        return VERSION.SDK_INT >= 14 && DialogPresenter.canPresentNativeDialogWithFeature(getFeature());
+        return DialogPresenter.canPresentNativeDialogWithFeature(getFeature());
     }
 
     public static boolean canShowWebFallback() {
-        return VERSION.SDK_INT >= 14 && DialogPresenter.canPresentWebFallbackDialogWithFeature(getFeature());
+        return DialogPresenter.canPresentWebFallbackDialogWithFeature(getFeature());
     }
 
     private static Bundle createParameters(LikeContent likeContent) {
@@ -114,14 +123,14 @@ public class LikeDialog extends FacebookDialogBase<LikeContent, Result> {
     }
 
     protected void registerCallbackImpl(CallbackManagerImpl callbackManagerImpl, final FacebookCallback<Result> facebookCallback) {
-        final ResultProcessor c02691 = facebookCallback == null ? null : new ResultProcessor(facebookCallback) {
+        final ResultProcessor c03271 = facebookCallback == null ? null : new ResultProcessor(facebookCallback) {
             public void onSuccess(AppCall appCall, Bundle bundle) {
                 facebookCallback.onSuccess(new Result(bundle));
             }
         };
         callbackManagerImpl.registerCallback(getRequestCode(), new Callback() {
             public boolean onActivityResult(int i, Intent intent) {
-                return ShareInternalUtility.handleActivityResult(LikeDialog.this.getRequestCode(), i, intent, c02691);
+                return ShareInternalUtility.handleActivityResult(LikeDialog.this.getRequestCode(), i, intent, c03271);
             }
         });
     }

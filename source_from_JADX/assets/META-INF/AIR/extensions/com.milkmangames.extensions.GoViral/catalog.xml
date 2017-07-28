@@ -28,6 +28,11 @@
         <dep id="AS3" type="n" /> 
         <dep id="flash.events:Event" type="i" /> 
       </script>
+      <script name="com/milkmangames/nativeextensions/GVFacebookDialogMode" mod="1486088770824" signatureChecksum="3565115417" >
+        <def id="com.milkmangames.nativeextensions:GVFacebookDialogMode" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="Object" type="i" /> 
+      </script>
       <script name="com/milkmangames/nativeextensions/GVFacebookAppEvent" mod="1395269714057" signatureChecksum="2726499577" >
         <def id="com.milkmangames.nativeextensions:GVFacebookAppEvent" /> 
         <dep id="AS3" type="n" /> 
@@ -46,7 +51,7 @@
         <dep id="AS3" type="n" /> 
         <dep id="com.milkmangames.nativeextensions:GVDispatcher" type="i" /> 
       </script>
-      <script name="com/milkmangames/nativeextensions/GoViral" mod="1447897230620" signatureChecksum="2999369253" >
+      <script name="com/milkmangames/nativeextensions/GoViral" mod="1486088727602" signatureChecksum="352043439" >
         <def id="com.milkmangames.nativeextensions:GoViral" /> 
         <dep id="com.milkmangames.nativeextensions:GVFacebookRequestActionType" type="e" /> 
         <dep id="ArgumentError" type="e" /> 
@@ -55,6 +60,7 @@
         <dep id="com.milkmangames.nativeextensions:GVDispatcher" type="e" /> 
         <dep id="Math" type="e" /> 
         <dep id="com.milkmangames.nativeextensions.events:GVFacebookEvent" type="e" /> 
+        <dep id="com.milkmangames.nativeextensions:GVFacebookDialogMode" type="e" /> 
         <dep id="com.milkmangames.nativeextensions:GVTwitterDispatcher" type="e" /> 
         <dep id="com.milkmangames.nativeextensions.events:GVMailEvent" type="e" /> 
         <dep id="flash.external:ExtensionContext" type="e" /> 
@@ -72,14 +78,15 @@
         <dep id="flash.utils:getDefinitionByName" type="e" /> 
         <dep id="com.milkmangames.nativeextensions:GVSocialServiceType" type="e" /> 
         <dep id="flash.events:Event" type="s" /> 
-        <dep id="flash.utils:ByteArray" type="s" /> 
         <dep id="flash.display:BitmapData" type="s" /> 
+        <dep id="flash.utils:ByteArray" type="s" /> 
         <dep id="com.milkmangames.nativeextensions:GVDispatcher" type="s" /> 
         <dep id="com.milkmangames.nativeextensions.events:GVFacebookEvent" type="s" /> 
         <dep id="com.milkmangames.nativeextensions:GVTwitterDispatcher" type="s" /> 
+        <dep id="com.milkmangames.nativeextensions:GVFacebookDialogMode" type="s" /> 
         <dep id="com.milkmangames.nativeextensions.events:GVMailEvent" type="s" /> 
-        <dep id="flash.external:ExtensionContext" type="s" /> 
         <dep id="com.milkmangames.nativeextensions:GVShareDispatcher" type="s" /> 
+        <dep id="flash.external:ExtensionContext" type="s" /> 
         <dep id="Error" type="s" /> 
         <dep id="com.milkmangames.nativeextensions:GVFacebookAppEvent" type="s" /> 
         <dep id="com.milkmangames.nativeextensions.events:GVTwitterEvent" type="s" /> 
@@ -108,8 +115,8 @@
         <dep id="AS3" type="n" /> 
         <dep id="Object" type="i" /> 
       </script>
-      <script name="_e1f0215c15a96814def2c094495d8e3d5b2763a2a291a0bcbfc8fd8a1ee3a3d8_flash_display_Sprite" mod="1450306543039" signatureChecksum="473529243" >
-        <def id="_e1f0215c15a96814def2c094495d8e3d5b2763a2a291a0bcbfc8fd8a1ee3a3d8_flash_display_Sprite" /> 
+      <script name="_5677c015197902b7c02812070e29e0df9e05f1cc172826cca944f06d5860d0c2_flash_display_Sprite" mod="1486088787382" signatureChecksum="3424942145" >
+        <def id="_5677c015197902b7c02812070e29e0df9e05f1cc172826cca944f06d5860d0c2_flash_display_Sprite" /> 
         <dep id="flash.system:Security" type="e" /> 
         <dep id="AS3" type="n" /> 
         <dep id="flash.display:Sprite" type="i" /> 
@@ -135,7 +142,7 @@
         <dep id="AS3" type="n" /> 
         <dep id="Object" type="i" /> 
       </script>
-      <script name="com/milkmangames/nativeextensions/GVFacebookFriend" mod="1340055367382" signatureChecksum="2710212295" >
+      <script name="com/milkmangames/nativeextensions/GVFacebookFriend" mod="1486019166883" signatureChecksum="560830188" >
         <def id="com.milkmangames.nativeextensions:GVFacebookFriend" /> 
         <dep id="AS3" type="n" /> 
         <dep id="Object" type="i" /> 
@@ -157,7 +164,7 @@
         <dep id="flash.events:Event" type="i" /> 
       </script>
       <digests>
-        <digest type="SHA-256" signed="false" value="a6adfa2f090dddb0c46ded46d643568bc1e7316825cde0a53a48d77abffad1ae"   />
+        <digest type="SHA-256" signed="false" value="9d9c58bbd2ad48d0884564904c38a09c86a56e6e07fb4109ab37f5b5145005e9"   />
       </digests>
     </library>
   </libraries>

@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import com.facebook.C0253R;
+import com.facebook.C0196R;
 import com.facebook.FacebookException;
 import com.facebook.LoggingBehavior;
 import com.facebook.internal.ImageDownloader;
@@ -51,8 +51,8 @@ public class ProfilePictureView extends FrameLayout {
     private int queryHeight = 0;
     private int queryWidth = 0;
 
-    class C02451 implements Callback {
-        C02451() {
+    class C02941 implements Callback {
+        C02941() {
         }
 
         public void onCompleted(ImageResponse imageResponse) {
@@ -85,17 +85,17 @@ public class ProfilePictureView extends FrameLayout {
         int i;
         switch (this.presetSizeType) {
             case -4:
-                i = C0253R.dimen.com_facebook_profilepictureview_preset_size_large;
+                i = C0196R.dimen.com_facebook_profilepictureview_preset_size_large;
                 break;
             case -3:
-                i = C0253R.dimen.com_facebook_profilepictureview_preset_size_normal;
+                i = C0196R.dimen.com_facebook_profilepictureview_preset_size_normal;
                 break;
             case -2:
-                i = C0253R.dimen.com_facebook_profilepictureview_preset_size_small;
+                i = C0196R.dimen.com_facebook_profilepictureview_preset_size_small;
                 break;
             case -1:
                 if (z) {
-                    i = C0253R.dimen.com_facebook_profilepictureview_preset_size_normal;
+                    i = C0196R.dimen.com_facebook_profilepictureview_preset_size_normal;
                     break;
                 }
                 return 0;
@@ -114,9 +114,9 @@ public class ProfilePictureView extends FrameLayout {
     }
 
     private void parseAttributes(AttributeSet attributeSet) {
-        TypedArray obtainStyledAttributes = getContext().obtainStyledAttributes(attributeSet, C0253R.styleable.com_facebook_profile_picture_view);
-        setPresetSize(obtainStyledAttributes.getInt(C0253R.styleable.com_facebook_profile_picture_view_com_facebook_preset_size, -1));
-        this.isCropped = obtainStyledAttributes.getBoolean(C0253R.styleable.com_facebook_profile_picture_view_com_facebook_is_cropped, true);
+        TypedArray obtainStyledAttributes = getContext().obtainStyledAttributes(attributeSet, C0196R.styleable.com_facebook_profile_picture_view);
+        setPresetSize(obtainStyledAttributes.getInt(C0196R.styleable.com_facebook_profile_picture_view_com_facebook_preset_size, -1));
+        this.isCropped = obtainStyledAttributes.getBoolean(C0196R.styleable.com_facebook_profile_picture_view_com_facebook_is_cropped, true);
         obtainStyledAttributes.recycle();
     }
 
@@ -151,7 +151,7 @@ public class ProfilePictureView extends FrameLayout {
     }
 
     private void sendImageRequest(boolean z) {
-        ImageRequest build = new Builder(getContext(), ImageRequest.getProfilePictureUri(this.profileId, this.queryWidth, this.queryHeight)).setAllowCachedRedirects(z).setCallerTag(this).setCallback(new C02451()).build();
+        ImageRequest build = new Builder(getContext(), ImageRequest.getProfilePictureUri(this.profileId, this.queryWidth, this.queryHeight)).setAllowCachedRedirects(z).setCallerTag(this).setCallback(new C02941()).build();
         if (this.lastRequest != null) {
             ImageDownloader.cancelRequest(this.lastRequest);
         }
@@ -164,7 +164,7 @@ public class ProfilePictureView extends FrameLayout {
             ImageDownloader.cancelRequest(this.lastRequest);
         }
         if (this.customizedDefaultProfilePicture == null) {
-            setImageBitmap(BitmapFactory.decodeResource(getResources(), isCropped() ? C0253R.drawable.com_facebook_profile_picture_blank_square : C0253R.drawable.com_facebook_profile_picture_blank_portrait));
+            setImageBitmap(BitmapFactory.decodeResource(getResources(), isCropped() ? C0196R.drawable.com_facebook_profile_picture_blank_square : C0196R.drawable.com_facebook_profile_picture_blank_portrait));
             return;
         }
         updateImageQueryParameters();

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Base64;
+import android.util.Log;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenSource;
 import com.facebook.FacebookException;
@@ -87,6 +88,18 @@ abstract class LoginMethodHandler implements Parcelable {
     void cancel() {
     }
 
+    protected String getClientState(String str) {
+        JSONObject jSONObject = new JSONObject();
+        try {
+            jSONObject.put("0_auth_logger_id", str);
+            jSONObject.put("3_method", getNameForLogging());
+            putChallengeParam(jSONObject);
+        } catch (JSONException e) {
+            Log.w("LoginMethodHandler", "Error creating client state json: " + e.getMessage());
+        }
+        return jSONObject.toString();
+    }
+
     abstract String getNameForLogging();
 
     protected void logWebLoginCompleted(String str) {
@@ -105,6 +118,9 @@ abstract class LoginMethodHandler implements Parcelable {
 
     boolean onActivityResult(int i, int i2, Intent intent) {
         return false;
+    }
+
+    void putChallengeParam(JSONObject jSONObject) {
     }
 
     void setLoginClient(LoginClient loginClient) {

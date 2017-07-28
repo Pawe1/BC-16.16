@@ -40,6 +40,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.Condition;
@@ -79,6 +80,7 @@ public class AndroidActivityWrapper {
     private ConfigDownloadListener mConfigDownloadListener = null;
     private boolean mContainsVideo = false;
     private DebuggerSettings mDebuggerSettings = new DebuggerSettings();
+    private List<String> mDeclaredPermissions = null;
     private boolean mDisplayWaitingDialog = false;
     private String mExtraArgs = null;
     private boolean mFullScreenSetFromMetaData = false;
@@ -95,6 +97,7 @@ public class AndroidActivityWrapper {
     private String mRootDir = null;
     private boolean mScreenOn = true;
     private boolean mShowDebuggerDialog = false;
+    private int mTargetSdkVersion = 0;
     private String mXmlPath = null;
     private Activity m_activity = null;
     private Application m_application = null;
@@ -133,10 +136,25 @@ public class AndroidActivityWrapper {
         ConflictMode
     }
 
+    public final class FlashPermission {
+        public static final int CAMERA = 4;
+        public static final int CAMERA_ROLL = 22;
+        public static final int CAMERA_UI = 50;
+        public static final int LOCATION = 1;
+        public static final int MICROPHONE = 2;
+        public static final int STORAGE = 8;
+    }
+
     interface InputEventCallback {
         boolean onGenericMotionEvent(MotionEvent motionEvent);
 
         boolean onKeyEvent(KeyEvent keyEvent);
+    }
+
+    public final class PermissionStatus {
+        public static final int DENIED = 2;
+        public static final int GRANTED = 1;
+        public static final int UNKNOWN = 0;
     }
 
     public static class PlaneID {
@@ -162,6 +180,8 @@ public class AndroidActivityWrapper {
     private native void nativeDeactivateEvent();
 
     private native void nativeLowMemoryEvent();
+
+    private native void nativeNotifyPermissionRequestResult(int i, int i2);
 
     private native void nativeOnFocusListener(boolean z);
 
@@ -230,6 +250,40 @@ public class AndroidActivityWrapper {
         return sActivityWrapper;
     }
 
+    boolean manifestDeclaresPermission(int i) {
+        return manifestDeclaresPermission(FlashToAndroidPermission(i));
+    }
+
+    boolean manifestDeclaresPermission(String str) {
+        if (str == null) {
+            return false;
+        }
+        if (this.mDeclaredPermissions == null) {
+            try {
+                String[] strArr = this.m_application.getPackageManager().getPackageInfo(this.m_application.getPackageName(), 4096).requestedPermissions;
+                if (strArr.length > 0) {
+                    this.mDeclaredPermissions = Arrays.asList(strArr);
+                }
+            } catch (Exception e) {
+                this.mDeclaredPermissions = null;
+            }
+        }
+        if (this.mDeclaredPermissions != null) {
+            return this.mDeclaredPermissions.contains(str);
+        }
+        return false;
+    }
+
+    int GetTargetSdkVersion() {
+        if (this.mTargetSdkVersion == 0) {
+            try {
+                this.mTargetSdkVersion = this.m_application.getPackageManager().getPackageInfo(this.m_application.getPackageName(), 4096).applicationInfo.targetSdkVersion;
+            } catch (Exception e) {
+            }
+        }
+        return this.mTargetSdkVersion;
+    }
+
     private AndroidActivityWrapper(Activity activity) {
         this.m_activity = activity;
         this.m_newActivityLock = new ReentrantLock();
@@ -289,6 +343,35 @@ public class AndroidActivityWrapper {
                 }
             }
         } catch (NameNotFoundException e) {
+        }
+        return false;
+    }
+
+    public boolean disableMediaCodec() {
+        try {
+            Bundle bundle = this.m_activity.getPackageManager().getActivityInfo(this.m_activity.getComponentName(), 128).metaData;
+            if (bundle != null) {
+                Boolean bool = (Boolean) bundle.get("disableMediaCodec");
+                if (bool != null) {
+                    return bool.booleanValue();
+                }
+            }
+        } catch (NameNotFoundException e) {
+        }
+        return false;
+    }
+
+    public boolean embeddedFonts() {
+        try {
+            Bundle bundle = this.m_activity.getPackageManager().getActivityInfo(this.m_activity.getComponentName(), 128).metaData;
+            if (bundle != null) {
+                Boolean bool = (Boolean) bundle.get("embeddedFonts");
+                if (bool != null) {
+                    return bool.booleanValue();
+                }
+            }
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
         }
         return false;
     }
@@ -577,7 +660,7 @@ public class AndroidActivityWrapper {
             Context applicationContext = getApplicationContext();
             this.m_layout = new FrameLayout(applicationContext);
             this.m_mainView = new AIRWindowSurfaceView(applicationContext, this);
-            if (this.m_cameraView == null && this.m_runtimeContext.checkCallingOrSelfPermission("android.permission.CAMERA") == 0) {
+            if (this.m_cameraView == null) {
                 this.m_cameraView = new AndroidCameraView(applicationContext, this);
             }
             if (this.m_cameraView != null) {
@@ -706,10 +789,16 @@ public class AndroidActivityWrapper {
     }
 
     private void setMainView(View view) {
-        if (sApplicationLaunched && sEntryPoint != null && isResumed()) {
-            try {
-                sEntryPoint.setMainView(view);
-            } catch (Exception e) {
+        if (sApplicationLaunched && sEntryPoint != null) {
+            boolean z = false;
+            if (VERSION.SDK_INT >= 24) {
+                z = this.m_activity.isInMultiWindowMode();
+            }
+            if (isResumed() || r0) {
+                try {
+                    sEntryPoint.setMainView(view);
+                } catch (Exception e) {
+                }
             }
         }
     }
@@ -921,10 +1010,7 @@ public class AndroidActivityWrapper {
     }
 
     public boolean needsCompositingSurface() {
-        if (this.m_runtimeContext.checkCallingOrSelfPermission("android.permission.CAMERA") == 0) {
-            return true;
-        }
-        return false;
+        return true;
     }
 
     public void setUseRGB565(Boolean bool) {
@@ -980,16 +1066,16 @@ public class AndroidActivityWrapper {
     }
 
     private void checkForDebuggerAndLaunchDialog() {
-        DebugMode debugMode;
         ServerSocket serverSocket;
         boolean z;
-        DebuggerSettings debuggerSettings;
-        boolean z2;
         Object obj;
         Throwable th;
         ServerSocket serverSocket2 = null;
         if (!this.mIsADL) {
+            DebugMode debugMode;
             String str;
+            DebuggerSettings debuggerSettings;
+            boolean z2;
             ResourceFileManager resourceFileManager = new ResourceFileManager(this.m_activity);
             DebugMode debugMode2 = DebugMode.None;
             if (resourceFileManager.resExists(resourceFileManager.lookupResId(AndroidConstants.ANDROID_RESOURCE_DEBUG_RAW_INFO))) {
@@ -1288,7 +1374,6 @@ public class AndroidActivityWrapper {
     }
 
     private void showDialogWaitingForConnection(final int i) {
-        getApplicationContext();
         if (sHasCaptiveRuntime) {
             new Thread(new Runnable() {
                 public void run() {
@@ -1302,6 +1387,7 @@ public class AndroidActivityWrapper {
             return;
         }
         try {
+            getApplicationContext();
             Intent intent = new Intent(this.m_runtimeContext, RemoteDebuggerListenerDialog.class);
             intent.setAction("android.intent.action.MAIN");
             intent.addCategory("RemoteDebuggerListenerDialog");
@@ -1714,6 +1800,103 @@ public class AndroidActivityWrapper {
     public void applyDownloadedConfig() {
         if (sEntryPoint != null) {
             sEntryPoint.EntryApplyDownloadedConfig();
+        }
+    }
+
+    public int checkPermission(int i) {
+        String FlashToAndroidPermission = FlashToAndroidPermission(i);
+        if (!manifestDeclaresPermission(FlashToAndroidPermission)) {
+            return 2;
+        }
+        int checkCallingOrSelfPermission = this.m_activity.checkCallingOrSelfPermission(FlashToAndroidPermission);
+        boolean z;
+        if (GetTargetSdkVersion() < 23 || VERSION.SDK_INT < 23) {
+            z = true;
+        } else {
+            z = this.m_activity.shouldShowRequestPermissionRationale(FlashToAndroidPermission);
+        }
+        if (checkCallingOrSelfPermission == 0) {
+            return 1;
+        }
+        if (checkCallingOrSelfPermission != -1 || r2) {
+            return 2;
+        }
+        return 0;
+    }
+
+    public String FlashToAndroidPermission(int i) {
+        switch (i) {
+            case 1:
+                return "android.permission.ACCESS_FINE_LOCATION";
+            case 2:
+                return "android.permission.RECORD_AUDIO";
+            case 4:
+                return "android.permission.CAMERA";
+            case 8:
+                return "android.permission.WRITE_EXTERNAL_STORAGE";
+            default:
+                return null;
+        }
+    }
+
+    public int AndroidToFlashPermission(String str) {
+        int i = -1;
+        switch (str.hashCode()) {
+            case -1888586689:
+                if (str.equals("android.permission.ACCESS_FINE_LOCATION")) {
+                    i = 0;
+                    break;
+                }
+                break;
+            case 463403621:
+                if (str.equals("android.permission.CAMERA")) {
+                    i = 3;
+                    break;
+                }
+                break;
+            case 1365911975:
+                if (str.equals("android.permission.WRITE_EXTERNAL_STORAGE")) {
+                    i = 1;
+                    break;
+                }
+                break;
+            case 1831139720:
+                if (str.equals("android.permission.RECORD_AUDIO")) {
+                    i = 2;
+                    break;
+                }
+                break;
+        }
+        switch (i) {
+            case 0:
+                return 1;
+            case 1:
+                return 8;
+            case 2:
+                return 2;
+            case 3:
+                return 4;
+            default:
+                return 0;
+        }
+    }
+
+    public void requestPermission(int i) {
+        if (VERSION.SDK_INT < 23 || GetTargetSdkVersion() < 23) {
+            nativeNotifyPermissionRequestResult(i, checkPermission(i));
+            return;
+        }
+        String FlashToAndroidPermission = FlashToAndroidPermission(i);
+        this.m_activity.requestPermissions(new String[]{FlashToAndroidPermission}, 0);
+    }
+
+    public void onRequestPermissionsResult(int i, String[] strArr, int[] iArr) {
+        int i2 = 2;
+        if (iArr.length > 0) {
+            if (iArr[0] == 0) {
+                i2 = 1;
+            }
+            nativeNotifyPermissionRequestResult(AndroidToFlashPermission(strArr[0]), i2);
         }
     }
 }

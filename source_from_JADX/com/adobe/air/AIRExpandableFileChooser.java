@@ -1,7 +1,6 @@
 package com.adobe.air;
 
 import android.app.AlertDialog.Builder;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.res.Resources;
@@ -56,8 +55,8 @@ public class AIRExpandableFileChooser implements OnChildClickListener {
     private boolean mSave = false;
     private String mSelection = new String();
 
-    class C00811 implements OnKeyListener {
-        C00811() {
+    class C00861 implements OnKeyListener {
+        C00861() {
         }
 
         public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
@@ -68,8 +67,8 @@ public class AIRExpandableFileChooser implements OnChildClickListener {
         }
     }
 
-    class C00822 implements View.OnKeyListener {
-        C00822() {
+    class C00872 implements View.OnKeyListener {
+        C00872() {
         }
 
         public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -88,8 +87,8 @@ public class AIRExpandableFileChooser implements OnChildClickListener {
         }
     }
 
-    class C00833 implements OnClickListener {
-        C00833() {
+    class C00883 implements OnClickListener {
+        C00883() {
         }
 
         public void onClick(View view) {
@@ -104,8 +103,8 @@ public class AIRExpandableFileChooser implements OnChildClickListener {
         }
     }
 
-    class C00844 implements DialogInterface.OnClickListener {
-        C00844() {
+    class C00894 implements DialogInterface.OnClickListener {
+        C00894() {
         }
 
         public void onClick(DialogInterface dialogInterface, int i) {
@@ -123,8 +122,8 @@ public class AIRExpandableFileChooser implements OnChildClickListener {
         }
     }
 
-    class C00855 implements DialogInterface.OnClickListener {
-        C00855() {
+    class C00905 implements DialogInterface.OnClickListener {
+        C00905() {
         }
 
         public void onClick(DialogInterface dialogInterface, int i) {
@@ -205,13 +204,13 @@ public class AIRExpandableFileChooser implements OnChildClickListener {
 
         FileChooserItem(LayoutInflater layoutInflater, Resources resources, ViewGroup viewGroup, int i, int i2) {
             super(AndroidActivityWrapper.GetAndroidActivityWrapper().getActivity());
-            View GetLayoutViewFromRuntime;
+            View GetLayoutView;
             if (AIRExpandableFileChooser.this.mAllowMultiple) {
-                GetLayoutViewFromRuntime = Utils.GetLayoutViewFromRuntime("expandable_multiple_chooser_row", resources, layoutInflater);
-                Resources resources2 = GetLayoutViewFromRuntime.getResources();
-                this.mFileNameView = (TextView) Utils.GetWidgetInViewByName("filename", resources2, GetLayoutViewFromRuntime);
-                this.mFilePathView = (TextView) Utils.GetWidgetInViewByName("filepath", resources2, GetLayoutViewFromRuntime);
-                this.mFileCheckBox = (CompoundButton) Utils.GetWidgetInViewByName("filecheck", resources2, GetLayoutViewFromRuntime);
+                GetLayoutView = Utils.GetLayoutView("expandable_multiple_chooser_row", resources, layoutInflater);
+                Resources resources2 = GetLayoutView.getResources();
+                this.mFileNameView = (TextView) Utils.GetWidgetInViewByNameFromPackage("filename", resources2, GetLayoutView);
+                this.mFilePathView = (TextView) Utils.GetWidgetInViewByNameFromPackage("filepath", resources2, GetLayoutView);
+                this.mFileCheckBox = (CompoundButton) Utils.GetWidgetInViewByNameFromPackage("filecheck", resources2, GetLayoutView);
                 if (this.mFileNameView == null || this.mFilePathView == null || this.mFileCheckBox == null) {
                     this.mListFlatPosition = AIRExpandableFileChooser.this.expandableListPositionToFlatPosition(i, i2);
                     this.mListener = new OnCheckedChangeListener(AIRExpandableFileChooser.this) {
@@ -225,22 +224,22 @@ public class AIRExpandableFileChooser implements OnChildClickListener {
                             }
                         }
                     };
-                    addView(GetLayoutViewFromRuntime);
+                    addView(GetLayoutView);
                 } else {
                     this.mListFlatPosition = AIRExpandableFileChooser.this.expandableListPositionToFlatPosition(i, i2);
                     this.mListener = /* anonymous class already generated */;
-                    addView(GetLayoutViewFromRuntime);
+                    addView(GetLayoutView);
                 }
                 return;
             }
-            GetLayoutViewFromRuntime = Utils.GetLayoutViewFromRuntime("expandable_chooser_row", resources, layoutInflater);
-            resources2 = GetLayoutViewFromRuntime.getResources();
-            this.mFileNameView = (TextView) Utils.GetWidgetInViewByName("filename", resources2, GetLayoutViewFromRuntime);
-            this.mFilePathView = (TextView) Utils.GetWidgetInViewByName("filepath", resources2, GetLayoutViewFromRuntime);
+            GetLayoutView = Utils.GetLayoutView("expandable_chooser_row", resources, layoutInflater);
+            resources2 = GetLayoutView.getResources();
+            this.mFileNameView = (TextView) Utils.GetWidgetInViewByNameFromPackage("filename", resources2, GetLayoutView);
+            this.mFilePathView = (TextView) Utils.GetWidgetInViewByNameFromPackage("filepath", resources2, GetLayoutView);
             if (this.mFileNameView == null || this.mFilePathView == null) {
-                addView(GetLayoutViewFromRuntime);
+                addView(GetLayoutView);
             } else {
-                addView(GetLayoutViewFromRuntime);
+                addView(GetLayoutView);
             }
         }
 
@@ -311,40 +310,40 @@ public class AIRExpandableFileChooser implements OnChildClickListener {
         AndroidActivityWrapper GetAndroidActivityWrapper = AndroidActivityWrapper.GetAndroidActivityWrapper();
         this.mFileChooserDialog = new AndroidAlertDialog(GetAndroidActivityWrapper.getActivity());
         Builder GetAlertDialogBuilder = this.mFileChooserDialog.GetAlertDialogBuilder();
-        GetAlertDialogBuilder.setOnKeyListener(new C00811());
-        Context runtimeContext = GetAndroidActivityWrapper.getRuntimeContext();
-        this.mRuntimeInflater = LayoutInflater.from(runtimeContext);
-        this.mRuntimeResources = runtimeContext.getResources();
-        View GetLayoutViewFromRuntime = Utils.GetLayoutViewFromRuntime("main", this.mRuntimeResources, this.mRuntimeInflater);
-        GetAlertDialogBuilder.setView(GetLayoutViewFromRuntime);
-        Resources resources = GetLayoutViewFromRuntime.getResources();
-        ExpandableListView expandableListView = (ExpandableListView) Utils.GetWidgetInViewByName("list", resources, GetLayoutViewFromRuntime);
+        GetAlertDialogBuilder.setOnKeyListener(new C00861());
+        GetAndroidActivityWrapper.getRuntimeContext();
+        this.mRuntimeInflater = GetAndroidActivityWrapper.getActivity().getLayoutInflater();
+        this.mRuntimeResources = GetAndroidActivityWrapper.getActivity().getResources();
+        View GetLayoutView = Utils.GetLayoutView("main", this.mRuntimeResources, this.mRuntimeInflater);
+        GetAlertDialogBuilder.setView(GetLayoutView);
+        Resources resources = GetLayoutView.getResources();
+        ExpandableListView expandableListView = (ExpandableListView) Utils.GetWidgetInView("list", resources, GetLayoutView);
         expandableListView.setOnChildClickListener(this);
         expandableListView.setEmptyView(GetAndroidActivityWrapper.getActivity().findViewById(16908292));
-        RelativeLayout relativeLayout = (RelativeLayout) Utils.GetWidgetInViewByName("file_save_panel", resources, GetLayoutViewFromRuntime);
+        RelativeLayout relativeLayout = (RelativeLayout) Utils.GetWidgetInViewByNameFromPackage("file_save_panel", resources, GetLayoutView);
         if (this.mSave) {
-            GetAlertDialogBuilder.setTitle(Utils.GetResourceStringFromRuntime("file_download", this.mRuntimeResources));
+            GetAlertDialogBuilder.setTitle(Utils.GetResourceString("file_download", this.mRuntimeResources));
             relativeLayout.setVisibility(0);
-            this.mFileSaveName = (EditText) Utils.GetWidgetInViewByName("file_save_name", resources, GetLayoutViewFromRuntime);
+            this.mFileSaveName = (EditText) Utils.GetWidgetInViewByNameFromPackage("file_save_name", resources, GetLayoutView);
             if (str != null) {
                 this.mFileSaveName.setText(Utils.GetExternalStorageDirectory() + "/" + str);
             }
-            this.mFileSaveName.setOnKeyListener(new C00822());
-            ((Button) Utils.GetWidgetInViewByName("file_save_button", resources, GetLayoutViewFromRuntime)).setOnClickListener(new C00833());
+            this.mFileSaveName.setOnKeyListener(new C00872());
+            ((Button) Utils.GetWidgetInViewByNameFromPackage("file_save_button", resources, GetLayoutView)).setOnClickListener(new C00883());
         } else {
-            GetAlertDialogBuilder.setTitle(Utils.GetResourceStringFromRuntime("file_upload", this.mRuntimeResources));
+            GetAlertDialogBuilder.setTitle(Utils.GetResourceString("file_upload", this.mRuntimeResources));
             relativeLayout.setVisibility(8);
         }
-        AddMediaSubtree(Utils.GetResourceStringFromRuntime("audio_files", this.mRuntimeResources), Media.EXTERNAL_CONTENT_URI);
-        AddMediaSubtree(Utils.GetResourceStringFromRuntime("image_files", this.mRuntimeResources), Images.Media.EXTERNAL_CONTENT_URI);
-        AddMediaSubtree(Utils.GetResourceStringFromRuntime("video_files", this.mRuntimeResources), Video.Media.EXTERNAL_CONTENT_URI);
+        AddMediaSubtree(Utils.GetResourceString("audio_files", this.mRuntimeResources), Media.EXTERNAL_CONTENT_URI);
+        AddMediaSubtree(Utils.GetResourceString("image_files", this.mRuntimeResources), Images.Media.EXTERNAL_CONTENT_URI);
+        AddMediaSubtree(Utils.GetResourceString("video_files", this.mRuntimeResources), Video.Media.EXTERNAL_CONTENT_URI);
         if (this.mGroupData.isEmpty()) {
             expandableListView.setVisibility(8);
         } else {
             this.mAdapter = new FileChooserExpandableListAdapter(this.mRuntimeInflater, this.mRuntimeResources);
             expandableListView.setAdapter(this.mAdapter);
             expandableListView.setItemsCanFocus(true);
-            ((TextView) Utils.GetWidgetInViewByName("empty", resources, GetLayoutViewFromRuntime)).setVisibility(8);
+            ((TextView) Utils.GetWidgetInViewByNameFromPackage("empty", resources, GetLayoutView)).setVisibility(8);
         }
         if (this.mAllowMultiple) {
             createInvisibleMultipleFileSelectionView();
@@ -403,8 +402,8 @@ public class AIRExpandableFileChooser implements OnChildClickListener {
 
     private void createInvisibleMultipleFileSelectionView() {
         Builder GetAlertDialogBuilder = this.mFileChooserDialog.GetAlertDialogBuilder();
-        GetAlertDialogBuilder.setPositiveButton(Utils.GetResourceStringFromRuntime("button_ok", this.mRuntimeResources), new C00844());
-        GetAlertDialogBuilder.setNegativeButton(Utils.GetResourceStringFromRuntime("button_cancel", this.mRuntimeResources), new C00855());
+        GetAlertDialogBuilder.setPositiveButton(Utils.GetResourceString("button_ok", this.mRuntimeResources), new C00894());
+        GetAlertDialogBuilder.setNegativeButton(Utils.GetResourceString("button_cancel", this.mRuntimeResources), new C00905());
     }
 
     private void AddMediaSubtree(String str, Uri uri) {

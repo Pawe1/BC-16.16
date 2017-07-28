@@ -21,14 +21,14 @@ public class ImageDownloader {
     private static Handler handler;
     private static final Map<RequestKey, DownloaderContext> pendingRequests = new HashMap();
 
-    final class C02131 implements Runnable {
+    final class C02481 implements Runnable {
         final /* synthetic */ Bitmap val$bitmap;
         final /* synthetic */ Callback val$callback;
         final /* synthetic */ Exception val$error;
         final /* synthetic */ boolean val$isCachedRedirect;
         final /* synthetic */ ImageRequest val$request;
 
-        C02131(ImageRequest imageRequest, Exception exception, boolean z, Bitmap bitmap, Callback callback) {
+        C02481(ImageRequest imageRequest, Exception exception, boolean z, Bitmap bitmap, Callback callback) {
             this.val$request = imageRequest;
             this.val$error = exception;
             this.val$isCachedRedirect = z;
@@ -57,15 +57,6 @@ public class ImageDownloader {
         }
     }
 
-    private static class DownloaderContext {
-        boolean isCancelled;
-        ImageRequest request;
-        WorkItem workItem;
-
-        private DownloaderContext() {
-        }
-    }
-
     private static class DownloadImageWorkItem implements Runnable {
         private Context context;
         private RequestKey key;
@@ -77,6 +68,15 @@ public class ImageDownloader {
 
         public void run() {
             ImageDownloader.download(this.key, this.context);
+        }
+    }
+
+    private static class DownloaderContext {
+        boolean isCancelled;
+        ImageRequest request;
+        WorkItem workItem;
+
+        private DownloaderContext() {
         }
     }
 
@@ -100,7 +100,7 @@ public class ImageDownloader {
         }
 
         public final int hashCode() {
-            return ((this.uri.hashCode() + 1073) * 37) + this.tag.hashCode();
+            return ((this.uri.hashCode() + 1073) * HASH_MULTIPLIER) + this.tag.hashCode();
         }
     }
 
@@ -237,7 +237,7 @@ public class ImageDownloader {
         com.facebook.internal.Utility.disconnectQuietly(r1);
         throw r0;
     L_0x00ac:
-        r4 = com.facebook.C0253R.string.com_facebook_image_download_unknown_error;	 Catch:{ IOException -> 0x0040, all -> 0x00a0 }
+        r4 = com.facebook.C0196R.string.com_facebook_image_download_unknown_error;	 Catch:{ IOException -> 0x0040, all -> 0x00a0 }
         r4 = r12.getString(r4);	 Catch:{ IOException -> 0x0040, all -> 0x00a0 }
         r6.append(r4);	 Catch:{ IOException -> 0x0040, all -> 0x00a0 }
         goto L_0x0096;
@@ -329,7 +329,7 @@ public class ImageDownloader {
             ImageRequest imageRequest = removePendingRequest.request;
             Callback callback = imageRequest.getCallback();
             if (callback != null) {
-                getHandler().post(new C02131(imageRequest, exception, z, bitmap, callback));
+                getHandler().post(new C02481(imageRequest, exception, z, bitmap, callback));
             }
         }
     }

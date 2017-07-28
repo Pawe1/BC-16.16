@@ -14,6 +14,11 @@ public class HelperActivity extends Activity {
         NativeManager.instance.notifyInfo("called startActivityForResult");
     }
 
+    protected void onStart() {
+        super.onStart();
+        setVisible(true);
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         NativeManager.instance.notifyInfo("onActivityResult called");

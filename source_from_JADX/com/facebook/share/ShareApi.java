@@ -57,8 +57,8 @@ public final class ShareApi {
     private String message;
     private final ShareContent shareContent;
 
-    class C03057 implements ValueMapper {
-        C03057() {
+    class C03067 implements ValueMapper {
+        C03067() {
         }
 
         public void mapValue(Object obj, OnMapValueCompleteListener onMapValueCompleteListener) {
@@ -99,6 +99,29 @@ public final class ShareApi {
         }
     }
 
+    private Bundle getSharePhotoCommonParameters(SharePhoto sharePhoto, SharePhotoContent sharePhotoContent) {
+        Bundle parameters = sharePhoto.getParameters();
+        if (!(parameters.containsKey("place") || Utility.isNullOrEmpty(sharePhotoContent.getPlaceId()))) {
+            parameters.putString("place", sharePhotoContent.getPlaceId());
+        }
+        if (!(parameters.containsKey("tags") || Utility.isNullOrEmpty(sharePhotoContent.getPeopleIds()))) {
+            Collection<String> peopleIds = sharePhotoContent.getPeopleIds();
+            if (!Utility.isNullOrEmpty((Collection) peopleIds)) {
+                JSONArray jSONArray = new JSONArray();
+                for (String str : peopleIds) {
+                    JSONObject jSONObject = new JSONObject();
+                    jSONObject.put("tag_uid", str);
+                    jSONArray.put(jSONObject);
+                }
+                parameters.putString("tags", jSONArray.toString());
+            }
+        }
+        if (!(parameters.containsKey("ref") || Utility.isNullOrEmpty(sharePhotoContent.getRef()))) {
+            parameters.putString("ref", sharePhotoContent.getRef());
+        }
+        return parameters;
+    }
+
     private static void handleImagesOnAction(Bundle bundle) {
         String string = bundle.getString("image");
         if (string != null) {
@@ -136,7 +159,7 @@ public final class ShareApi {
     }
 
     private void shareLinkContent(ShareLinkContent shareLinkContent, final FacebookCallback<Result> facebookCallback) {
-        Callback c03014 = new Callback() {
+        Callback c03024 = new Callback() {
             public void onCompleted(GraphResponse graphResponse) {
                 JSONObject jSONObject = graphResponse.getJSONObject();
                 ShareInternalUtility.invokeCallbackWithResults(facebookCallback, jSONObject == null ? null : jSONObject.optString(ShareConstants.WEB_DIALOG_PARAM_ID), graphResponse);
@@ -150,11 +173,11 @@ public final class ShareApi {
         bundle.putString("name", shareLinkContent.getContentTitle());
         bundle.putString("description", shareLinkContent.getContentDescription());
         bundle.putString("ref", shareLinkContent.getRef());
-        new GraphRequest(AccessToken.getCurrentAccessToken(), getGraphPath("feed"), bundle, HttpMethod.POST, c03014).executeAsync();
+        new GraphRequest(AccessToken.getCurrentAccessToken(), getGraphPath("feed"), bundle, HttpMethod.POST, c03024).executeAsync();
     }
 
     private void shareOpenGraphContent(ShareOpenGraphContent shareOpenGraphContent, final FacebookCallback<Result> facebookCallback) {
-        final Callback c02981 = new Callback() {
+        final Callback c02991 = new Callback() {
             public void onCompleted(GraphResponse graphResponse) {
                 JSONObject jSONObject = graphResponse.getJSONObject();
                 ShareInternalUtility.invokeCallbackWithResults(facebookCallback, jSONObject == null ? null : jSONObject.optString(ShareConstants.WEB_DIALOG_PARAM_ID), graphResponse);
@@ -171,7 +194,7 @@ public final class ShareApi {
             public void onComplete() {
                 try {
                     ShareApi.handleImagesOnAction(bundle);
-                    new GraphRequest(AccessToken.getCurrentAccessToken(), ShareApi.this.getGraphPath(URLEncoder.encode(action.getActionType(), ShareApi.DEFAULT_CHARSET)), bundle, HttpMethod.POST, c02981).executeAsync();
+                    new GraphRequest(AccessToken.getCurrentAccessToken(), ShareApi.this.getGraphPath(URLEncoder.encode(action.getActionType(), ShareApi.DEFAULT_CHARSET)), bundle, HttpMethod.POST, c02991).executeAsync();
                 } catch (Exception e) {
                     ShareInternalUtility.invokeCallbackWithException(facebookCallback2, e);
                 }
@@ -190,7 +213,7 @@ public final class ShareApi {
         final ArrayList arrayList2 = new ArrayList();
         final ArrayList arrayList3 = new ArrayList();
         final FacebookCallback<Result> facebookCallback2 = facebookCallback;
-        C03003 c03003 = new Callback() {
+        C03013 c03013 = new Callback() {
             public void onCompleted(GraphResponse graphResponse) {
                 JSONObject jSONObject = graphResponse.getJSONObject();
                 if (jSONObject != null) {
@@ -212,18 +235,22 @@ public final class ShareApi {
         };
         try {
             for (SharePhoto sharePhoto : sharePhotoContent.getPhotos()) {
-                Bitmap bitmap = sharePhoto.getBitmap();
-                Uri imageUrl = sharePhoto.getImageUrl();
-                String caption = sharePhoto.getCaption();
-                if (caption == null) {
-                    caption = getMessage();
-                }
-                if (bitmap != null) {
-                    arrayList.add(GraphRequest.newUploadPhotoRequest(currentAccessToken, getGraphPath(PHOTOS_EDGE), bitmap, caption, sharePhoto.getParameters(), (Callback) c03003));
-                } else if (imageUrl != null) {
-                    arrayList.add(GraphRequest.newUploadPhotoRequest(currentAccessToken, getGraphPath(PHOTOS_EDGE), imageUrl, caption, sharePhoto.getParameters(), (Callback) c03003));
-                } else {
-                    continue;
+                try {
+                    Bundle sharePhotoCommonParameters = getSharePhotoCommonParameters(sharePhoto, sharePhotoContent);
+                    Bitmap bitmap = sharePhoto.getBitmap();
+                    Uri imageUrl = sharePhoto.getImageUrl();
+                    String caption = sharePhoto.getCaption();
+                    if (caption == null) {
+                        caption = getMessage();
+                    }
+                    if (bitmap != null) {
+                        arrayList.add(GraphRequest.newUploadPhotoRequest(currentAccessToken, getGraphPath(PHOTOS_EDGE), bitmap, caption, sharePhotoCommonParameters, (Callback) c03013));
+                    } else if (imageUrl != null) {
+                        arrayList.add(GraphRequest.newUploadPhotoRequest(currentAccessToken, getGraphPath(PHOTOS_EDGE), imageUrl, caption, sharePhotoCommonParameters, (Callback) c03013));
+                    }
+                } catch (Exception e) {
+                    ShareInternalUtility.invokeCallbackWithException(facebookCallback, e);
+                    return;
                 }
             }
             mutable.value = Integer.valueOf(((Integer) mutable.value).intValue() + arrayList.size());
@@ -231,8 +258,8 @@ public final class ShareApi {
             while (it.hasNext()) {
                 ((GraphRequest) it.next()).executeAsync();
             }
-        } catch (Exception e) {
-            ShareInternalUtility.invokeCallbackWithException(facebookCallback, e);
+        } catch (Exception e2) {
+            ShareInternalUtility.invokeCallbackWithException(facebookCallback, e2);
         }
     }
 
@@ -294,7 +321,7 @@ public final class ShareApi {
     }
 
     private <T> void stageCollectionValues(CollectionMapper.Collection<T> collection, OnMapperCompleteListener onMapperCompleteListener) {
-        CollectionMapper.iterate(collection, new C03057(), onMapperCompleteListener);
+        CollectionMapper.iterate(collection, new C03067(), onMapperCompleteListener);
     }
 
     private void stageOpenGraphAction(final Bundle bundle, OnMapperCompleteListener onMapperCompleteListener) {
@@ -316,7 +343,7 @@ public final class ShareApi {
     }
 
     private void stageOpenGraphObject(final ShareOpenGraphObject shareOpenGraphObject, final OnMapValueCompleteListener onMapValueCompleteListener) {
-        String string = shareOpenGraphObject.getString("type");
+        String string = shareOpenGraphObject.getString(ShareConstants.MEDIA_TYPE);
         if (string == null) {
             string = shareOpenGraphObject.getString("og:type");
         }
@@ -325,7 +352,7 @@ public final class ShareApi {
             return;
         }
         final JSONObject jSONObject = new JSONObject();
-        CollectionMapper.Collection c03079 = new CollectionMapper.Collection<String>() {
+        CollectionMapper.Collection c03089 = new CollectionMapper.Collection<String>() {
             public Object get(String str) {
                 return shareOpenGraphObject.get(str);
             }
@@ -372,7 +399,7 @@ public final class ShareApi {
             }
         };
         final OnMapValueCompleteListener onMapValueCompleteListener2 = onMapValueCompleteListener;
-        stageCollectionValues(c03079, new OnMapperCompleteListener() {
+        stageCollectionValues(c03089, new OnMapperCompleteListener() {
             public void onComplete() {
                 String jSONObject = jSONObject.toString();
                 Bundle bundle = new Bundle();
@@ -403,8 +430,8 @@ public final class ShareApi {
         }
         Callback anonymousClass12 = new Callback() {
             public void onCompleted(GraphResponse graphResponse) {
-                String errorMessage;
                 FacebookRequestError error = graphResponse.getError();
+                String errorMessage;
                 if (error != null) {
                     errorMessage = error.getErrorMessage();
                     if (errorMessage == null) {
@@ -418,7 +445,7 @@ public final class ShareApi {
                     onMapValueCompleteListener.onError(new FacebookException("Error staging photo."));
                     return;
                 }
-                errorMessage = jSONObject.optString("uri");
+                errorMessage = jSONObject.optString(ShareConstants.MEDIA_URI);
                 if (errorMessage == null) {
                     onMapValueCompleteListener.onError(new FacebookException("Error staging photo."));
                     return;

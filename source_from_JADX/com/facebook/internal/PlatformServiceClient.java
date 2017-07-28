@@ -22,8 +22,8 @@ public abstract class PlatformServiceClient implements ServiceConnection {
     private boolean running;
     private Messenger sender;
 
-    class C02171 extends Handler {
-        C02171() {
+    class C02531 extends Handler {
+        C02531() {
         }
 
         public void handleMessage(Message message) {
@@ -45,7 +45,7 @@ public abstract class PlatformServiceClient implements ServiceConnection {
         this.replyMessage = i2;
         this.applicationId = str;
         this.protocolVersion = i3;
-        this.handler = new C02171();
+        this.handler = new C02531();
     }
 
     private void callback(Bundle bundle) {
@@ -89,7 +89,10 @@ public abstract class PlatformServiceClient implements ServiceConnection {
             } else {
                 callback(data);
             }
-            this.context.unbindService(this);
+            try {
+                this.context.unbindService(this);
+            } catch (IllegalArgumentException e) {
+            }
         }
     }
 

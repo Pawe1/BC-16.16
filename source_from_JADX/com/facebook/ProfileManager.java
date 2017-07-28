@@ -3,7 +3,7 @@ package com.facebook;
 import android.content.Intent;
 import com.facebook.internal.Utility;
 import com.facebook.internal.Validate;
-import p000c.p001m.p002x.p003a.gv.at;
+import p000c.p001m.p002x.p003a.gv.ax;
 
 final class ProfileManager {
     static final String ACTION_CURRENT_PROFILE_CHANGED = "com.facebook.sdk.ACTION_CURRENT_PROFILE_CHANGED";
@@ -11,13 +11,13 @@ final class ProfileManager {
     static final String EXTRA_OLD_PROFILE = "com.facebook.sdk.EXTRA_OLD_PROFILE";
     private static volatile ProfileManager instance;
     private Profile currentProfile;
-    private final at localBroadcastManager;
+    private final ax localBroadcastManager;
     private final ProfileCache profileCache;
 
-    ProfileManager(at atVar, ProfileCache profileCache) {
-        Validate.notNull(atVar, "localBroadcastManager");
+    ProfileManager(ax axVar, ProfileCache profileCache) {
+        Validate.notNull(axVar, "localBroadcastManager");
         Validate.notNull(profileCache, "profileCache");
-        this.localBroadcastManager = atVar;
+        this.localBroadcastManager = axVar;
         this.profileCache = profileCache;
     }
 
@@ -25,7 +25,7 @@ final class ProfileManager {
         if (instance == null) {
             synchronized (ProfileManager.class) {
                 if (instance == null) {
-                    instance = new ProfileManager(at.m70a(FacebookSdk.getApplicationContext()), new ProfileCache());
+                    instance = new ProfileManager(ax.m123a(FacebookSdk.getApplicationContext()), new ProfileCache());
                 }
             }
         }
@@ -36,7 +36,7 @@ final class ProfileManager {
         Intent intent = new Intent(ACTION_CURRENT_PROFILE_CHANGED);
         intent.putExtra(EXTRA_OLD_PROFILE, profile);
         intent.putExtra(EXTRA_NEW_PROFILE, profile2);
-        this.localBroadcastManager.m74a(intent);
+        this.localBroadcastManager.m127a(intent);
     }
 
     private void setCurrentProfile(Profile profile, boolean z) {

@@ -1,6 +1,5 @@
 package de.pagecon.ane.notificationlistenerservice;
 
-import android.annotation.TargetApi;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
@@ -18,22 +17,21 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.json.JSONObject;
 
-@TargetApi(21)
 public class ExtensionContext extends FREContext implements ManagerListener {
-    public static final String EVENT_APPLICATION_STATE_CHANGED = "eventApplicateionStateChanged";
+    public static final String EVENT_APPLICATION_STATE_CHANGED = "eventApplicationStateChanged";
     public static final String EVENT_NOTIFICATION = "eventNotification";
     public static final String EVENT_STATUS_CHANGED = "eventNotificationStatusChanged";
     private Map<String, FREFunction> functionMap;
     private ExtensionContext instance;
     private Boolean isInitialized = Boolean.valueOf(false);
 
-    class C03801 implements FREFunction {
-        C03801() {
+    class C04311 implements FREFunction {
+        C04311() {
         }
 
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
             if (!ExtensionContext.this.isInitialized.booleanValue()) {
-                Manager.cLog("initializing NotificationListenerServiceANE v5 ...");
+                Manager.cLog("initializing NotificationListenerServiceANE v6 ...");
                 if (Manager.instance == null) {
                     try {
                         Manager.create(ExtensionContext.this.getActivity(), ExtensionContext.this.instance);
@@ -53,7 +51,7 @@ public class ExtensionContext extends FREContext implements ManagerListener {
         Manager.cLog("ExtensionContext");
         this.instance = this;
         this.functionMap = new HashMap();
-        this.functionMap.put("initialize", new C03801());
+        this.functionMap.put("initialize", new C04311());
         this.functionMap.put("setNotificationDebugMode", new SetNotificationDebugMode());
         this.functionMap.put("openSecuritySettings", new OpenSecuritySettings());
         this.functionMap.put("getNotificationsEnabled", new GetNotificationsEnabled());
@@ -71,6 +69,7 @@ public class ExtensionContext extends FREContext implements ManagerListener {
     }
 
     public void dispatchNotification(StatusBarNotification sbn) {
+        Manager.cLog("[dispatchNotification]");
         Manager.cLog("[StatusBarNotification]: " + sbn.getId() + " - " + sbn.getNotification().toString());
         try {
             JSONObject json = new JSONObject();
@@ -114,6 +113,7 @@ public class ExtensionContext extends FREContext implements ManagerListener {
                 json.put("category", 0);
                 json.put("group", "");
             }
+            Manager.cLog("[dispatchNotification] EVENT_NOTIFICATION: " + json.toString());
             dispatchStatusEventAsync(EVENT_NOTIFICATION, json.toString());
         } catch (Exception e) {
             Manager.cLog("[StatusBarNotification] ERROR: " + e.getMessage());
@@ -133,11 +133,12 @@ public class ExtensionContext extends FREContext implements ManagerListener {
         }
     }
 
-    public void dispatchNativeApplicationState(String state) {
-        Manager.cLog("[dispatchNativeApplicationState changed]: " + state);
+    public void dispatchNativeApplicationState(String state, String activityName) {
+        Manager.cLog("[dispatchNativeApplicationState changed from " + activityName + "]: " + state);
         try {
             JSONObject json = new JSONObject();
-            json.put("state", state);
+            json.put(ServerProtocol.DIALOG_PARAM_STATE, state);
+            json.put("activityName", activityName);
             dispatchStatusEventAsync(EVENT_APPLICATION_STATE_CHANGED, json.toString());
         } catch (Exception e) {
             Manager.cLog("[dispatchNativeApplicationState changed] ERROR: " + e.getMessage());

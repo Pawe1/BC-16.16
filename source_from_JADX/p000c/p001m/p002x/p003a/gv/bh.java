@@ -1,143 +1,173 @@
 package p000c.p001m.p002x.p003a.gv;
 
-import android.os.Build.VERSION;
-import android.support.v4.view.ViewPropertyAnimatorCompat;
-import android.view.View;
-import java.util.WeakHashMap;
+public final class bh<E> implements Cloneable {
+    private static final Object f159a = new Object();
+    private boolean f160b;
+    private int[] f161c;
+    private Object[] f162d;
+    private int f163e;
 
-public final class bh {
-    static final C0029k f127a;
-
-    interface C0029k {
-        int mo18a(View view);
-
-        void mo19a(View view, int i);
-
-        boolean mo20b(View view);
-
-        void mo21c(View view);
+    public bh() {
+        this(10);
     }
 
-    static class C0030a implements C0029k {
-        WeakHashMap<View, ViewPropertyAnimatorCompat> f125a = null;
-
-        C0030a() {
-        }
-
-        public int mo18a(View view) {
-            return 0;
-        }
-
-        public void mo19a(View view, int i) {
-        }
-
-        public boolean mo20b(View view) {
-            return true;
-        }
-
-        public void mo21c(View view) {
-        }
-    }
-
-    static class C0031b extends C0030a {
-        C0031b() {
-        }
-    }
-
-    static class C0032c extends C0031b {
-        C0032c() {
-        }
-    }
-
-    static class C0033d extends C0032c {
-        C0033d() {
-        }
-
-        public final int mo18a(View view) {
-            return view.getLayerType();
-        }
-
-        public final void mo19a(View view, int i) {
-            view.setLayerType(i, null);
-        }
-
-        public final void mo21c(View view) {
-            view.setSaveFromParentEnabled(false);
-        }
-    }
-
-    static class C0034e extends C0033d {
-        static boolean f126b = false;
-
-        C0034e() {
-        }
-    }
-
-    static class C0035f extends C0034e {
-        C0035f() {
-        }
-
-        public final boolean mo20b(View view) {
-            return view.hasOverlappingRendering();
-        }
-    }
-
-    static class C0036g extends C0035f {
-        C0036g() {
-        }
-    }
-
-    static class C0037h extends C0036g {
-        C0037h() {
-        }
-    }
-
-    static class C0038i extends C0037h {
-        C0038i() {
-        }
-    }
-
-    static class C0039j extends C0038i {
-        C0039j() {
-        }
-    }
-
-    static {
-        int i = VERSION.SDK_INT;
-        if (i >= 21) {
-            f127a = new C0039j();
-        } else if (i >= 19) {
-            f127a = new C0038i();
-        } else if (i >= 17) {
-            f127a = new C0036g();
-        } else if (i >= 16) {
-            f127a = new C0035f();
-        } else if (i >= 14) {
-            f127a = new C0034e();
-        } else if (i >= 11) {
-            f127a = new C0033d();
-        } else if (i >= 9) {
-            f127a = new C0032c();
-        } else if (i >= 7) {
-            f127a = new C0031b();
+    public bh(int i) {
+        this.f160b = false;
+        if (i == 0) {
+            this.f161c = bc.f142a;
+            this.f162d = bc.f144c;
         } else {
-            f127a = new C0030a();
+            int a = bc.m165a(i);
+            this.f161c = new int[a];
+            this.f162d = new Object[a];
+        }
+        this.f163e = 0;
+    }
+
+    private bh<E> m170c() {
+        try {
+            bh<E> bhVar = (bh) super.clone();
+            try {
+                bhVar.f161c = (int[]) this.f161c.clone();
+                bhVar.f162d = (Object[]) this.f162d.clone();
+                return bhVar;
+            } catch (CloneNotSupportedException e) {
+                return bhVar;
+            }
+        } catch (CloneNotSupportedException e2) {
+            return null;
         }
     }
 
-    public static int m140a(View view) {
-        return f127a.mo18a(view);
+    private void m171d() {
+        int i = this.f163e;
+        int[] iArr = this.f161c;
+        Object[] objArr = this.f162d;
+        int i2 = 0;
+        for (int i3 = 0; i3 < i; i3++) {
+            Object obj = objArr[i3];
+            if (obj != f159a) {
+                if (i3 != i2) {
+                    iArr[i2] = iArr[i3];
+                    objArr[i2] = obj;
+                    objArr[i3] = null;
+                }
+                i2++;
+            }
+        }
+        this.f160b = false;
+        this.f163e = i2;
     }
 
-    public static void m141a(View view, int i) {
-        f127a.mo19a(view, i);
+    public final int m172a() {
+        if (this.f160b) {
+            m171d();
+        }
+        return this.f163e;
     }
 
-    public static void m142b(View view) {
-        f127a.mo21c(view);
+    public final E m173a(int i) {
+        int a = bc.m166a(this.f161c, this.f163e, i);
+        return (a < 0 || this.f162d[a] == f159a) ? null : this.f162d[a];
     }
 
-    public static boolean m143c(View view) {
-        return f127a.mo20b(view);
+    public final void m174a(int i, E e) {
+        int a = bc.m166a(this.f161c, this.f163e, i);
+        if (a >= 0) {
+            this.f162d[a] = e;
+            return;
+        }
+        a ^= -1;
+        if (a >= this.f163e || this.f162d[a] != f159a) {
+            if (this.f160b && this.f163e >= this.f161c.length) {
+                m171d();
+                a = bc.m166a(this.f161c, this.f163e, i) ^ -1;
+            }
+            if (this.f163e >= this.f161c.length) {
+                int a2 = bc.m165a(this.f163e + 1);
+                Object obj = new int[a2];
+                Object obj2 = new Object[a2];
+                System.arraycopy(this.f161c, 0, obj, 0, this.f161c.length);
+                System.arraycopy(this.f162d, 0, obj2, 0, this.f162d.length);
+                this.f161c = obj;
+                this.f162d = obj2;
+            }
+            if (this.f163e - a != 0) {
+                System.arraycopy(this.f161c, a, this.f161c, a + 1, this.f163e - a);
+                System.arraycopy(this.f162d, a, this.f162d, a + 1, this.f163e - a);
+            }
+            this.f161c[a] = i;
+            this.f162d[a] = e;
+            this.f163e++;
+            return;
+        }
+        this.f161c[a] = i;
+        this.f162d[a] = e;
+    }
+
+    public final void m175b() {
+        int i = this.f163e;
+        Object[] objArr = this.f162d;
+        for (int i2 = 0; i2 < i; i2++) {
+            objArr[i2] = null;
+        }
+        this.f163e = 0;
+        this.f160b = false;
+    }
+
+    public final void m176b(int i) {
+        int a = bc.m166a(this.f161c, this.f163e, i);
+        if (a >= 0 && this.f162d[a] != f159a) {
+            this.f162d[a] = f159a;
+            this.f160b = true;
+        }
+    }
+
+    public final int m177c(int i) {
+        if (this.f160b) {
+            m171d();
+        }
+        return this.f161c[i];
+    }
+
+    public final /* synthetic */ Object clone() {
+        return m170c();
+    }
+
+    public final E m178d(int i) {
+        if (this.f160b) {
+            m171d();
+        }
+        return this.f162d[i];
+    }
+
+    public final int m179e(int i) {
+        if (this.f160b) {
+            m171d();
+        }
+        return bc.m166a(this.f161c, this.f163e, i);
+    }
+
+    public final String toString() {
+        if (m172a() <= 0) {
+            return "{}";
+        }
+        StringBuilder stringBuilder = new StringBuilder(this.f163e * 28);
+        stringBuilder.append('{');
+        for (int i = 0; i < this.f163e; i++) {
+            if (i > 0) {
+                stringBuilder.append(", ");
+            }
+            stringBuilder.append(m177c(i));
+            stringBuilder.append('=');
+            bh d = m178d(i);
+            if (d != this) {
+                stringBuilder.append(d);
+            } else {
+                stringBuilder.append("(this Map)");
+            }
+        }
+        stringBuilder.append('}');
+        return stringBuilder.toString();
     }
 }

@@ -1,7 +1,7 @@
 package com.facebook;
 
 final class FacebookSdkVersion {
-    public static final String BUILD = "4.5.1";
+    public static final String BUILD = "4.19.0";
 
     FacebookSdkVersion() {
     }

@@ -5,13 +5,14 @@ import android.os.Parcel;
 import android.os.Parcelable.Creator;
 
 public final class ShareLinkContent extends ShareContent<ShareLinkContent, Builder> {
-    public static final Creator<ShareLinkContent> CREATOR = new C02901();
+    public static final Creator<ShareLinkContent> CREATOR = new C03511();
     private final String contentDescription;
     private final String contentTitle;
     private final Uri imageUrl;
+    private final String quote;
 
-    final class C02901 implements Creator<ShareLinkContent> {
-        C02901() {
+    final class C03511 implements Creator<ShareLinkContent> {
+        C03511() {
         }
 
         public final ShareLinkContent createFromParcel(Parcel parcel) {
@@ -27,17 +28,14 @@ public final class ShareLinkContent extends ShareContent<ShareLinkContent, Build
         private String contentDescription;
         private String contentTitle;
         private Uri imageUrl;
+        private String quote;
 
         public final ShareLinkContent build() {
             return new ShareLinkContent();
         }
 
-        public final Builder readFrom(Parcel parcel) {
-            return readFrom((ShareLinkContent) parcel.readParcelable(ShareLinkContent.class.getClassLoader()));
-        }
-
         public final Builder readFrom(ShareLinkContent shareLinkContent) {
-            return shareLinkContent == null ? this : ((Builder) super.readFrom((ShareContent) shareLinkContent)).setContentDescription(shareLinkContent.getContentDescription()).setImageUrl(shareLinkContent.getImageUrl()).setContentTitle(shareLinkContent.getContentTitle());
+            return shareLinkContent == null ? this : ((Builder) super.readFrom((ShareContent) shareLinkContent)).setContentDescription(shareLinkContent.getContentDescription()).setImageUrl(shareLinkContent.getImageUrl()).setContentTitle(shareLinkContent.getContentTitle()).setQuote(shareLinkContent.getQuote());
         }
 
         public final Builder setContentDescription(String str) {
@@ -54,6 +52,11 @@ public final class ShareLinkContent extends ShareContent<ShareLinkContent, Build
             this.imageUrl = uri;
             return this;
         }
+
+        public final Builder setQuote(String str) {
+            this.quote = str;
+            return this;
+        }
     }
 
     ShareLinkContent(Parcel parcel) {
@@ -61,6 +64,7 @@ public final class ShareLinkContent extends ShareContent<ShareLinkContent, Build
         this.contentDescription = parcel.readString();
         this.contentTitle = parcel.readString();
         this.imageUrl = (Uri) parcel.readParcelable(Uri.class.getClassLoader());
+        this.quote = parcel.readString();
     }
 
     private ShareLinkContent(Builder builder) {
@@ -68,6 +72,7 @@ public final class ShareLinkContent extends ShareContent<ShareLinkContent, Build
         this.contentDescription = builder.contentDescription;
         this.contentTitle = builder.contentTitle;
         this.imageUrl = builder.imageUrl;
+        this.quote = builder.quote;
     }
 
     public final int describeContents() {
@@ -86,10 +91,15 @@ public final class ShareLinkContent extends ShareContent<ShareLinkContent, Build
         return this.imageUrl;
     }
 
+    public final String getQuote() {
+        return this.quote;
+    }
+
     public final void writeToParcel(Parcel parcel, int i) {
         super.writeToParcel(parcel, i);
         parcel.writeString(this.contentDescription);
         parcel.writeString(this.contentTitle);
         parcel.writeParcelable(this.imageUrl, 0);
+        parcel.writeString(this.quote);
     }
 }

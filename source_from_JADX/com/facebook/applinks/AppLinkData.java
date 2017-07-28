@@ -24,6 +24,7 @@ public class AppLinkData {
     private static final String APPLINK_BRIDGE_ARGS_KEY = "bridge_args";
     private static final String APPLINK_METHOD_ARGS_KEY = "method_args";
     private static final String APPLINK_VERSION_KEY = "version";
+    public static final String ARGUMENTS_EXTRAS_KEY = "extras";
     public static final String ARGUMENTS_NATIVE_CLASS_KEY = "com.facebook.platform.APPLINK_NATIVE_CLASS";
     public static final String ARGUMENTS_NATIVE_URL = "com.facebook.platform.APPLINK_NATIVE_URL";
     public static final String ARGUMENTS_REFERER_DATA_KEY = "referer_data";
@@ -37,21 +38,24 @@ public class AppLinkData {
     private static final String DEFERRED_APP_LINK_EVENT = "DEFERRED_APP_LINK";
     private static final String DEFERRED_APP_LINK_PATH = "%s/activities";
     private static final String DEFERRED_APP_LINK_URL_FIELD = "applink_url";
+    private static final String EXTRAS_DEEPLINK_CONTEXT_KEY = "deeplink_context";
     private static final String METHOD_ARGS_REF_KEY = "ref";
     private static final String METHOD_ARGS_TARGET_URL_KEY = "target_url";
+    private static final String PROMOTION_CODE_KEY = "promo_code";
     private static final String REFERER_DATA_REF_KEY = "fb_ref";
     private static final String TAG = AppLinkData.class.getCanonicalName();
     private Bundle argumentBundle;
     private JSONObject arguments;
+    private String promotionCode;
     private String ref;
     private Uri targetUri;
 
-    final class C01761 implements Runnable {
+    final class C02211 implements Runnable {
         final /* synthetic */ Context val$applicationContext;
         final /* synthetic */ String val$applicationIdCopy;
         final /* synthetic */ CompletionHandler val$completionHandler;
 
-        C01761(Context context, String str, CompletionHandler completionHandler) {
+        C02211(Context context, String str, CompletionHandler completionHandler) {
             this.val$applicationContext = context;
             this.val$applicationIdCopy = str;
             this.val$completionHandler = completionHandler;
@@ -82,7 +86,10 @@ public class AppLinkData {
         return createFromAlApplinkData == null ? createFromUri(intent.getData()) : createFromAlApplinkData;
     }
 
-    private static AppLinkData createFromAlApplinkData(Intent intent) {
+    public static AppLinkData createFromAlApplinkData(Intent intent) {
+        if (intent == null) {
+            return null;
+        }
         Bundle bundleExtra = intent.getBundleExtra(BUNDLE_AL_APPLINK_DATA_KEY);
         if (bundleExtra == null) {
             return null;
@@ -100,6 +107,20 @@ public class AppLinkData {
         Bundle bundle = bundleExtra.getBundle(ARGUMENTS_REFERER_DATA_KEY);
         if (bundle != null) {
             appLinkData.ref = bundle.getString(REFERER_DATA_REF_KEY);
+        }
+        bundle = bundleExtra.getBundle(ARGUMENTS_EXTRAS_KEY);
+        if (bundle != null) {
+            String string2 = bundle.getString("deeplink_context");
+            if (string2 != null) {
+                try {
+                    JSONObject jSONObject = new JSONObject(string2);
+                    if (jSONObject.has("promo_code")) {
+                        appLinkData.promotionCode = jSONObject.getString("promo_code");
+                    }
+                } catch (Throwable e) {
+                    Log.d(TAG, "Unable to parse deeplink_context JSON", e);
+                }
+            }
         }
         return appLinkData;
     }
@@ -126,6 +147,15 @@ public class AppLinkData {
             }
             if (appLinkData.arguments.has(METHOD_ARGS_TARGET_URL_KEY)) {
                 appLinkData.targetUri = Uri.parse(appLinkData.arguments.getString(METHOD_ARGS_TARGET_URL_KEY));
+            }
+            if (appLinkData.arguments.has(ARGUMENTS_EXTRAS_KEY)) {
+                jSONObject = appLinkData.arguments.getJSONObject(ARGUMENTS_EXTRAS_KEY);
+                if (jSONObject.has("deeplink_context")) {
+                    jSONObject = jSONObject.getJSONObject("deeplink_context");
+                    if (jSONObject.has("promo_code")) {
+                        appLinkData.promotionCode = jSONObject.getString("promo_code");
+                    }
+                }
             }
             appLinkData.argumentBundle = toBundle(appLinkData.arguments);
             return appLinkData;
@@ -158,7 +188,7 @@ public class AppLinkData {
             str = Utility.getMetadataApplicationId(context);
         }
         Validate.notNull(str, "applicationId");
-        FacebookSdk.getExecutor().execute(new C01761(context.getApplicationContext(), str, completionHandler));
+        FacebookSdk.getExecutor().execute(new C02211(context.getApplicationContext(), str, completionHandler));
     }
 
     private static void fetchDeferredAppLinkFromServer(Context context, String str, CompletionHandler completionHandler) {
@@ -167,6 +197,7 @@ public class AppLinkData {
         try {
             jSONObject.put("event", DEFERRED_APP_LINK_EVENT);
             Utility.setAppEventAttributionParameters(jSONObject, AttributionIdentifiers.getAttributionIdentifiers(context), AppEventsLogger.getAnonymousAppDeviceGUID(context), FacebookSdk.getLimitEventAndDataUsage(context));
+            Utility.setAppEventExtendedDeviceInfoParameters(jSONObject, FacebookSdk.getApplicationContext());
             jSONObject.put("application_package_name", context.getPackageName());
             try {
                 jSONObject = GraphRequest.newPostRequest(null, String.format(DEFERRED_APP_LINK_PATH, new Object[]{str}), jSONObject, null).executeAndWait().getJSONObject();
@@ -264,6 +295,10 @@ public class AppLinkData {
 
     public Bundle getArgumentBundle() {
         return this.argumentBundle;
+    }
+
+    public String getPromotionCode() {
+        return this.promotionCode;
     }
 
     public String getRef() {

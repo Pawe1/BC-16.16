@@ -25,7 +25,7 @@ import org.json.JSONObject;
 public final class AccessToken implements Parcelable {
     public static final String ACCESS_TOKEN_KEY = "access_token";
     private static final String APPLICATION_ID_KEY = "application_id";
-    public static final Creator<AccessToken> CREATOR = new C01612();
+    public static final Creator<AccessToken> CREATOR = new C01702();
     private static final int CURRENT_JSON_FORMAT = 1;
     private static final String DECLINED_PERMISSIONS_KEY = "declined_permissions";
     private static final AccessTokenSource DEFAULT_ACCESS_TOKEN_SOURCE = AccessTokenSource.FACEBOOK_APPLICATION_WEB;
@@ -49,12 +49,12 @@ public final class AccessToken implements Parcelable {
     private final String token;
     private final String userId;
 
-    final class C01601 implements GraphMeRequestWithCacheCallback {
+    final class C01691 implements GraphMeRequestWithCacheCallback {
         final /* synthetic */ AccessTokenCreationCallback val$accessTokenCallback;
         final /* synthetic */ String val$applicationId;
         final /* synthetic */ Bundle val$extras;
 
-        C01601(Bundle bundle, AccessTokenCreationCallback accessTokenCreationCallback, String str) {
+        C01691(Bundle bundle, AccessTokenCreationCallback accessTokenCreationCallback, String str) {
             this.val$extras = bundle;
             this.val$accessTokenCallback = accessTokenCreationCallback;
             this.val$applicationId = str;
@@ -74,8 +74,8 @@ public final class AccessToken implements Parcelable {
         }
     }
 
-    final class C01612 implements Creator {
-        C01612() {
+    final class C01702 implements Creator {
+        C01702() {
         }
 
         public final AccessToken createFromParcel(Parcel parcel) {
@@ -91,6 +91,12 @@ public final class AccessToken implements Parcelable {
         void onError(FacebookException facebookException);
 
         void onSuccess(AccessToken accessToken);
+    }
+
+    public interface AccessTokenRefreshCallback {
+        void OnTokenRefreshFailed(FacebookException facebookException);
+
+        void OnTokenRefreshed(AccessToken accessToken);
     }
 
     static {
@@ -199,7 +205,7 @@ public final class AccessToken implements Parcelable {
         }
         String string2 = bundle.getString(USER_ID_KEY);
         if (string2 == null || string2.isEmpty()) {
-            Utility.getGraphMeRequestWithCacheAsync(string, new C01601(bundle, accessTokenCreationCallback, str));
+            Utility.getGraphMeRequestWithCacheAsync(string, new C01691(bundle, accessTokenCreationCallback, str));
         } else {
             accessTokenCreationCallback.onSuccess(createFromBundle(null, bundle, AccessTokenSource.FACEBOOK_APPLICATION_WEB, new Date(), str));
         }
@@ -226,7 +232,11 @@ public final class AccessToken implements Parcelable {
     }
 
     public static void refreshCurrentAccessTokenAsync() {
-        AccessTokenManager.getInstance().refreshCurrentAccessToken();
+        AccessTokenManager.getInstance().refreshCurrentAccessToken(null);
+    }
+
+    public static void refreshCurrentAccessTokenAsync(AccessTokenRefreshCallback accessTokenRefreshCallback) {
+        AccessTokenManager.getInstance().refreshCurrentAccessToken(accessTokenRefreshCallback);
     }
 
     public static void setCurrentAccessToken(AccessToken accessToken) {

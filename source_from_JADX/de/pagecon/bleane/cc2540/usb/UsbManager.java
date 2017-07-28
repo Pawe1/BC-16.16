@@ -24,10 +24,10 @@ public class UsbManager implements SigmaUsbDeviceListener {
     private UsbManagerListener mListener;
     private PendingIntent mPermissionIntent;
     private android.hardware.usb.UsbManager mUsbManager;
-    private final BroadcastReceiver mUsbReceiver = new C04061();
+    private final BroadcastReceiver mUsbReceiver = new C04571();
 
-    class C04061 extends BroadcastReceiver {
-        C04061() {
+    class C04571 extends BroadcastReceiver {
+        C04571() {
         }
 
         public void onReceive(Context context, Intent intent) {

@@ -31,10 +31,13 @@ import com.facebook.internal.Utility;
 import com.facebook.internal.Utility.Mapper;
 import com.facebook.share.Sharer.Result;
 import com.facebook.share.internal.OpenGraphJSONUtility.PhotoJSONProcessor;
+import com.facebook.share.model.ShareMedia;
+import com.facebook.share.model.ShareMediaContent;
 import com.facebook.share.model.ShareOpenGraphAction;
 import com.facebook.share.model.ShareOpenGraphContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.model.ShareVideo;
 import com.facebook.share.model.ShareVideoContent;
 import com.facebook.share.widget.LikeView.ObjectType;
 import java.io.File;
@@ -52,10 +55,10 @@ public final class ShareInternalUtility {
     private static final String MY_STAGING_RESOURCES = "me/staging_resources";
     private static final String STAGING_PARAM = "file";
 
-    final class C02741 extends ResultProcessor {
+    final class C03321 extends ResultProcessor {
         final /* synthetic */ FacebookCallback val$callback;
 
-        C02741(FacebookCallback facebookCallback, FacebookCallback facebookCallback2) {
+        C03321(FacebookCallback facebookCallback, FacebookCallback facebookCallback2) {
             this.val$callback = facebookCallback2;
             super(facebookCallback);
         }
@@ -82,10 +85,10 @@ public final class ShareInternalUtility {
         }
     }
 
-    final class C02752 implements Callback {
+    final class C03332 implements Callback {
         final /* synthetic */ int val$requestCode;
 
-        C02752(int i) {
+        C03332(int i) {
             this.val$requestCode = i;
         }
 
@@ -94,11 +97,11 @@ public final class ShareInternalUtility {
         }
     }
 
-    final class C02763 implements Callback {
+    final class C03343 implements Callback {
         final /* synthetic */ FacebookCallback val$callback;
         final /* synthetic */ int val$requestCode;
 
-        C02763(int i, FacebookCallback facebookCallback) {
+        C03343(int i, FacebookCallback facebookCallback) {
             this.val$requestCode = i;
             this.val$callback = facebookCallback;
         }
@@ -108,10 +111,10 @@ public final class ShareInternalUtility {
         }
     }
 
-    final class C02774 implements Mapper<SharePhoto, Attachment> {
+    final class C03354 implements Mapper<SharePhoto, Attachment> {
         final /* synthetic */ UUID val$appCallId;
 
-        C02774(UUID uuid) {
+        C03354(UUID uuid) {
             this.val$appCallId = uuid;
         }
 
@@ -120,8 +123,8 @@ public final class ShareInternalUtility {
         }
     }
 
-    final class C02785 implements Mapper<Attachment, String> {
-        C02785() {
+    final class C03365 implements Mapper<Attachment, String> {
+        C03365() {
         }
 
         public final String apply(Attachment attachment) {
@@ -129,11 +132,30 @@ public final class ShareInternalUtility {
         }
     }
 
-    final class C02796 implements PhotoJSONProcessor {
+    final class C03376 implements Mapper<ShareMedia, Bundle> {
+        final /* synthetic */ UUID val$appCallId;
+        final /* synthetic */ List val$attachments;
+
+        C03376(UUID uuid, List list) {
+            this.val$appCallId = uuid;
+            this.val$attachments = list;
+        }
+
+        public final Bundle apply(ShareMedia shareMedia) {
+            Attachment access$000 = ShareInternalUtility.getAttachment(this.val$appCallId, shareMedia);
+            this.val$attachments.add(access$000);
+            Bundle bundle = new Bundle();
+            bundle.putString(ShareConstants.MEDIA_TYPE, shareMedia.getMediaType().name());
+            bundle.putString(ShareConstants.MEDIA_URI, access$000.getAttachmentUrl());
+            return bundle;
+        }
+    }
+
+    final class C03387 implements PhotoJSONProcessor {
         final /* synthetic */ ArrayList val$attachments;
         final /* synthetic */ UUID val$callId;
 
-        C02796(UUID uuid, ArrayList arrayList) {
+        C03387(UUID uuid, ArrayList arrayList) {
             this.val$callId = uuid;
             this.val$attachments = arrayList;
         }
@@ -158,8 +180,8 @@ public final class ShareInternalUtility {
         }
     }
 
-    final class C02807 implements PhotoJSONProcessor {
-        C02807() {
+    final class C03398 implements PhotoJSONProcessor {
+        C03398() {
         }
 
         public final JSONObject toJSONObject(SharePhoto sharePhoto) {
@@ -179,9 +201,20 @@ public final class ShareInternalUtility {
         return callIdFromIntent == null ? null : AppCall.finishPendingCall(callIdFromIntent, i);
     }
 
-    private static Attachment getAttachment(UUID uuid, SharePhoto sharePhoto) {
-        Bitmap bitmap = sharePhoto.getBitmap();
-        Uri imageUrl = sharePhoto.getImageUrl();
+    private static Attachment getAttachment(UUID uuid, ShareMedia shareMedia) {
+        Bitmap bitmap;
+        Uri imageUrl;
+        if (shareMedia instanceof SharePhoto) {
+            SharePhoto sharePhoto = (SharePhoto) shareMedia;
+            bitmap = sharePhoto.getBitmap();
+            imageUrl = sharePhoto.getImageUrl();
+        } else if (shareMedia instanceof ShareVideo) {
+            imageUrl = ((ShareVideo) shareMedia).getLocalUrl();
+            bitmap = null;
+        } else {
+            imageUrl = null;
+            bitmap = null;
+        }
         return bitmap != null ? NativeAppCallAttachmentStore.createAttachment(uuid, bitmap) : imageUrl != null ? NativeAppCallAttachmentStore.createAttachment(uuid, imageUrl) : null;
     }
 
@@ -196,6 +229,19 @@ public final class ShareInternalUtility {
         return new Pair(obj, substring);
     }
 
+    public static List<Bundle> getMediaInfos(ShareMediaContent shareMediaContent, UUID uuid) {
+        if (shareMediaContent != null) {
+            List media = shareMediaContent.getMedia();
+            if (media != null) {
+                Collection arrayList = new ArrayList();
+                List<Bundle> map = Utility.map(media, new C03376(uuid, arrayList));
+                NativeAppCallAttachmentStore.addAttachments(arrayList);
+                return map;
+            }
+        }
+        return null;
+    }
+
     public static ObjectType getMostSpecificObjectType(ObjectType objectType, ObjectType objectType2) {
         return objectType == objectType2 ? objectType : objectType == ObjectType.UNKNOWN ? objectType2 : objectType2 != ObjectType.UNKNOWN ? null : objectType;
     }
@@ -208,8 +254,8 @@ public final class ShareInternalUtility {
         if (sharePhotoContent != null) {
             List photos = sharePhotoContent.getPhotos();
             if (photos != null) {
-                Collection map = Utility.map(photos, new C02774(uuid));
-                List<String> map2 = Utility.map(map, new C02785());
+                Collection map = Utility.map(photos, new C03354(uuid));
+                List<String> map2 = Utility.map(map, new C03365());
                 NativeAppCallAttachmentStore.addAttachments(map);
                 return map2;
             }
@@ -222,7 +268,7 @@ public final class ShareInternalUtility {
     }
 
     public static ResultProcessor getShareResultProcessor(FacebookCallback<Result> facebookCallback) {
-        return new C02741(facebookCallback, facebookCallback);
+        return new C03321(facebookCallback, facebookCallback);
     }
 
     public static String getVideoUrl(ShareVideoContent shareVideoContent, UUID uuid) {
@@ -356,14 +402,14 @@ public final class ShareInternalUtility {
 
     public static void registerSharerCallback(int i, CallbackManager callbackManager, FacebookCallback<Result> facebookCallback) {
         if (callbackManager instanceof CallbackManagerImpl) {
-            ((CallbackManagerImpl) callbackManager).registerCallback(i, new C02763(i, facebookCallback));
+            ((CallbackManagerImpl) callbackManager).registerCallback(i, new C03343(i, facebookCallback));
             return;
         }
         throw new FacebookException("Unexpected CallbackManager, please use the provided Factory.");
     }
 
     public static void registerStaticShareCallback(int i) {
-        CallbackManagerImpl.registerStaticCallback(i, new C02752(i));
+        CallbackManagerImpl.registerStaticCallback(i, new C03332(i));
     }
 
     public static JSONArray removeNamespacesFromOGJsonArray(JSONArray jSONArray, boolean z) {
@@ -428,7 +474,7 @@ public final class ShareInternalUtility {
     public static JSONObject toJSONObjectForCall(UUID uuid, ShareOpenGraphContent shareOpenGraphContent) {
         ShareOpenGraphAction action = shareOpenGraphContent.getAction();
         Collection arrayList = new ArrayList();
-        JSONObject toJSONObject = OpenGraphJSONUtility.toJSONObject(action, new C02796(uuid, arrayList));
+        JSONObject toJSONObject = OpenGraphJSONUtility.toJSONObject(action, new C03387(uuid, arrayList));
         NativeAppCallAttachmentStore.addAttachments(arrayList);
         if (shareOpenGraphContent.getPlaceId() != null && Utility.isNullOrEmpty(toJSONObject.optString("place"))) {
             toJSONObject.put("place", shareOpenGraphContent.getPlaceId());
@@ -443,12 +489,12 @@ public final class ShareInternalUtility {
             for (String add : shareOpenGraphContent.getPeopleIds()) {
                 arrayList.add(add);
             }
-            toJSONObject.put("tags", new ArrayList(arrayList));
+            toJSONObject.put("tags", new JSONArray(arrayList));
         }
         return toJSONObject;
     }
 
     public static JSONObject toJSONObjectForWeb(ShareOpenGraphContent shareOpenGraphContent) {
-        return OpenGraphJSONUtility.toJSONObject(shareOpenGraphContent.getAction(), new C02807());
+        return OpenGraphJSONUtility.toJSONObject(shareOpenGraphContent.getAction(), new C03398());
     }
 }

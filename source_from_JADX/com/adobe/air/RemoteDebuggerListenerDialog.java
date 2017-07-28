@@ -13,7 +13,6 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.appcompat.C0004R;
 import android.view.KeyEvent;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -28,8 +27,8 @@ public class RemoteDebuggerListenerDialog extends Activity {
     private BroadcastReceiver mReceiver;
     private AlertDialog mWaitDialog = null;
 
-    class C01291 extends BroadcastReceiver {
-        C01291() {
+    class C01381 extends BroadcastReceiver {
+        C01381() {
         }
 
         public void onReceive(Context context, Intent intent) {
@@ -42,8 +41,8 @@ public class RemoteDebuggerListenerDialog extends Activity {
         }
     }
 
-    class C01302 implements OnClickListener {
-        C01302() {
+    class C01392 implements OnClickListener {
+        C01392() {
         }
 
         public void onClick(DialogInterface dialogInterface, int i) {
@@ -56,8 +55,8 @@ public class RemoteDebuggerListenerDialog extends Activity {
         }
     }
 
-    class C01313 implements OnKeyListener {
-        C01313() {
+    class C01403 implements OnKeyListener {
+        C01403() {
         }
 
         public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
@@ -73,8 +72,8 @@ public class RemoteDebuggerListenerDialog extends Activity {
         }
     }
 
-    class C01355 extends AsyncTask<Integer, Integer, Integer> {
-        C01355() {
+    class C01445 extends AsyncTask<Integer, Integer, Integer> {
+        C01445() {
         }
 
         protected Integer doInBackground(Integer... numArr) {
@@ -93,24 +92,24 @@ public class RemoteDebuggerListenerDialog extends Activity {
     }
 
     public void onCreate(Bundle bundle) {
-        final String string = getString(C0004R.string.IDA_APP_WAITING_DEBUGGER_WARNING);
-        final String string2 = getString(C0004R.string.IDA_APP_DEBUGGER_TIMEOUT_INFO);
+        final String string = getString(2131689577);
+        final String string2 = getString(2131689578);
         this.mActivity = this;
         super.onCreate(bundle);
         Bundle extras = getIntent().getExtras();
         this.debuggerPort = extras != null ? extras.getInt("debuggerPort") : 7936;
         this.mWaitDialog = new Builder(this).create();
         CharSequence format = String.format(string, new Object[]{Integer.valueOf(60)});
-        this.mReceiver = new C01291();
+        this.mReceiver = new C01381();
         IntentFilter intentFilter = new IntentFilter("android.intent.action.MAIN");
         intentFilter.addCategory("RemoteDebuggerListenerDialogClose");
         registerReceiver(this.mReceiver, intentFilter);
-        this.mWaitDialog = createDialog(getString(C0004R.string.IDA_APP_WAITING_DEBUGGER_TITLE), format, getString(C0004R.string.button_cancel), new C01302(), new C01313());
+        this.mWaitDialog = createDialog(getString(2131689575), format, getString(2131689570), new C01392(), new C01403());
         this.count = 0;
         this.mCheckAgain = new Runnable() {
 
-            class C01321 implements OnClickListener {
-                C01321() {
+            class C01411 implements OnClickListener {
+                C01411() {
                 }
 
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -134,11 +133,11 @@ public class RemoteDebuggerListenerDialog extends Activity {
                     RemoteDebuggerListenerDialog.this.unregisterReceiver(RemoteDebuggerListenerDialog.this.mReceiver);
                     RemoteDebuggerListenerDialog.this.mReceiver = null;
                 }
-                final OnClickListener c01321 = new C01321();
-                RemoteDebuggerListenerDialog.this.mWaitDialog = RemoteDebuggerListenerDialog.this.createDialog(AndroidConstants.ADOBE_AIR, string2, RemoteDebuggerListenerDialog.this.getString(C0004R.string.button_continue), c01321, new OnKeyListener() {
+                final OnClickListener c01411 = new C01411();
+                RemoteDebuggerListenerDialog.this.mWaitDialog = RemoteDebuggerListenerDialog.this.createDialog(AndroidConstants.ADOBE_AIR, string2, RemoteDebuggerListenerDialog.this.getString(2131689571), c01411, new OnKeyListener() {
                     public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
                         if (i == 4) {
-                            c01321.onClick(dialogInterface, -1);
+                            c01411.onClick(dialogInterface, -1);
                         }
                         return false;
                     }
@@ -161,7 +160,7 @@ public class RemoteDebuggerListenerDialog extends Activity {
     }
 
     private void closeListeningDebuggerSocket() {
-        new C01355().execute(new Integer[]{Integer.valueOf(this.debuggerPort)});
+        new C01445().execute(new Integer[]{Integer.valueOf(this.debuggerPort)});
     }
 
     private void dismissDialog() {

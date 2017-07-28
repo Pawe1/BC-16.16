@@ -37,8 +37,8 @@ public final class FileLruCache {
         void onClose();
     }
 
-    class C02103 implements Runnable {
-        C02103() {
+    class C02453 implements Runnable {
+        C02453() {
         }
 
         public void run() {
@@ -48,11 +48,11 @@ public final class FileLruCache {
 
     private static class BufferFile {
         private static final String FILE_NAME_PREFIX = "buffer";
-        private static final FilenameFilter filterExcludeBufferFiles = new C02111();
-        private static final FilenameFilter filterExcludeNonBufferFiles = new C02122();
+        private static final FilenameFilter filterExcludeBufferFiles = new C02461();
+        private static final FilenameFilter filterExcludeNonBufferFiles = new C02472();
 
-        final class C02111 implements FilenameFilter {
-            C02111() {
+        final class C02461 implements FilenameFilter {
+            C02461() {
             }
 
             public final boolean accept(File file, String str) {
@@ -60,8 +60,8 @@ public final class FileLruCache {
             }
         }
 
-        final class C02122 implements FilenameFilter {
-            C02122() {
+        final class C02472 implements FilenameFilter {
+            C02472() {
             }
 
             public final boolean accept(File file, String str) {
@@ -254,7 +254,7 @@ public final class FileLruCache {
         }
 
         public final int hashCode() {
-            return ((this.file.hashCode() + 1073) * 37) + ((int) (this.modified % 2147483647L));
+            return ((this.file.hashCode() + 1073) * HASH_MULTIPLIER) + ((int) (this.modified % 2147483647L));
         }
     }
 
@@ -323,7 +323,7 @@ public final class FileLruCache {
         synchronized (this.lock) {
             if (!this.isTrimPending) {
                 this.isTrimPending = true;
-                FacebookSdk.getExecutor().execute(new C02103());
+                FacebookSdk.getExecutor().execute(new C02453());
             }
         }
     }

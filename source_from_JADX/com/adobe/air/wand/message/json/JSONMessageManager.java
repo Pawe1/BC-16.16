@@ -62,7 +62,7 @@ public class JSONMessageManager extends MessageManager {
             JSONObject jSONObject2 = jSONObject.getJSONObject("header");
             JSONObject jSONObject3 = jSONObject.getJSONObject(ShareConstants.WEB_DIALOG_PARAM_DATA);
             String string = jSONObject2.getString(ShareConstants.WEB_DIALOG_PARAM_TITLE);
-            String string2 = jSONObject2.getString("type");
+            String string2 = jSONObject2.getString(ShareConstants.MEDIA_TYPE);
             long j = jSONObject2.getLong("timestamp");
             message = null;
             if (string2.equals(Type.REQUEST.toString())) {
@@ -115,7 +115,7 @@ public class JSONMessageManager extends MessageManager {
                     throw new Exception("Unsupported message type");
             }
             jSONObject2.put(ShareConstants.WEB_DIALOG_PARAM_TITLE, header.getTitle());
-            jSONObject2.put("type", header.getType().toString());
+            jSONObject2.put(ShareConstants.MEDIA_TYPE, header.getType().toString());
             jSONObject2.put("timestamp", header.getTimestamp());
             jSONObject = new JSONObject();
             jSONObject.put("header", jSONObject2);

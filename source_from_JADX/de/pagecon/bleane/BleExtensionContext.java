@@ -23,6 +23,8 @@ public class BleExtensionContext extends FREContext implements ManagerListener, 
     private static final String ACTION_DEVICE_CONNECTED = "deviceConnected";
     private static final String ACTION_DEVICE_DISCONNECTED = "deviceDisconnected";
     private static final String ACTION_DEVICE_DISCOVERED = "deviceDiscovered";
+    private static final String ACTION_DEVICE_NOT_PAIRED = "deviceNotPaired";
+    private static final String ACTION_DEVICE_PAIRED = "devicePaired";
     private static final String ACTION_ENABLED_STATE_CHANGED = "enabledStateChanged";
     private static final String ACTION_ERROR = "error";
     private static final String ACTION_IDS_CHECKED = "idsChecked";
@@ -44,8 +46,8 @@ public class BleExtensionContext extends FREContext implements ManagerListener, 
     private static final String SERVICE_UUID = "suuid";
     private Map<String, FREFunction> functionMap;
 
-    class C03811 implements FREFunction {
-        C03811() {
+    class C04321 implements FREFunction {
+        C04321() {
         }
 
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -54,8 +56,8 @@ public class BleExtensionContext extends FREContext implements ManagerListener, 
         }
     }
 
-    class C03822 implements FREFunction {
-        C03822() {
+    class C04332 implements FREFunction {
+        C04332() {
         }
 
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -68,8 +70,8 @@ public class BleExtensionContext extends FREContext implements ManagerListener, 
         }
     }
 
-    class C03833 implements FREFunction {
-        C03833() {
+    class C04343 implements FREFunction {
+        C04343() {
         }
 
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -82,8 +84,8 @@ public class BleExtensionContext extends FREContext implements ManagerListener, 
         }
     }
 
-    class C03844 implements FREFunction {
-        C03844() {
+    class C04354 implements FREFunction {
+        C04354() {
         }
 
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -96,8 +98,8 @@ public class BleExtensionContext extends FREContext implements ManagerListener, 
         }
     }
 
-    class C03855 implements FREFunction {
-        C03855() {
+    class C04365 implements FREFunction {
+        C04365() {
         }
 
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -110,8 +112,8 @@ public class BleExtensionContext extends FREContext implements ManagerListener, 
         }
     }
 
-    class C03866 implements FREFunction {
-        C03866() {
+    class C04376 implements FREFunction {
+        C04376() {
         }
 
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -124,8 +126,8 @@ public class BleExtensionContext extends FREContext implements ManagerListener, 
         }
     }
 
-    class C03877 implements FREFunction {
-        C03877() {
+    class C04387 implements FREFunction {
+        C04387() {
         }
 
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -143,8 +145,8 @@ public class BleExtensionContext extends FREContext implements ManagerListener, 
         }
     }
 
-    class C03888 implements FREFunction {
-        C03888() {
+    class C04398 implements FREFunction {
+        C04398() {
         }
 
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -159,8 +161,8 @@ public class BleExtensionContext extends FREContext implements ManagerListener, 
         }
     }
 
-    class C03899 implements FREFunction {
-        C03899() {
+    class C04409 implements FREFunction {
+        C04409() {
         }
 
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -196,15 +198,15 @@ public class BleExtensionContext extends FREContext implements ManagerListener, 
             Manager.instance.hwListener = this;
         }
         this.functionMap = new HashMap();
-        this.functionMap.put("reset", new C03811());
-        this.functionMap.put("isBleSupported", new C03822());
-        this.functionMap.put("getEnabledBleHw", new C03833());
-        this.functionMap.put("getSelectedBleHw", new C03844());
-        this.functionMap.put("setBleNotificationFilterParams", new C03855());
-        this.functionMap.put("askUserToEnableBle", new C03866());
-        this.functionMap.put("startScan", new C03877());
-        this.functionMap.put("stopScan", new C03888());
-        this.functionMap.put("connect", new C03899());
+        this.functionMap.put("reset", new C04321());
+        this.functionMap.put("isBleSupported", new C04332());
+        this.functionMap.put("getEnabledBleHw", new C04343());
+        this.functionMap.put("getSelectedBleHw", new C04354());
+        this.functionMap.put("setBleNotificationFilterParams", new C04365());
+        this.functionMap.put("askUserToEnableBle", new C04376());
+        this.functionMap.put("startScan", new C04387());
+        this.functionMap.put("stopScan", new C04398());
+        this.functionMap.put("connect", new C04409());
         this.functionMap.put("cancelConnectionRequests", new FREFunction() {
             public FREObject call(FREContext freContext, FREObject[] freObjects) {
                 try {
@@ -327,6 +329,28 @@ public class BleExtensionContext extends FREContext implements ManagerListener, 
             JSONObject json = new JSONObject();
             json.put(DEVICE_ID, id);
             dispatchStatusEventAsync(ACTION_DEVICE_CONNECTED, json.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void devicePaired(String id, String primaryServiceUUID) {
+        try {
+            id = id.toLowerCase(Locale.US);
+            JSONObject json = new JSONObject();
+            json.put(DEVICE_ID, id);
+            dispatchStatusEventAsync(ACTION_DEVICE_PAIRED, json.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deviceNotPaired(String id, String primaryServiceUUID) {
+        try {
+            id = id.toLowerCase(Locale.US);
+            JSONObject json = new JSONObject();
+            json.put(DEVICE_ID, id);
+            dispatchStatusEventAsync(ACTION_DEVICE_NOT_PAIRED, json.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

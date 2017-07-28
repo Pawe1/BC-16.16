@@ -67,7 +67,7 @@
     </style>
     <style name="com_facebook_button">
         <item>14dp</item>
-        <item>#ffffff</item>
+        <item>@color/com_facebook_button_text_color</item>
         <item>11</item>
         <item>@drawable/com_facebook_button_background</item>
         <item>8dp</item>
@@ -80,7 +80,11 @@
         <item>@drawable/com_facebook_button_like_background</item>
     </style>
     <style name="com_facebook_loginview_default_style">
-        <item>@drawable/com_facebook_button_icon</item>
+        <item>13dp</item>
+        <item>@drawable/com_facebook_button_login_background</item>
+        <item>6dp</item>
+        <item>6dp</item>
+        <item>5dp</item>
     </style>
     <style name="com_facebook_loginview_silver_style">
         <item>#4b5164</item>
@@ -88,13 +92,59 @@
         <item>?unknown_ref: 0</item>
     </style>
     <style name="com_facebook_button_send">
+        <item>@color/com_facebook_send_button_text_color</item>
         <item>@drawable/com_facebook_button_send_background</item>
         <item>@string/com_facebook_send_button_text</item>
-        <item>@drawable/com_facebook_button_send_icon</item>
+        <item>@drawable/com_facebook_send_button_icon</item>
     </style>
     <style name="com_facebook_button_share">
         <item>@string/com_facebook_share_button_text</item>
         <item>@drawable/com_facebook_button_icon</item>
+    </style>
+    <style name="com_facebook_auth_dialog">
+        <item>?unknown_ref: 106000d</item>
+        <item>true</item>
+        <item>true</item>
+        <item>true</item>
+    </style>
+    <style name="com_facebook_auth_dialog_instructions_textview">
+        <item>16sp</item>
+        <item>1</item>
+        <item>@color/com_facebook_device_auth_text</item>
+        <item>11</item>
+        <item>-2</item>
+        <item>-2</item>
+        <item>false</item>
+    </style>
+    <style name="com_facebook_auth_dialog_instructions_textview">
+        <item>16sp</item>
+        <item>1</item>
+        <item>@color/com_facebook_device_auth_text</item>
+        <item>11</item>
+        <item>-2</item>
+        <item>-2</item>
+        <item>false</item>
+        <item>roboto</item>
+    </style>
+    <style name="com_facebook_activity_theme">
+        <item>?unknown_ref: 106000d</item>
+        <item>true</item>
+        <item>true</item>
+    </style>
+    <style name="Base.CardView">
+        <item>@dimen/cardview_default_radius</item>
+        <item>@dimen/cardview_default_elevation</item>
+        <item>@dimen/cardview_default_elevation</item>
+        <item>false</item>
+        <item>true</item>
+    </style>
+    <style name="CardView">
+    </style>
+    <style name="CardView.Dark">
+        <item>@color/cardview_dark_background</item>
+    </style>
+    <style name="CardView.Light">
+        <item>@color/cardview_light_background</item>
     </style>
     <style name="Theme.NoShadow">
         <item>?unknown_ref: 0</item>

@@ -7,10 +7,10 @@ import java.util.Map;
 import org.json.JSONObject;
 
 public class AppEventsLoggerUtility {
-    private static final Map<GraphAPIActivityType, String> API_ACTIVITY_TYPE_TO_STRING = new C01911();
+    private static final Map<GraphAPIActivityType, String> API_ACTIVITY_TYPE_TO_STRING = new C02251();
 
-    final class C01911 extends HashMap<GraphAPIActivityType, String> {
-        C01911() {
+    final class C02251 extends HashMap<GraphAPIActivityType, String> {
+        C02251() {
             put(GraphAPIActivityType.MOBILE_INSTALL_EVENT, "MOBILE_APP_INSTALL");
             put(GraphAPIActivityType.CUSTOM_APP_EVENTS, "CUSTOM_APP_EVENTS");
         }

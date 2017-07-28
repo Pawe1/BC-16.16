@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import p000c.p001m.p002x.p003a.gv.bk;
+import p000c.p001m.p002x.p003a.gv.bp;
 
 public class MessengerUtils {
     public static final String EXTRA_APP_ID = "com.facebook.orca.extra.APPLICATION_ID";
@@ -41,7 +41,7 @@ public class MessengerUtils {
             activity.setResult(0, null);
             activity.finish();
         } else if (categories.contains(ORCA_THREAD_CATEGORY_20150314)) {
-            Bundle a = bk.m146a(intent);
+            Bundle a = bp.m204a(intent);
             Intent intent2 = new Intent();
             if (categories.contains(ORCA_THREAD_CATEGORY_20150314)) {
                 intent2.putExtra(EXTRA_PROTOCOL_VERSION, PROTOCOL_VERSION_20150314);
@@ -84,7 +84,7 @@ public class MessengerUtils {
         if (categories == null || !categories.contains(ORCA_THREAD_CATEGORY_20150314)) {
             return null;
         }
-        Bundle a = bk.m146a(intent);
+        Bundle a = bp.m204a(intent);
         String string = a.getString(EXTRA_THREAD_TOKEN_KEY);
         String string2 = a.getString(EXTRA_METADATA);
         String string3 = a.getString(EXTRA_PARTICIPANTS);

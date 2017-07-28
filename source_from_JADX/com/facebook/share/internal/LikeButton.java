@@ -2,7 +2,7 @@ package com.facebook.share.internal;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import com.facebook.C0253R;
+import com.facebook.C0196R;
 import com.facebook.FacebookButtonBase;
 import com.facebook.internal.AnalyticsEvents;
 
@@ -14,12 +14,12 @@ public class LikeButton extends FacebookButtonBase {
 
     private void updateForLikeStatus() {
         if (isSelected()) {
-            setCompoundDrawablesWithIntrinsicBounds(C0253R.drawable.com_facebook_button_like_icon_selected, 0, 0, 0);
-            setText(getResources().getString(C0253R.string.com_facebook_like_button_liked));
+            setCompoundDrawablesWithIntrinsicBounds(C0196R.drawable.com_facebook_button_like_icon_selected, 0, 0, 0);
+            setText(getResources().getString(C0196R.string.com_facebook_like_button_liked));
             return;
         }
-        setCompoundDrawablesWithIntrinsicBounds(C0253R.drawable.com_facebook_button_icon, 0, 0, 0);
-        setText(getResources().getString(C0253R.string.com_facebook_like_button_not_liked));
+        setCompoundDrawablesWithIntrinsicBounds(C0196R.drawable.com_facebook_button_icon, 0, 0, 0);
+        setText(getResources().getString(C0196R.string.com_facebook_like_button_not_liked));
     }
 
     protected void configureButton(Context context, AttributeSet attributeSet, int i, int i2) {
@@ -32,7 +32,7 @@ public class LikeButton extends FacebookButtonBase {
     }
 
     protected int getDefaultStyleResource() {
-        return C0253R.style.com_facebook_button_like;
+        return C0196R.style.com_facebook_button_like;
     }
 
     public void setSelected(boolean z) {

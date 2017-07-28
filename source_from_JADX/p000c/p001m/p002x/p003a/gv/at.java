@@ -1,388 +1,126 @@
 package p000c.p001m.p002x.p003a.gv;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Handler;
-import java.util.ArrayList;
-import java.util.HashMap;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
-public final class at {
-    private static final Object f76f = new Object();
-    private static at f77g;
-    private final Context f78a;
-    private final HashMap<BroadcastReceiver, ArrayList<IntentFilter>> f79b = new HashMap();
-    private final HashMap<String, ArrayList<C0016b>> f80c = new HashMap();
-    private final ArrayList<C0015a> f81d = new ArrayList();
-    private final Handler f82e;
+public abstract class at {
+    private static int f106b = 1048576;
+    private Matrix f107a;
 
-    private static class C0015a {
-        final Intent f71a;
-        final ArrayList<C0016b> f72b;
-
-        C0015a(Intent intent, ArrayList<C0016b> arrayList) {
-            this.f71a = intent;
-            this.f72b = arrayList;
-        }
-    }
-
-    private static class C0016b {
-        final IntentFilter f73a;
-        final BroadcastReceiver f74b;
-        boolean f75c;
-
-        C0016b(IntentFilter intentFilter, BroadcastReceiver broadcastReceiver) {
-            this.f73a = intentFilter;
-            this.f74b = broadcastReceiver;
-        }
-
-        public final String toString() {
-            StringBuilder stringBuilder = new StringBuilder(128);
-            stringBuilder.append("Receiver{");
-            stringBuilder.append(this.f74b);
-            stringBuilder.append(" filter=");
-            stringBuilder.append(this.f73a);
-            stringBuilder.append("}");
-            return stringBuilder.toString();
-        }
-    }
-
-    private at(Context context) {
-        this.f78a = context;
-        this.f82e = new au(this, context.getMainLooper());
-    }
-
-    public static at m70a(Context context) {
-        at atVar;
-        synchronized (f76f) {
-            if (f77g == null) {
-                f77g = new at(context.getApplicationContext());
+    public static View m109a(Context context, Parcelable parcelable) {
+        View view;
+        if (parcelable instanceof Bundle) {
+            Bundle bundle = (Bundle) parcelable;
+            Bitmap bitmap = (Bitmap) bundle.getParcelable("sharedElement:snapshot:bitmap");
+            if (bitmap == null) {
+                return null;
             }
-            atVar = f77g;
-        }
-        return atVar;
-    }
-
-    /* JADX WARNING: inconsistent code. */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    static /* synthetic */ void m71a(p000c.p001m.p002x.p003a.gv.at r8) {
-        /*
-        r2 = 0;
-    L_0x0001:
-        r1 = r8.f79b;
-        monitor-enter(r1);
-        r0 = r8.f81d;	 Catch:{ all -> 0x003f }
-        r0 = r0.size();	 Catch:{ all -> 0x003f }
-        if (r0 > 0) goto L_0x000e;
-    L_0x000c:
-        monitor-exit(r1);	 Catch:{ all -> 0x003f }
-        return;
-    L_0x000e:
-        r4 = new p000c.p001m.p002x.p003a.gv.at.C0015a[r0];	 Catch:{ all -> 0x003f }
-        r0 = r8.f81d;	 Catch:{ all -> 0x003f }
-        r0.toArray(r4);	 Catch:{ all -> 0x003f }
-        r0 = r8.f81d;	 Catch:{ all -> 0x003f }
-        r0.clear();	 Catch:{ all -> 0x003f }
-        monitor-exit(r1);	 Catch:{ all -> 0x003f }
-        r3 = r2;
-    L_0x001c:
-        r0 = r4.length;
-        if (r3 >= r0) goto L_0x0001;
-    L_0x001f:
-        r5 = r4[r3];
-        r1 = r2;
-    L_0x0022:
-        r0 = r5.f72b;
-        r0 = r0.size();
-        if (r1 >= r0) goto L_0x0042;
-    L_0x002a:
-        r0 = r5.f72b;
-        r0 = r0.get(r1);
-        r0 = (p000c.p001m.p002x.p003a.gv.at.C0016b) r0;
-        r0 = r0.f74b;
-        r6 = r8.f78a;
-        r7 = r5.f71a;
-        r0.onReceive(r6, r7);
-        r0 = r1 + 1;
-        r1 = r0;
-        goto L_0x0022;
-    L_0x003f:
-        r0 = move-exception;
-        monitor-exit(r1);
-        throw r0;
-    L_0x0042:
-        r0 = r3 + 1;
-        r3 = r0;
-        goto L_0x001c;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: c.m.x.a.gv.at.a(c.m.x.a.gv.at):void");
-    }
-
-    public final void m72a(BroadcastReceiver broadcastReceiver) {
-        synchronized (this.f79b) {
-            ArrayList arrayList = (ArrayList) this.f79b.remove(broadcastReceiver);
-            if (arrayList == null) {
-                return;
+            View imageView = new ImageView(context);
+            imageView.setImageBitmap(bitmap);
+            imageView.setScaleType(ScaleType.valueOf(bundle.getString("sharedElement:snapshot:imageScaleType")));
+            if (imageView.getScaleType() == ScaleType.MATRIX) {
+                float[] floatArray = bundle.getFloatArray("sharedElement:snapshot:imageMatrix");
+                Matrix matrix = new Matrix();
+                matrix.setValues(floatArray);
+                imageView.setImageMatrix(matrix);
             }
-            for (int i = 0; i < arrayList.size(); i++) {
-                IntentFilter intentFilter = (IntentFilter) arrayList.get(i);
-                for (int i2 = 0; i2 < intentFilter.countActions(); i2++) {
-                    String action = intentFilter.getAction(i2);
-                    ArrayList arrayList2 = (ArrayList) this.f80c.get(action);
-                    if (arrayList2 != null) {
-                        int i3 = 0;
-                        while (i3 < arrayList2.size()) {
-                            int i4;
-                            if (((C0016b) arrayList2.get(i3)).f74b == broadcastReceiver) {
-                                arrayList2.remove(i3);
-                                i4 = i3 - 1;
-                            } else {
-                                i4 = i3;
-                            }
-                            i3 = i4 + 1;
-                        }
-                        if (arrayList2.size() <= 0) {
-                            this.f80c.remove(action);
-                        }
+            view = imageView;
+        } else if (parcelable instanceof Bitmap) {
+            Bitmap bitmap2 = (Bitmap) parcelable;
+            view = new ImageView(context);
+            view.setImageBitmap(bitmap2);
+        } else {
+            view = null;
+        }
+        return view;
+    }
+
+    public static void m110a() {
+    }
+
+    public static void m111b() {
+    }
+
+    public static void m112c() {
+    }
+
+    public static void m113d() {
+    }
+
+    public final Parcelable m114a(View view, Matrix matrix, RectF rectF) {
+        int intrinsicWidth;
+        if (view instanceof ImageView) {
+            ImageView imageView = (ImageView) view;
+            Drawable drawable = imageView.getDrawable();
+            Drawable background = imageView.getBackground();
+            if (drawable != null && background == null) {
+                Parcelable parcelable;
+                intrinsicWidth = drawable.getIntrinsicWidth();
+                int intrinsicHeight = drawable.getIntrinsicHeight();
+                if (intrinsicWidth <= 0 || intrinsicHeight <= 0) {
+                    parcelable = null;
+                } else {
+                    float min = Math.min(1.0f, ((float) f106b) / ((float) (intrinsicWidth * intrinsicHeight)));
+                    if ((drawable instanceof BitmapDrawable) && min == 1.0f) {
+                        Object bitmap = ((BitmapDrawable) drawable).getBitmap();
+                    } else {
+                        int i = (int) (((float) intrinsicWidth) * min);
+                        intrinsicHeight = (int) (((float) intrinsicHeight) * min);
+                        parcelable = Bitmap.createBitmap(i, intrinsicHeight, Config.ARGB_8888);
+                        Canvas canvas = new Canvas(parcelable);
+                        Rect bounds = drawable.getBounds();
+                        int i2 = bounds.left;
+                        int i3 = bounds.top;
+                        int i4 = bounds.right;
+                        int i5 = bounds.bottom;
+                        drawable.setBounds(0, 0, i, intrinsicHeight);
+                        drawable.draw(canvas);
+                        drawable.setBounds(i2, i3, i4, i5);
                     }
                 }
-            }
-        }
-    }
-
-    public final void m73a(BroadcastReceiver broadcastReceiver, IntentFilter intentFilter) {
-        synchronized (this.f79b) {
-            C0016b c0016b = new C0016b(intentFilter, broadcastReceiver);
-            ArrayList arrayList = (ArrayList) this.f79b.get(broadcastReceiver);
-            if (arrayList == null) {
-                arrayList = new ArrayList(1);
-                this.f79b.put(broadcastReceiver, arrayList);
-            }
-            arrayList.add(intentFilter);
-            for (int i = 0; i < intentFilter.countActions(); i++) {
-                String action = intentFilter.getAction(i);
-                arrayList = (ArrayList) this.f80c.get(action);
-                if (arrayList == null) {
-                    arrayList = new ArrayList(1);
-                    this.f80c.put(action, arrayList);
+                if (parcelable != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("sharedElement:snapshot:bitmap", parcelable);
+                    bundle.putString("sharedElement:snapshot:imageScaleType", imageView.getScaleType().toString());
+                    if (imageView.getScaleType() == ScaleType.MATRIX) {
+                        float[] fArr = new float[9];
+                        imageView.getImageMatrix().getValues(fArr);
+                        bundle.putFloatArray("sharedElement:snapshot:imageMatrix", fArr);
+                    }
+                    return bundle;
                 }
-                arrayList.add(c0016b);
             }
         }
-    }
-
-    /* JADX WARNING: inconsistent code. */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public final boolean m74a(android.content.Intent r17) {
-        /*
-        r16 = this;
-        r0 = r16;
-        r13 = r0.f79b;
-        monitor-enter(r13);
-        r2 = r17.getAction();	 Catch:{ all -> 0x00f3 }
-        r0 = r16;
-        r1 = r0.f78a;	 Catch:{ all -> 0x00f3 }
-        r1 = r1.getContentResolver();	 Catch:{ all -> 0x00f3 }
-        r0 = r17;
-        r3 = r0.resolveTypeIfNeeded(r1);	 Catch:{ all -> 0x00f3 }
-        r5 = r17.getData();	 Catch:{ all -> 0x00f3 }
-        r4 = r17.getScheme();	 Catch:{ all -> 0x00f3 }
-        r6 = r17.getCategories();	 Catch:{ all -> 0x00f3 }
-        r1 = r17.getFlags();	 Catch:{ all -> 0x00f3 }
-        r1 = r1 & 8;
-        if (r1 == 0) goto L_0x00bd;
-    L_0x002b:
-        r1 = 1;
-        r12 = r1;
-    L_0x002d:
-        if (r12 == 0) goto L_0x0059;
-    L_0x002f:
-        r1 = "LocalBroadcastManager";
-        r7 = new java.lang.StringBuilder;	 Catch:{ all -> 0x00f3 }
-        r8 = "Resolving type ";
-        r7.<init>(r8);	 Catch:{ all -> 0x00f3 }
-        r7 = r7.append(r3);	 Catch:{ all -> 0x00f3 }
-        r8 = " scheme ";
-        r7 = r7.append(r8);	 Catch:{ all -> 0x00f3 }
-        r7 = r7.append(r4);	 Catch:{ all -> 0x00f3 }
-        r8 = " of intent ";
-        r7 = r7.append(r8);	 Catch:{ all -> 0x00f3 }
-        r0 = r17;
-        r7 = r7.append(r0);	 Catch:{ all -> 0x00f3 }
-        r7 = r7.toString();	 Catch:{ all -> 0x00f3 }
-        android.util.Log.v(r1, r7);	 Catch:{ all -> 0x00f3 }
-    L_0x0059:
-        r0 = r16;
-        r1 = r0.f80c;	 Catch:{ all -> 0x00f3 }
-        r7 = r17.getAction();	 Catch:{ all -> 0x00f3 }
-        r1 = r1.get(r7);	 Catch:{ all -> 0x00f3 }
-        r0 = r1;
-        r0 = (java.util.ArrayList) r0;	 Catch:{ all -> 0x00f3 }
-        r8 = r0;
-        if (r8 == 0) goto L_0x015a;
-    L_0x006b:
-        if (r12 == 0) goto L_0x0081;
-    L_0x006d:
-        r1 = "LocalBroadcastManager";
-        r7 = new java.lang.StringBuilder;	 Catch:{ all -> 0x00f3 }
-        r9 = "Action list: ";
-        r7.<init>(r9);	 Catch:{ all -> 0x00f3 }
-        r7 = r7.append(r8);	 Catch:{ all -> 0x00f3 }
-        r7 = r7.toString();	 Catch:{ all -> 0x00f3 }
-        android.util.Log.v(r1, r7);	 Catch:{ all -> 0x00f3 }
-    L_0x0081:
-        r10 = 0;
-        r1 = 0;
-        r11 = r1;
-    L_0x0084:
-        r1 = r8.size();	 Catch:{ all -> 0x00f3 }
-        if (r11 >= r1) goto L_0x011f;
-    L_0x008a:
-        r1 = r8.get(r11);	 Catch:{ all -> 0x00f3 }
-        r0 = r1;
-        r0 = (p000c.p001m.p002x.p003a.gv.at.C0016b) r0;	 Catch:{ all -> 0x00f3 }
-        r9 = r0;
-        if (r12 == 0) goto L_0x00aa;
-    L_0x0094:
-        r1 = "LocalBroadcastManager";
-        r7 = new java.lang.StringBuilder;	 Catch:{ all -> 0x00f3 }
-        r14 = "Matching against filter ";
-        r7.<init>(r14);	 Catch:{ all -> 0x00f3 }
-        r14 = r9.f73a;	 Catch:{ all -> 0x00f3 }
-        r7 = r7.append(r14);	 Catch:{ all -> 0x00f3 }
-        r7 = r7.toString();	 Catch:{ all -> 0x00f3 }
-        android.util.Log.v(r1, r7);	 Catch:{ all -> 0x00f3 }
-    L_0x00aa:
-        r1 = r9.f75c;	 Catch:{ all -> 0x00f3 }
-        if (r1 == 0) goto L_0x00c1;
-    L_0x00ae:
-        if (r12 == 0) goto L_0x0111;
-    L_0x00b0:
-        r1 = "LocalBroadcastManager";
-        r7 = "  Filter's target already added";
-        android.util.Log.v(r1, r7);	 Catch:{ all -> 0x00f3 }
-        r1 = r10;
-    L_0x00b8:
-        r7 = r11 + 1;
-        r11 = r7;
-        r10 = r1;
-        goto L_0x0084;
-    L_0x00bd:
-        r1 = 0;
-        r12 = r1;
-        goto L_0x002d;
-    L_0x00c1:
-        r1 = r9.f73a;	 Catch:{ all -> 0x00f3 }
-        r7 = "LocalBroadcastManager";
-        r1 = r1.match(r2, r3, r4, r5, r6, r7);	 Catch:{ all -> 0x00f3 }
-        if (r1 < 0) goto L_0x00f6;
-    L_0x00cb:
-        if (r12 == 0) goto L_0x00e5;
-    L_0x00cd:
-        r7 = "LocalBroadcastManager";
-        r14 = new java.lang.StringBuilder;	 Catch:{ all -> 0x00f3 }
-        r15 = "  Filter matched!  match=0x";
-        r14.<init>(r15);	 Catch:{ all -> 0x00f3 }
-        r1 = java.lang.Integer.toHexString(r1);	 Catch:{ all -> 0x00f3 }
-        r1 = r14.append(r1);	 Catch:{ all -> 0x00f3 }
-        r1 = r1.toString();	 Catch:{ all -> 0x00f3 }
-        android.util.Log.v(r7, r1);	 Catch:{ all -> 0x00f3 }
-    L_0x00e5:
-        if (r10 != 0) goto L_0x015d;
-    L_0x00e7:
-        r1 = new java.util.ArrayList;	 Catch:{ all -> 0x00f3 }
-        r1.<init>();	 Catch:{ all -> 0x00f3 }
-    L_0x00ec:
-        r1.add(r9);	 Catch:{ all -> 0x00f3 }
-        r7 = 1;
-        r9.f75c = r7;	 Catch:{ all -> 0x00f3 }
-        goto L_0x00b8;
-    L_0x00f3:
-        r1 = move-exception;
-        monitor-exit(r13);
-        throw r1;
-    L_0x00f6:
-        if (r12 == 0) goto L_0x0111;
-    L_0x00f8:
-        switch(r1) {
-            case -4: goto L_0x0116;
-            case -3: goto L_0x0113;
-            case -2: goto L_0x0119;
-            case -1: goto L_0x011c;
-            default: goto L_0x00fb;
-        };
-    L_0x00fb:
-        r1 = "unknown reason";
-    L_0x00fd:
-        r7 = "LocalBroadcastManager";
-        r9 = new java.lang.StringBuilder;	 Catch:{ all -> 0x00f3 }
-        r14 = "  Filter did not match: ";
-        r9.<init>(r14);	 Catch:{ all -> 0x00f3 }
-        r1 = r9.append(r1);	 Catch:{ all -> 0x00f3 }
-        r1 = r1.toString();	 Catch:{ all -> 0x00f3 }
-        android.util.Log.v(r7, r1);	 Catch:{ all -> 0x00f3 }
-    L_0x0111:
-        r1 = r10;
-        goto L_0x00b8;
-    L_0x0113:
-        r1 = "action";
-        goto L_0x00fd;
-    L_0x0116:
-        r1 = "category";
-        goto L_0x00fd;
-    L_0x0119:
-        r1 = "data";
-        goto L_0x00fd;
-    L_0x011c:
-        r1 = "type";
-        goto L_0x00fd;
-    L_0x011f:
-        if (r10 == 0) goto L_0x015a;
-    L_0x0121:
-        r1 = 0;
-        r2 = r1;
-    L_0x0123:
-        r1 = r10.size();	 Catch:{ all -> 0x00f3 }
-        if (r2 >= r1) goto L_0x0136;
-    L_0x0129:
-        r1 = r10.get(r2);	 Catch:{ all -> 0x00f3 }
-        r1 = (p000c.p001m.p002x.p003a.gv.at.C0016b) r1;	 Catch:{ all -> 0x00f3 }
-        r3 = 0;
-        r1.f75c = r3;	 Catch:{ all -> 0x00f3 }
-        r1 = r2 + 1;
-        r2 = r1;
-        goto L_0x0123;
-    L_0x0136:
-        r0 = r16;
-        r1 = r0.f81d;	 Catch:{ all -> 0x00f3 }
-        r2 = new c.m.x.a.gv.at$a;	 Catch:{ all -> 0x00f3 }
-        r0 = r17;
-        r2.<init>(r0, r10);	 Catch:{ all -> 0x00f3 }
-        r1.add(r2);	 Catch:{ all -> 0x00f3 }
-        r0 = r16;
-        r1 = r0.f82e;	 Catch:{ all -> 0x00f3 }
-        r2 = 1;
-        r1 = r1.hasMessages(r2);	 Catch:{ all -> 0x00f3 }
-        if (r1 != 0) goto L_0x0157;
-    L_0x014f:
-        r0 = r16;
-        r1 = r0.f82e;	 Catch:{ all -> 0x00f3 }
-        r2 = 1;
-        r1.sendEmptyMessage(r2);	 Catch:{ all -> 0x00f3 }
-    L_0x0157:
-        r1 = 1;
-        monitor-exit(r13);	 Catch:{ all -> 0x00f3 }
-    L_0x0159:
-        return r1;
-    L_0x015a:
-        monitor-exit(r13);
-        r1 = 0;
-        goto L_0x0159;
-    L_0x015d:
-        r1 = r10;
-        goto L_0x00ec;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: c.m.x.a.gv.at.a(android.content.Intent):boolean");
+        int round = Math.round(rectF.width());
+        intrinsicWidth = Math.round(rectF.height());
+        if (round <= 0 || intrinsicWidth <= 0) {
+            return null;
+        }
+        float min2 = Math.min(1.0f, ((float) f106b) / ((float) (round * intrinsicWidth)));
+        round = (int) (((float) round) * min2);
+        intrinsicWidth = (int) (((float) intrinsicWidth) * min2);
+        if (this.f107a == null) {
+            this.f107a = new Matrix();
+        }
+        this.f107a.set(matrix);
+        this.f107a.postTranslate(-rectF.left, -rectF.top);
+        this.f107a.postScale(min2, min2);
+        Parcelable createBitmap = Bitmap.createBitmap(round, intrinsicWidth, Config.ARGB_8888);
+        Canvas canvas2 = new Canvas(createBitmap);
+        canvas2.concat(this.f107a);
+        view.draw(canvas2);
+        return createBitmap;
     }
 }

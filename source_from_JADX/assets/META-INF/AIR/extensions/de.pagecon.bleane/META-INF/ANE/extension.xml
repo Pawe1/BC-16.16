@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <extension 
-	xmlns="http://ns.adobe.com/air/extension/23.0">
+	xmlns="http://ns.adobe.com/air/extension/24.0">
 	<id>de.pagecon.bleane</id>
 	<versionNumber>2</versionNumber>
 	<platforms>

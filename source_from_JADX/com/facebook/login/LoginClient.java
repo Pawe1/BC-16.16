@@ -7,43 +7,39 @@ import android.os.Parcelable;
 import android.os.Parcelable.Creator;
 import android.text.TextUtils;
 import com.facebook.AccessToken;
-import com.facebook.C0253R;
+import com.facebook.C0196R;
 import com.facebook.FacebookException;
 import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsConstants;
-import com.facebook.internal.AnalyticsEvents;
 import com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
 import com.facebook.internal.NativeProtocol;
 import com.facebook.internal.Utility;
 import com.facebook.internal.Validate;
-import com.facebook.share.internal.ShareConstants;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import p000c.p001m.p002x.p003a.gv.C0058n;
-import p000c.p001m.p002x.p003a.gv.C0068q;
+import p000c.p001m.p002x.p003a.gv.C0073r;
+import p000c.p001m.p002x.p003a.gv.C0083u;
 
 class LoginClient implements Parcelable {
-    public static final Creator<LoginClient> CREATOR = new C02301();
+    public static final Creator<LoginClient> CREATOR = new C02781();
     BackgroundProcessingListener backgroundProcessingListener;
     boolean checkedInternetPermission;
     int currentHandler = -1;
-    C0058n fragment;
+    C0073r fragment;
     LoginMethodHandler[] handlersToTry;
     Map<String, String> loggingExtras;
     private LoginLogger loginLogger;
     OnCompletedListener onCompletedListener;
     Request pendingRequest;
 
-    final class C02301 implements Creator {
-        C02301() {
+    final class C02781 implements Creator {
+        C02781() {
         }
 
         public final LoginClient createFromParcel(Parcel parcel) {
@@ -65,35 +61,18 @@ class LoginClient implements Parcelable {
         void onCompleted(Result result);
     }
 
-    private static class PermissionsPair {
-        List<String> declinedPermissions;
-        List<String> grantedPermissions;
-
-        public PermissionsPair(List<String> list, List<String> list2) {
-            this.grantedPermissions = list;
-            this.declinedPermissions = list2;
-        }
-
-        public List<String> getDeclinedPermissions() {
-            return this.declinedPermissions;
-        }
-
-        public List<String> getGrantedPermissions() {
-            return this.grantedPermissions;
-        }
-    }
-
     public static class Request implements Parcelable {
-        public static final Creator<Request> CREATOR = new C02311();
+        public static final Creator<Request> CREATOR = new C02791();
         private final String applicationId;
         private final String authId;
         private final DefaultAudience defaultAudience;
+        private String deviceRedirectUriString;
         private boolean isRerequest;
         private final LoginBehavior loginBehavior;
         private Set<String> permissions;
 
-        final class C02311 implements Creator {
-            C02311() {
+        final class C02791 implements Creator {
+            C02791() {
             }
 
             public final Request createFromParcel(Parcel parcel) {
@@ -121,6 +100,7 @@ class LoginClient implements Parcelable {
             this.applicationId = parcel.readString();
             this.authId = parcel.readString();
             this.isRerequest = parcel.readByte() != (byte) 0;
+            this.deviceRedirectUriString = parcel.readString();
         }
 
         Request(LoginBehavior loginBehavior, Set<String> set, DefaultAudience defaultAudience, String str, String str2) {
@@ -152,6 +132,10 @@ class LoginClient implements Parcelable {
             return this.defaultAudience;
         }
 
+        String getDeviceRedirectUriString() {
+            return this.deviceRedirectUriString;
+        }
+
         LoginBehavior getLoginBehavior() {
             return this.loginBehavior;
         }
@@ -171,6 +155,10 @@ class LoginClient implements Parcelable {
 
         boolean isRerequest() {
             return this.isRerequest;
+        }
+
+        void setDeviceRedirectUriString(String str) {
+            this.deviceRedirectUriString = str;
         }
 
         void setPermissions(Set<String> set) {
@@ -193,11 +181,12 @@ class LoginClient implements Parcelable {
             parcel.writeString(this.applicationId);
             parcel.writeString(this.authId);
             parcel.writeByte((byte) (this.isRerequest ? 1 : 0));
+            parcel.writeString(this.deviceRedirectUriString);
         }
     }
 
     public static class Result implements Parcelable {
-        public static final Creator<Result> CREATOR = new C02321();
+        public static final Creator<Result> CREATOR = new C02801();
         final Code code;
         final String errorCode;
         final String errorMessage;
@@ -205,8 +194,8 @@ class LoginClient implements Parcelable {
         final Request request;
         final AccessToken token;
 
-        final class C02321 implements Creator {
-            C02321() {
+        final class C02801 implements Creator {
+            C02801() {
             }
 
             public final Result createFromParcel(Parcel parcel) {
@@ -294,8 +283,8 @@ class LoginClient implements Parcelable {
         this.loggingExtras = Utility.readStringMapFromParcel(parcel);
     }
 
-    public LoginClient(C0058n c0058n) {
-        this.fragment = c0058n;
+    public LoginClient(C0073r c0073r) {
+        this.fragment = c0073r;
     }
 
     private void addLoggingExtra(String str, String str2, boolean z) {
@@ -317,10 +306,6 @@ class LoginClient implements Parcelable {
         return new AccessToken(accessToken.getToken(), accessToken.getApplicationId(), accessToken.getUserId(), collection, collection2, accessToken.getSource(), accessToken.getExpires(), accessToken.getLastRefresh());
     }
 
-    private LoginMethodHandler getCurrentHandler() {
-        return this.currentHandler >= 0 ? this.handlersToTry[this.currentHandler] : null;
-    }
-
     static String getE2E() {
         JSONObject jSONObject = new JSONObject();
         try {
@@ -328,21 +313,6 @@ class LoginClient implements Parcelable {
         } catch (JSONException e) {
         }
         return jSONObject.toString();
-    }
-
-    private LoginMethodHandler[] getHandlersToTry(Request request) {
-        ArrayList arrayList = new ArrayList();
-        LoginBehavior loginBehavior = request.getLoginBehavior();
-        if (loginBehavior.allowsKatanaAuth()) {
-            arrayList.add(new GetTokenLoginMethodHandler(this));
-            arrayList.add(new KatanaProxyLoginMethodHandler(this));
-        }
-        if (loginBehavior.allowsWebViewAuth()) {
-            arrayList.add(new WebViewLoginMethodHandler(this));
-        }
-        LoginMethodHandler[] loginMethodHandlerArr = new LoginMethodHandler[arrayList.size()];
-        arrayList.toArray(loginMethodHandlerArr);
-        return loginMethodHandlerArr;
     }
 
     private LoginLogger getLogger() {
@@ -354,37 +324,6 @@ class LoginClient implements Parcelable {
 
     public static int getLoginRequestCode() {
         return RequestCodeOffset.Login.toRequestCode();
-    }
-
-    private static PermissionsPair handlePermissionResponse(GraphResponse graphResponse) {
-        if (graphResponse.getError() != null) {
-            return null;
-        }
-        JSONObject jSONObject = graphResponse.getJSONObject();
-        if (jSONObject == null) {
-            return null;
-        }
-        JSONArray optJSONArray = jSONObject.optJSONArray(ShareConstants.WEB_DIALOG_PARAM_DATA);
-        if (optJSONArray == null || optJSONArray.length() == 0) {
-            return null;
-        }
-        List arrayList = new ArrayList(optJSONArray.length());
-        List arrayList2 = new ArrayList(optJSONArray.length());
-        for (int i = 0; i < optJSONArray.length(); i++) {
-            JSONObject optJSONObject = optJSONArray.optJSONObject(i);
-            String optString = optJSONObject.optString("permission");
-            if (!(optString == null || optString.equals("installed"))) {
-                String optString2 = optJSONObject.optString(AnalyticsEvents.PARAMETER_SHARE_DIALOG_CONTENT_STATUS);
-                if (optString2 != null) {
-                    if (optString2.equals("granted")) {
-                        arrayList.add(optString);
-                    } else if (optString2.equals("declined")) {
-                        arrayList2.add(optString);
-                    }
-                }
-            }
-        }
-        return new PermissionsPair(arrayList, arrayList2);
     }
 
     private void logAuthorizationMethodComplete(String str, Result result, Map<String, String> map) {
@@ -429,7 +368,7 @@ class LoginClient implements Parcelable {
         }
         if (checkPermission("android.permission.INTERNET") != 0) {
             Activity activity = getActivity();
-            complete(Result.createErrorResult(this.pendingRequest, activity.getString(C0253R.string.com_facebook_internet_permission_error_title), activity.getString(C0253R.string.com_facebook_internet_permission_error_message)));
+            complete(Result.createErrorResult(this.pendingRequest, activity.getString(C0196R.string.com_facebook_internet_permission_error_title), activity.getString(C0196R.string.com_facebook_internet_permission_error_message)));
             return false;
         }
         this.checkedInternetPermission = true;
@@ -467,7 +406,7 @@ class LoginClient implements Parcelable {
         return 0;
     }
 
-    C0068q getActivity() {
+    C0083u getActivity() {
         return this.fragment.getActivity();
     }
 
@@ -475,8 +414,38 @@ class LoginClient implements Parcelable {
         return this.backgroundProcessingListener;
     }
 
-    public C0058n getFragment() {
+    LoginMethodHandler getCurrentHandler() {
+        return this.currentHandler >= 0 ? this.handlersToTry[this.currentHandler] : null;
+    }
+
+    public C0073r getFragment() {
         return this.fragment;
+    }
+
+    protected LoginMethodHandler[] getHandlersToTry(Request request) {
+        ArrayList arrayList = new ArrayList();
+        LoginBehavior loginBehavior = request.getLoginBehavior();
+        if (loginBehavior.allowsGetTokenAuth()) {
+            arrayList.add(new GetTokenLoginMethodHandler(this));
+        }
+        if (loginBehavior.allowsKatanaAuth()) {
+            arrayList.add(new KatanaProxyLoginMethodHandler(this));
+        }
+        if (loginBehavior.allowsFacebookLiteAuth()) {
+            arrayList.add(new FacebookLiteLoginMethodHandler(this));
+        }
+        if (loginBehavior.allowsCustomTabAuth()) {
+            arrayList.add(new CustomTabLoginMethodHandler(this));
+        }
+        if (loginBehavior.allowsWebViewAuth()) {
+            arrayList.add(new WebViewLoginMethodHandler(this));
+        }
+        if (loginBehavior.allowsDeviceAuth()) {
+            arrayList.add(new DeviceAuthMethodHandler(this));
+        }
+        LoginMethodHandler[] loginMethodHandlerArr = new LoginMethodHandler[arrayList.size()];
+        arrayList.toArray(loginMethodHandlerArr);
+        return loginMethodHandlerArr;
     }
 
     boolean getInProgress() {
@@ -511,11 +480,11 @@ class LoginClient implements Parcelable {
         this.backgroundProcessingListener = backgroundProcessingListener;
     }
 
-    void setFragment(C0058n c0058n) {
+    void setFragment(C0073r c0073r) {
         if (this.fragment != null) {
             throw new FacebookException("Can't set fragment once it is already set.");
         }
-        this.fragment = c0058n;
+        this.fragment = c0073r;
     }
 
     void setOnCompletedListener(OnCompletedListener onCompletedListener) {
@@ -536,6 +505,7 @@ class LoginClient implements Parcelable {
             if (z) {
                 getLogger().logAuthorizationMethodStart(this.pendingRequest.getAuthId(), currentHandler.getNameForLogging());
             } else {
+                getLogger().logAuthorizationMethodNotTried(this.pendingRequest.getAuthId(), currentHandler.getNameForLogging());
                 addLoggingExtra("not_tried", currentHandler.getNameForLogging(), true);
             }
         } else {

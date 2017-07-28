@@ -35,8 +35,8 @@ public class AndroidCamera {
     private boolean mInitialized = false;
     private boolean mPreviewSurfaceValid = true;
 
-    class C00971 implements PreviewCallback {
-        C00971() {
+    class C01051 implements PreviewCallback {
+        C01051() {
         }
 
         public void onPreviewFrame(byte[] bArr, Camera camera) {
@@ -55,8 +55,8 @@ public class AndroidCamera {
         }
     }
 
-    class C00982 implements StateChangeCallback {
-        C00982() {
+    class C01062 implements StateChangeCallback {
+        C01062() {
         }
 
         public void onActivityStateChanged(ActivityState activityState) {
@@ -355,7 +355,7 @@ public class AndroidCamera {
             parameters.setPreviewFrameRate(i3);
             parameters.setPreviewFormat(i4);
             this.mCamera.setParameters(parameters);
-            this.mCamera.setPreviewCallbackWithBuffer(new C00971());
+            this.mCamera.setPreviewCallbackWithBuffer(new C01051());
             this.mCamera.startPreview();
             parameters = this.mCamera.getParameters();
             int bitsPerPixel = ImageFormat.getBitsPerPixel(parameters.getPreviewFormat()) * (parameters.getPreviewSize().width * parameters.getPreviewSize().height);
@@ -397,7 +397,7 @@ public class AndroidCamera {
         this.mCallbacksRegistered = z;
         if (z) {
             if (this.mActivityStateCB == null) {
-                this.mActivityStateCB = new C00982();
+                this.mActivityStateCB = new C01062();
             }
             AndroidActivityWrapper.GetAndroidActivityWrapper().addActivityStateChangeListner(this.mActivityStateCB);
             return;

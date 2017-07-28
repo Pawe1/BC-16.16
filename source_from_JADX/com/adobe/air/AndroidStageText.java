@@ -14,7 +14,6 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.graphics.drawable.shapes.Shape;
 import android.os.Build.VERSION;
-import android.support.v7.appcompat.C0004R;
 import android.text.InputFilter;
 import android.text.InputFilter.LengthFilter;
 import android.text.Spannable;
@@ -41,6 +40,9 @@ import android.widget.TextView.BufferType;
 import android.widget.TextView.OnEditorActionListener;
 import com.adobe.air.AndroidActivityWrapper.ActivityState;
 import com.facebook.internal.Utility;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AndroidStageText implements StateChangeCallback {
     private static final int ALIGN_Center = 2;
@@ -56,6 +58,7 @@ public class AndroidStageText implements StateChangeCallback {
     private static final int FOCUS_DOWN = 3;
     private static final int FOCUS_NONE = 1;
     private static final int FOCUS_UP = 2;
+    private static Map<String, Typeface> FontMap = new HashMap();
     private static final int KEYBOARDTYPE_Contact = 4;
     private static final int KEYBOARDTYPE_Default = 0;
     private static final int KEYBOARDTYPE_Email = 5;
@@ -63,6 +66,7 @@ public class AndroidStageText implements StateChangeCallback {
     private static final int KEYBOARDTYPE_Punctuation = 1;
     private static final int KEYBOARDTYPE_Url = 2;
     private static final String LOG_TAG = "AndroidStageText";
+    private static boolean MapCreate = false;
     private static final int RETURN_KEY_Default = 0;
     private static final int RETURN_KEY_Done = 1;
     private static final int RETURN_KEY_Go = 2;
@@ -108,8 +112,8 @@ public class AndroidStageText implements StateChangeCallback {
     private AndroidStageTextImpl mView;
     private Rect mViewBounds = null;
 
-    class C01031 implements OnEditorActionListener {
-        C01031() {
+    class C01111 implements OnEditorActionListener {
+        C01111() {
         }
 
         public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -294,8 +298,8 @@ public class AndroidStageText implements StateChangeCallback {
             boolean z = false;
             switch (i) {
                 case 4:
-                case C0004R.styleable.Theme_textColorSearchUrl /*66*/:
-                case C0004R.styleable.Theme_colorPrimaryDark /*82*/:
+                case 66:
+                case 82:
                     if (!AndroidStageText.this.enterKeyDispatched) {
                         z = AndroidStageText.this.handleKeyEvent(AndroidStageText.this.mInternalReference, keyEvent.getAction(), i);
                         break;
@@ -311,8 +315,8 @@ public class AndroidStageText implements StateChangeCallback {
         public boolean onKeyUp(int i, KeyEvent keyEvent) {
             switch (i) {
                 case 4:
-                case C0004R.styleable.Theme_textColorSearchUrl /*66*/:
-                case C0004R.styleable.Theme_colorPrimaryDark /*82*/:
+                case 66:
+                case 82:
                     if (!AndroidStageText.this.enterKeyDispatched) {
                         AndroidStageText.this.handleKeyEvent(AndroidStageText.this.mInternalReference, keyEvent.getAction(), i);
                         break;
@@ -448,15 +452,15 @@ public class AndroidStageText implements StateChangeCallback {
                     char charAt = str.charAt(i);
                     if (!z3) {
                         switch (charAt) {
-                            case C0004R.styleable.Theme_actionDropDownStyle /*45*/:
+                            case '-':
                                 z4 = false;
                                 z2 = true;
                                 break;
-                            case C0004R.styleable.Theme_alertDialogCenterButtons /*92*/:
+                            case '\\':
                                 z4 = false;
                                 z3 = true;
                                 break;
-                            case C0004R.styleable.Theme_textColorAlertDialogListItem /*94*/:
+                            case '^':
                                 if (z) {
                                     z = false;
                                 } else {
@@ -586,6 +590,7 @@ public class AndroidStageText implements StateChangeCallback {
     private native void invokeSoftKeyboard(long j);
 
     public AndroidStageText(boolean z) {
+        int i = 0;
         this.mMultiline = z;
         this.mDisplayAsPassword = false;
         this.mInternalReference = 0;
@@ -608,6 +613,37 @@ public class AndroidStageText implements StateChangeCallback {
             this.mTextView.setSingleLine(true);
         }
         this.mTextView.setGravity(3);
+        if (!(MapCreate || AndroidActivityWrapper.GetAndroidActivityWrapper().embeddedFonts())) {
+            MapCreate = true;
+        }
+        if (!MapCreate) {
+            MapCreate = true;
+            try {
+                String[] list = this.mContext.getAssets().list("customEmbeddedFonts");
+                String str = new String();
+                int length = list.length;
+                while (i < length) {
+                    String str2 = list[i];
+                    String str3 = "customEmbeddedFonts/" + str2;
+                    try {
+                        this.mContext.getAssets().open(str3);
+                        String substring = str3.substring(str3.lastIndexOf(46) + 1);
+                        if (substring.equals("ttf") || substring.equals("otf")) {
+                            Typeface createFromAsset = Typeface.createFromAsset(this.mContext.getAssets(), str3);
+                            if (createFromAsset != null) {
+                                FontMap.put(str2.substring(0, str2.lastIndexOf(46)), createFromAsset);
+                            }
+                            i++;
+                        } else {
+                            i++;
+                        }
+                    } catch (IOException e) {
+                    }
+                }
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
+        }
     }
 
     public void onActivityStateChanged(ActivityState activityState) {
@@ -637,7 +673,7 @@ public class AndroidStageText implements StateChangeCallback {
         activityWrapper.addActivityStateChangeListner(this);
         this.mLayout = activityWrapper.getOverlaysLayout(true);
         this.mLayout.addView(this.mView, new RelativeLayout.LayoutParams(this.mGlobalBounds.width(), this.mGlobalBounds.height()));
-        this.mTextView.setOnEditorActionListener(new C01031());
+        this.mTextView.setOnEditorActionListener(new C01111());
     }
 
     public void removeFromStage() {
@@ -1074,27 +1110,35 @@ public class AndroidStageText implements StateChangeCallback {
     }
 
     public void updateTypeface() {
-        int i = 0;
+        int i;
+        int i2 = 0;
         if (this.mBold) {
-            i = 1;
+            i2 = 1;
         }
         if (this.mItalic) {
-            i |= 2;
+            i = i2 | 2;
+        } else {
+            i = i2;
         }
-        Typeface create = Typeface.create(this.mFont, i);
-        if (create == null) {
-            switch (i) {
-                case 0:
-                    this.mTextView.setTypeface(Typeface.DEFAULT);
-                    break;
-                case 1:
-                    this.mTextView.setTypeface(Typeface.DEFAULT_BOLD);
-                    break;
-                default:
-                    break;
+        Typeface typeface = (Typeface) FontMap.get(this.mFont);
+        if (typeface == null) {
+            typeface = Typeface.create(this.mFont, i);
+            if (typeface == null) {
+                switch (i) {
+                    case 0:
+                        this.mTextView.setTypeface(Typeface.DEFAULT);
+                        break;
+                    case 1:
+                        this.mTextView.setTypeface(Typeface.DEFAULT_BOLD);
+                        break;
+                    default:
+                        break;
+                }
             }
+            this.mTextView.setTypeface(typeface, i);
+        } else {
+            this.mTextView.setTypeface(typeface);
         }
-        this.mTextView.setTypeface(create, i);
         this.mTextView.invalidate();
     }
 

@@ -12,7 +12,7 @@ public class GraphUtil {
         JSONObject jSONObject = new JSONObject();
         if (str != null) {
             try {
-                jSONObject.put("type", str);
+                jSONObject.put(ShareConstants.MEDIA_TYPE, str);
             } catch (Throwable e) {
                 throw new FacebookException("An error occurred while setting up the open graph action", e);
             }
@@ -28,7 +28,7 @@ public class GraphUtil {
         JSONObject jSONObject2 = new JSONObject();
         if (str != null) {
             try {
-                jSONObject2.put("type", str);
+                jSONObject2.put(ShareConstants.MEDIA_TYPE, str);
             } catch (Throwable e) {
                 throw new FacebookException("An error occurred while setting up the graph object", e);
             }

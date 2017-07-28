@@ -1,6 +1,7 @@
 package com.facebook.share.widget;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import com.facebook.FacebookCallback;
 import com.facebook.internal.AppCall;
@@ -10,6 +11,7 @@ import com.facebook.internal.DialogFeature;
 import com.facebook.internal.DialogPresenter;
 import com.facebook.internal.DialogPresenter.ParameterProvider;
 import com.facebook.internal.FacebookDialogBase;
+import com.facebook.internal.FragmentWrapper;
 import com.facebook.share.Sharer;
 import com.facebook.share.Sharer.Result;
 import com.facebook.share.internal.LegacyNativeDialogParameters;
@@ -25,18 +27,18 @@ import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.model.ShareVideoContent;
 import java.util.ArrayList;
 import java.util.List;
-import p000c.p001m.p002x.p003a.gv.C0058n;
+import p000c.p001m.p002x.p003a.gv.C0073r;
 
 public final class MessageDialog extends FacebookDialogBase<ShareContent, Result> implements Sharer {
     private static final int DEFAULT_REQUEST_CODE = RequestCodeOffset.Message.toRequestCode();
-    private boolean shouldFailOnDataError = false;
+    private boolean shouldFailOnDataError;
 
     private class NativeHandler extends ModeHandler {
         private NativeHandler() {
             super();
         }
 
-        public boolean canShow(ShareContent shareContent) {
+        public boolean canShow(ShareContent shareContent, boolean z) {
             return shareContent != null && MessageDialog.canShow(shareContent.getClass());
         }
 
@@ -44,7 +46,6 @@ public final class MessageDialog extends FacebookDialogBase<ShareContent, Result
             ShareContentValidation.validateForMessage(shareContent);
             final AppCall createBaseAppCall = MessageDialog.this.createBaseAppCall();
             final boolean shouldFailOnDataError = MessageDialog.this.getShouldFailOnDataError();
-            MessageDialog.this.getActivityContext();
             DialogPresenter.setupAppCallForNativeDialog(createBaseAppCall, new ParameterProvider() {
                 public Bundle getLegacyParameters() {
                     return LegacyNativeDialogParameters.create(createBaseAppCall.getCallId(), shareContent, shouldFailOnDataError);
@@ -60,21 +61,41 @@ public final class MessageDialog extends FacebookDialogBase<ShareContent, Result
 
     public MessageDialog(Activity activity) {
         super(activity, DEFAULT_REQUEST_CODE);
+        this.shouldFailOnDataError = false;
         ShareInternalUtility.registerStaticShareCallback(DEFAULT_REQUEST_CODE);
     }
 
     MessageDialog(Activity activity, int i) {
         super(activity, i);
+        this.shouldFailOnDataError = false;
         ShareInternalUtility.registerStaticShareCallback(i);
     }
 
-    public MessageDialog(C0058n c0058n) {
-        super(c0058n, DEFAULT_REQUEST_CODE);
+    public MessageDialog(Fragment fragment) {
+        this(new FragmentWrapper(fragment));
+    }
+
+    MessageDialog(Fragment fragment, int i) {
+        this(new FragmentWrapper(fragment), i);
+    }
+
+    public MessageDialog(C0073r c0073r) {
+        this(new FragmentWrapper(c0073r));
+    }
+
+    MessageDialog(C0073r c0073r, int i) {
+        this(new FragmentWrapper(c0073r), i);
+    }
+
+    private MessageDialog(FragmentWrapper fragmentWrapper) {
+        super(fragmentWrapper, DEFAULT_REQUEST_CODE);
+        this.shouldFailOnDataError = false;
         ShareInternalUtility.registerStaticShareCallback(DEFAULT_REQUEST_CODE);
     }
 
-    MessageDialog(C0058n c0058n, int i) {
-        super(c0058n, i);
+    private MessageDialog(FragmentWrapper fragmentWrapper, int i) {
+        super(fragmentWrapper, i);
+        this.shouldFailOnDataError = false;
         ShareInternalUtility.registerStaticShareCallback(i);
     }
 
@@ -91,8 +112,16 @@ public final class MessageDialog extends FacebookDialogBase<ShareContent, Result
         new MessageDialog(activity).show(shareContent);
     }
 
-    public static void show(C0058n c0058n, ShareContent shareContent) {
-        new MessageDialog(c0058n).show(shareContent);
+    public static void show(Fragment fragment, ShareContent shareContent) {
+        show(new FragmentWrapper(fragment), shareContent);
+    }
+
+    public static void show(C0073r c0073r, ShareContent shareContent) {
+        show(new FragmentWrapper(c0073r), shareContent);
+    }
+
+    private static void show(FragmentWrapper fragmentWrapper, ShareContent shareContent) {
+        new MessageDialog(fragmentWrapper).show(shareContent);
     }
 
     protected final AppCall createBaseAppCall() {

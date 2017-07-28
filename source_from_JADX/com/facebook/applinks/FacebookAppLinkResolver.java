@@ -16,11 +16,11 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import p000c.p001m.p002x.p003a.gv.bj;
-import p000c.p001m.p002x.p003a.gv.bj.C0041a;
-import p000c.p001m.p002x.p003a.gv.bn;
 import p000c.p001m.p002x.p003a.gv.bo;
-import p000c.p001m.p002x.p003a.gv.bo.C0043a;
+import p000c.p001m.p002x.p003a.gv.bo.C0049a;
+import p000c.p001m.p002x.p003a.gv.bs;
+import p000c.p001m.p002x.p003a.gv.bt;
+import p000c.p001m.p002x.p003a.gv.bt.C0051a;
 
 public class FacebookAppLinkResolver {
     private static final String APP_LINK_ANDROID_TARGET_KEY = "android";
@@ -31,9 +31,9 @@ public class FacebookAppLinkResolver {
     private static final String APP_LINK_TARGET_SHOULD_FALLBACK_KEY = "should_fallback";
     private static final String APP_LINK_TARGET_URL_KEY = "url";
     private static final String APP_LINK_WEB_TARGET_KEY = "web";
-    private final HashMap<Uri, bj> cachedAppLinks = new HashMap();
+    private final HashMap<Uri, bo> cachedAppLinks = new HashMap();
 
-    private static C0041a getAndroidTargetFromJson(JSONObject jSONObject) {
+    private static C0049a getAndroidTargetFromJson(JSONObject jSONObject) {
         Uri uri = null;
         String tryGetStringFromJson = tryGetStringFromJson(jSONObject, APP_LINK_TARGET_PACKAGE_KEY, null);
         if (tryGetStringFromJson == null) {
@@ -45,7 +45,7 @@ public class FacebookAppLinkResolver {
         if (tryGetStringFromJson4 != null) {
             uri = Uri.parse(tryGetStringFromJson4);
         }
-        return new C0041a(tryGetStringFromJson, tryGetStringFromJson2, uri, tryGetStringFromJson3);
+        return new C0049a(tryGetStringFromJson, tryGetStringFromJson2, uri, tryGetStringFromJson3);
     }
 
     private static Uri getWebFallbackUriFromJson(Uri uri, JSONObject jSONObject) {
@@ -81,26 +81,26 @@ public class FacebookAppLinkResolver {
         return str2;
     }
 
-    public bo<bj> getAppLinkFromUrlInBackground(final Uri uri) {
+    public bt<bo> getAppLinkFromUrlInBackground(final Uri uri) {
         List arrayList = new ArrayList();
         arrayList.add(uri);
-        return getAppLinkFromUrlsInBackground(arrayList).m177b(new bn<Map<Uri, bj>, bj>() {
-            public bj then(bo<Map<Uri, bj>> boVar) {
-                return (bj) ((Map) boVar.m180d()).get(uri);
+        return getAppLinkFromUrlsInBackground(arrayList).m235b(new bs<Map<Uri, bo>, bo>() {
+            public bo then(bt<Map<Uri, bo>> btVar) {
+                return (bo) ((Map) btVar.m238d()).get(uri);
             }
         });
     }
 
-    public bo<Map<Uri, bj>> getAppLinkFromUrlsInBackground(List<Uri> list) {
+    public bt<Map<Uri, bo>> getAppLinkFromUrlsInBackground(List<Uri> list) {
         final Object hashMap = new HashMap();
         final HashSet hashSet = new HashSet();
         StringBuilder stringBuilder = new StringBuilder();
         for (Uri uri : list) {
             synchronized (this.cachedAppLinks) {
-                bj bjVar = (bj) this.cachedAppLinks.get(uri);
+                bo boVar = (bo) this.cachedAppLinks.get(uri);
             }
-            if (bjVar != null) {
-                hashMap.put(uri, bjVar);
+            if (boVar != null) {
+                hashMap.put(uri, boVar);
             } else {
                 if (!hashSet.isEmpty()) {
                     stringBuilder.append(',');
@@ -110,9 +110,9 @@ public class FacebookAppLinkResolver {
             }
         }
         if (hashSet.isEmpty()) {
-            return bo.m161a(hashMap);
+            return bt.m219a(hashMap);
         }
-        final C0043a a = bo.m158a();
+        final C0051a a = bt.m216a();
         Bundle bundle = new Bundle();
         bundle.putString("ids", stringBuilder.toString());
         bundle.putString(GraphRequest.FIELDS_PARAM, String.format("%s.fields(%s,%s)", new Object[]{APP_LINK_KEY, APP_LINK_ANDROID_TARGET_KEY, "web"}));
@@ -120,12 +120,12 @@ public class FacebookAppLinkResolver {
             public void onCompleted(GraphResponse graphResponse) {
                 FacebookRequestError error = graphResponse.getError();
                 if (error != null) {
-                    a.m155a(error.getException());
+                    a.m213a(error.getException());
                     return;
                 }
                 JSONObject jSONObject = graphResponse.getJSONObject();
                 if (jSONObject == null) {
-                    a.m156a(hashMap);
+                    a.m214a(hashMap);
                     return;
                 }
                 Iterator it = hashSet.iterator();
@@ -138,23 +138,23 @@ public class FacebookAppLinkResolver {
                             int length = jSONArray.length();
                             List arrayList = new ArrayList(length);
                             for (int i = 0; i < length; i++) {
-                                C0041a access$000 = FacebookAppLinkResolver.getAndroidTargetFromJson(jSONArray.getJSONObject(i));
+                                C0049a access$000 = FacebookAppLinkResolver.getAndroidTargetFromJson(jSONArray.getJSONObject(i));
                                 if (access$000 != null) {
                                     arrayList.add(access$000);
                                 }
                             }
-                            bj bjVar = new bj(uri, arrayList, FacebookAppLinkResolver.getWebFallbackUriFromJson(uri, jSONObject2));
-                            hashMap.put(uri, bjVar);
+                            bo boVar = new bo(uri, arrayList, FacebookAppLinkResolver.getWebFallbackUriFromJson(uri, jSONObject2));
+                            hashMap.put(uri, boVar);
                             synchronized (FacebookAppLinkResolver.this.cachedAppLinks) {
-                                FacebookAppLinkResolver.this.cachedAppLinks.put(uri, bjVar);
+                                FacebookAppLinkResolver.this.cachedAppLinks.put(uri, boVar);
                             }
                         } catch (JSONException e) {
                         }
                     }
                 }
-                a.m156a(hashMap);
+                a.m214a(hashMap);
             }
         }).executeAsync();
-        return a.m154a();
+        return a.m212a();
     }
 }

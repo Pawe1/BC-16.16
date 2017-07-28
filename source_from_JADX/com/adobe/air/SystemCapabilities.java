@@ -2,25 +2,51 @@ package com.adobe.air;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 import java.util.Arrays;
 
 public class SystemCapabilities {
+    private static final String LOG_TAG = "SystemCapabilities";
+
     public static int GetScreenHRes(Context context) {
-        WindowManager windowManager = (WindowManager) context.getSystemService("window");
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-        return displayMetrics.widthPixels;
+        Display defaultDisplay = ((WindowManager) context.getSystemService("window")).getDefaultDisplay();
+        Point point = new Point();
+        defaultDisplay.getSize(point);
+        return point.x;
+    }
+
+    public static int GetRealScreenHRes(Context context) {
+        Display defaultDisplay = ((WindowManager) context.getSystemService("window")).getDefaultDisplay();
+        Point point = new Point();
+        if (VERSION.SDK_INT >= 17) {
+            defaultDisplay.getRealSize(point);
+        } else {
+            defaultDisplay.getSize(point);
+        }
+        return point.x;
     }
 
     public static int GetScreenVRes(Context context) {
-        WindowManager windowManager = (WindowManager) context.getSystemService("window");
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-        return displayMetrics.heightPixels;
+        Display defaultDisplay = ((WindowManager) context.getSystemService("window")).getDefaultDisplay();
+        Point point = new Point();
+        defaultDisplay.getSize(point);
+        return point.y;
+    }
+
+    public static int GetRealScreenVRes(Context context) {
+        Display defaultDisplay = ((WindowManager) context.getSystemService("window")).getDefaultDisplay();
+        Point point = new Point();
+        if (VERSION.SDK_INT >= 17) {
+            defaultDisplay.getRealSize(point);
+        } else {
+            defaultDisplay.getSize(point);
+        }
+        return point.y;
     }
 
     public static int GetScreenDPI(Context context) {

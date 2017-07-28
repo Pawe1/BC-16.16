@@ -5,7 +5,7 @@ import android.os.Parcelable.Creator;
 import com.facebook.share.model.ShareContent;
 
 public class ShareFeedContent extends ShareContent<ShareFeedContent, Builder> {
-    public static final Creator<ShareFeedContent> CREATOR = new C02731();
+    public static final Creator<ShareFeedContent> CREATOR = new C03311();
     private final String link;
     private final String linkCaption;
     private final String linkDescription;
@@ -14,8 +14,8 @@ public class ShareFeedContent extends ShareContent<ShareFeedContent, Builder> {
     private final String picture;
     private final String toId;
 
-    final class C02731 implements Creator<ShareFeedContent> {
-        C02731() {
+    final class C03311 implements Creator<ShareFeedContent> {
+        C03311() {
         }
 
         public final ShareFeedContent createFromParcel(Parcel parcel) {
@@ -38,10 +38,6 @@ public class ShareFeedContent extends ShareContent<ShareFeedContent, Builder> {
 
         public final ShareFeedContent build() {
             return new ShareFeedContent();
-        }
-
-        public final Builder readFrom(Parcel parcel) {
-            return readFrom((ShareFeedContent) parcel.readParcelable(ShareFeedContent.class.getClassLoader()));
         }
 
         public final Builder readFrom(ShareFeedContent shareFeedContent) {

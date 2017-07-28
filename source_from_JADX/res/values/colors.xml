@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="com_smart_login_code">#3c6499</color>
     <color name="com_facebook_blue">#3b5998</color>
+    <color name="com_facebook_messenger_blue">#0084ff</color>
     <color name="com_facebook_likeview_text_color">#6a7180</color>
     <color name="com_facebook_likeboxcountview_border_color">#6a7180</color>
     <color name="com_facebook_likeboxcountview_text_color">#6a7180</color>
     <color name="com_facebook_share_button_text_color">#ffffff</color>
+    <color name="com_facebook_device_auth_text">#90949c</color>
     <color name="com_facebook_button_background_color">#415dae</color>
+    <color name="com_facebook_button_background_color_focused">#fffffe</color>
+    <color name="com_facebook_button_background_color_focused_disabled">#84878c</color>
+    <color name="com_facebook_button_background_color_selected">#7c8fc8</color>
     <color name="com_facebook_button_background_color_disabled">#bdc1c9</color>
     <color name="com_facebook_button_background_color_pressed">#2f477a</color>
-    <color name="com_facebook_button_like_background_color_selected">#7c8fc8</color>
     <color name="com_facebook_button_login_silver_background_color">#f4f6f8</color>
+    <color name="com_facebook_button_login_background_color">#4267b2</color>
     <color name="com_facebook_button_login_silver_background_color_pressed">#e9eaf0</color>
-    <color name="com_facebook_button_send_background_color">#0084ff</color>
+    <color name="com_facebook_button_send_background_color">@color/com_facebook_messenger_blue</color>
     <color name="com_facebook_button_send_background_color_pressed">#006fff</color>
+    <color name="com_facebook_button_border_color_focused">#dedee6</color>
+    <color name="cardview_dark_background">#ff424242</color>
+    <color name="cardview_light_background">#ffffffff</color>
+    <color name="cardview_shadow_end_color">#03000000</color>
+    <color name="cardview_shadow_start_color">#37000000</color>
     <color name="opaque_blue">#0ff</color>
+    <color name="com_facebook_button_text_color">res/color/com_facebook_button_text_color.xml</color>
+    <color name="com_facebook_send_button_text_color">res/color/com_facebook_send_button_text_color.xml</color>
 </resources>

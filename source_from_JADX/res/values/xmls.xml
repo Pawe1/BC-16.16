@@ -2,4 +2,5 @@
 <resources>
     <xml name="device_filter">res/xml/device_filter.xml</xml>
     <xml name="devices">res/xml/devices.xml</xml>
+    <xml name="provider_paths">res/xml/provider_paths.xml</xml>
 </resources>

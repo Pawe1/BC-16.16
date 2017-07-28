@@ -13,8 +13,8 @@ public class FacebookWebFallbackDialog extends WebDialog {
     private static final String TAG = FacebookWebFallbackDialog.class.getName();
     private boolean waitingForDialogToClose;
 
-    class C02071 implements Runnable {
-        C02071() {
+    class C02411 implements Runnable {
+        C02411() {
         }
 
         public void run() {
@@ -34,7 +34,7 @@ public class FacebookWebFallbackDialog extends WebDialog {
         } else if (!this.waitingForDialogToClose) {
             this.waitingForDialogToClose = true;
             webView.loadUrl("javascript:" + "(function() {  var event = document.createEvent('Event');  event.initEvent('fbPlatformDialogMustClose',true,true);  document.dispatchEvent(event);})();");
-            new Handler(Looper.getMainLooper()).postDelayed(new C02071(), 1500);
+            new Handler(Looper.getMainLooper()).postDelayed(new C02411(), 1500);
         }
     }
 

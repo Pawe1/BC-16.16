@@ -8,15 +8,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.facebook.C0253R;
+import com.facebook.C0196R;
 import com.facebook.login.LoginClient.OnCompletedListener;
 import com.facebook.login.LoginClient.Request;
 import com.facebook.login.LoginClient.Result;
-import p000c.p001m.p002x.p003a.gv.C0058n;
+import p000c.p001m.p002x.p003a.gv.C0073r;
 
-public class LoginFragment extends C0058n {
-    private static final String EXTRA_REQUEST = "request";
+public class LoginFragment extends C0073r {
+    static final String EXTRA_REQUEST = "request";
     private static final String NULL_CALLING_PKG_ERROR_MSG = "Cannot call LoginFragment with a null calling package. This can occur if the launchMode of the caller is singleInstance.";
+    static final String REQUEST_KEY = "com.facebook.LoginFragment:Request";
     static final String RESULT_KEY = "com.facebook.LoginFragment:Result";
     private static final String SAVED_LOGIN_CLIENT = "loginClient";
     private static final String TAG = "LoginFragment";
@@ -24,8 +25,8 @@ public class LoginFragment extends C0058n {
     private LoginClient loginClient;
     private Request request;
 
-    class C02331 implements OnCompletedListener {
-        C02331() {
+    class C02811 implements OnCompletedListener {
+        C02811() {
         }
 
         public void onCompleted(Result result) {
@@ -53,10 +54,12 @@ public class LoginFragment extends C0058n {
         }
     }
 
-    static Bundle populateIntentExtras(Request request) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("request", request);
-        return bundle;
+    protected LoginClient createLoginClient() {
+        return new LoginClient((C0073r) this);
+    }
+
+    LoginClient getLoginClient() {
+        return this.loginClient;
     }
 
     public void onActivityResult(int i, int i2, Intent intent) {
@@ -70,27 +73,27 @@ public class LoginFragment extends C0058n {
             this.loginClient = (LoginClient) bundle.getParcelable(SAVED_LOGIN_CLIENT);
             this.loginClient.setFragment(this);
         } else {
-            this.loginClient = new LoginClient((C0058n) this);
+            this.loginClient = createLoginClient();
         }
-        this.loginClient.setOnCompletedListener(new C02331());
+        this.loginClient.setOnCompletedListener(new C02811());
         Activity activity = getActivity();
         if (activity != null) {
             initializeCallingPackage(activity);
             if (activity.getIntent() != null) {
-                this.request = (Request) activity.getIntent().getParcelableExtra("request");
+                this.request = (Request) activity.getIntent().getBundleExtra(REQUEST_KEY).getParcelable("request");
             }
         }
     }
 
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        final View inflate = layoutInflater.inflate(C0253R.layout.com_facebook_login_fragment, viewGroup, false);
+        final View inflate = layoutInflater.inflate(C0196R.layout.com_facebook_login_fragment, viewGroup, false);
         this.loginClient.setBackgroundProcessingListener(new BackgroundProcessingListener() {
             public void onBackgroundProcessingStarted() {
-                inflate.findViewById(C0253R.id.com_facebook_login_activity_progress_bar).setVisibility(0);
+                inflate.findViewById(C0196R.id.com_facebook_login_activity_progress_bar).setVisibility(0);
             }
 
             public void onBackgroundProcessingStopped() {
-                inflate.findViewById(C0253R.id.com_facebook_login_activity_progress_bar).setVisibility(8);
+                inflate.findViewById(C0196R.id.com_facebook_login_activity_progress_bar).setVisibility(8);
             }
         });
         return inflate;
@@ -103,7 +106,7 @@ public class LoginFragment extends C0058n {
 
     public void onPause() {
         super.onPause();
-        getActivity().findViewById(C0253R.id.com_facebook_login_activity_progress_bar).setVisibility(8);
+        getActivity().findViewById(C0196R.id.com_facebook_login_activity_progress_bar).setVisibility(8);
     }
 
     public void onResume() {

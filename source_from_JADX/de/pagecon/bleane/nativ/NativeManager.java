@@ -13,6 +13,7 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanFilter.Builder;
+import android.bluetooth.le.ScanRecord;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.BroadcastReceiver;
@@ -35,6 +36,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 public class NativeManager {
+    private static final int REQUEST_LOCATION = 2;
     private static final String baseUUID = "0000xxxx-0000-1000-8000-00805f9b34fb";
     public static NativeManager instance = null;
     private Activity activity;
@@ -44,17 +46,19 @@ public class NativeManager {
     public NativeManagerListener listener;
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothManager mBluetoothManager;
-    private final BroadcastReceiver mReceiver = new C04201();
+    private final BroadcastReceiver mReceiver = new C04711();
     private NotificationFilter notiFilter = null;
     private ScanCallback scanCallback;
     private List<String> serviceUUIDs;
 
-    class C04201 extends BroadcastReceiver {
-        C04201() {
+    class C04711 extends BroadcastReceiver {
+        C04711() {
         }
 
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals("android.bluetooth.adapter.action.STATE_CHANGED")) {
+            String action = intent.getAction();
+            Manager.cLog("ACTION: " + action);
+            if (action.equals("android.bluetooth.adapter.action.STATE_CHANGED")) {
                 Iterator it;
                 NativeBleDevice device;
                 BluetoothGatt gatt;
@@ -89,6 +93,20 @@ public class NativeManager {
                         return;
                     default:
                         return;
+                }
+            } else if (action.equals("android.bluetooth.device.action.BOND_STATE_CHANGED")) {
+                BluetoothDevice device2 = (BluetoothDevice) intent.getParcelableExtra("android.bluetooth.device.extra.DEVICE");
+                int state = intent.getIntExtra("android.bluetooth.device.extra.BOND_STATE", Integer.MIN_VALUE);
+                int prevState = intent.getIntExtra("android.bluetooth.device.extra.PREVIOUS_BOND_STATE", Integer.MIN_VALUE);
+                if (state == 12 && prevState == 11) {
+                    Manager.cLog("[ACTION_BOND_STATE_CHANGED] [BOND_BONDED] finish");
+                    NativeManager.instance.notifyDevicePaired(device2.getAddress(), null);
+                } else if (state == 10 && prevState == 12) {
+                    Manager.cLog("[ACTION_BOND_STATE_CHANGED] [BOND_NONE] cancel");
+                    NativeManager.instance.notifyDeviceNotPaired(device2.getAddress(), null);
+                } else if (state == 10 && prevState == 11) {
+                    Manager.cLog("[ACTION_BOND_STATE_CHANGED] [BOND_NONE] cancel");
+                    NativeManager.instance.notifyDeviceNotPaired(device2.getAddress(), null);
                 }
             }
         }
@@ -278,13 +296,17 @@ public class NativeManager {
         }
 
         public void onScanResult(int callbackType, ScanResult result) {
-            onScanDevice(result.getDevice(), result.getScanRecord().getBytes());
+            BluetoothDevice device = result.getDevice();
+            ScanRecord scanRecord = result.getScanRecord();
+            Manager.cLog("onScanResult device: " + device.getAddress());
+            onScanDevice(device, scanRecord.getBytes());
         }
 
         public void onBatchScanResults(List<ScanResult> list) {
         }
 
         public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+            Manager.cLog("onLeScan");
             onScanDevice(device, scanRecord);
         }
 
@@ -423,6 +445,22 @@ public class NativeManager {
         });
     }
 
+    private void notifyDevicePaired(final String id, final String primaryServiceUUID) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            public void run() {
+                NativeManager.this.listener.devicePaired(id, primaryServiceUUID);
+            }
+        });
+    }
+
+    private void notifyDeviceNotPaired(final String id, final String primaryServiceUUID) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            public void run() {
+                NativeManager.this.listener.deviceNotPaired(id, primaryServiceUUID);
+            }
+        });
+    }
+
     public static NativeManager create(Activity activity, NativeManagerListener listener) {
         Manager.cLog("NativeManager.create called");
         if (instance == null) {
@@ -433,7 +471,6 @@ public class NativeManager {
 
     private NativeManager(Activity activity, NativeManagerListener listener) {
         Manager.cLog("NativeManager constructor called");
-        notifyInfo("NativeManager constructor called");
         this.activity = activity;
         this.listener = listener;
         this.knownDevices = new NativeBleDeviceList();
@@ -446,20 +483,21 @@ public class NativeManager {
 
     public void initialise() {
         Manager.cLog("NativeManager.initialize called");
-        notifyInfo("NativeManager.initialize called");
         this.knownDevices = new NativeBleDeviceList();
         this.discoveredDevices = new NativeBleDeviceList();
         this.serviceUUIDs = null;
         if (isBleSupported() && this.mBluetoothAdapter == null) {
             this.mBluetoothManager = (BluetoothManager) this.activity.getSystemService("bluetooth");
             this.mBluetoothAdapter = this.mBluetoothManager.getAdapter();
-            this.activity.registerReceiver(this.mReceiver, new IntentFilter("android.bluetooth.adapter.action.STATE_CHANGED"));
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("android.bluetooth.adapter.action.STATE_CHANGED");
+            filter.addAction("android.bluetooth.device.action.BOND_STATE_CHANGED");
+            this.activity.registerReceiver(this.mReceiver, filter);
         }
     }
 
     public void finalise(boolean shutDown) {
         Manager.cLog("NativeManager.finalize called");
-        notifyInfo("NativeManager.finalize called");
         stopScan();
         Iterator it = this.knownDevices.iterator();
         while (it.hasNext()) {
@@ -507,13 +545,11 @@ public class NativeManager {
 
     public void setBleNotificationFilterParams(boolean filterDuplicates, int filterDuration) {
         Manager.cLog("NativeManager.setBleNotificationFilterParams called");
-        notifyInfo("NativeManager.setBleNotificationFilterParams called");
         this.notiFilter = new NotificationFilter(filterDuplicates, filterDuration);
     }
 
     public boolean isBleSupported() {
         Manager.cLog("NativeManager.isBleSupported called");
-        notifyInfo("NativeManager.isBleSupported called");
         if (VERSION.SDK_INT >= 18) {
             return this.activity.getPackageManager().hasSystemFeature("android.hardware.bluetooth_le");
         }
@@ -522,13 +558,11 @@ public class NativeManager {
 
     public boolean isBleEnabled() {
         Manager.cLog("NativeManager.isBleEnabled called");
-        notifyInfo("NativeManager.isBleEnabled called");
         return this.mBluetoothAdapter != null && this.mBluetoothAdapter.isEnabled();
     }
 
     public int askUserToEnableBle() {
         Manager.cLog("NativeManager.askUserToEnableBle called");
-        notifyInfo("NativeManager.askUserToEnableBle called");
         if (isBleEnabled()) {
             return -13;
         }
@@ -538,7 +572,6 @@ public class NativeManager {
 
     public int startScan(List<String> serviceUUIDs) {
         Manager.cLog("NativeManager.startScan called");
-        notifyInfo("NativeManager.startScan called");
         if (!isBleEnabled()) {
             return -2;
         }
@@ -552,11 +585,15 @@ public class NativeManager {
         }
         this.discoveredDevices = new NativeBleDeviceList();
         this.serviceUUIDs = serviceUUIDs;
+        Manager.cLog("Build.VERSION.SDK_INT: " + VERSION.SDK_INT);
         if (VERSION.SDK_INT >= 21) {
             BluetoothLeScanner leScanner = this.mBluetoothAdapter.getBluetoothLeScanner();
             List<ScanFilter> filters = new ArrayList();
+            Manager.cLog("check serviceUUIDs...");
             if (serviceUUIDs != null) {
+                Manager.cLog("serviceUUIDs != null");
                 for (String serviceUuid2 : serviceUUIDs) {
+                    Manager.cLog("serviceUuid: " + serviceUuid2);
                     Builder builder = new Builder();
                     builder.setServiceUuid(new ParcelUuid(uuidFromString(serviceUuid2)));
                     filters.add(builder.build());
@@ -583,7 +620,6 @@ public class NativeManager {
 
     public void stopScan() {
         Manager.cLog("NativeManager.stopScan called");
-        notifyInfo("NativeManager.stopScan called");
         if (isBleEnabled()) {
             if (VERSION.SDK_INT < 21) {
                 this.mBluetoothAdapter.stopLeScan(this.scanCallback);
@@ -597,7 +633,6 @@ public class NativeManager {
 
     public int connect(List<String> deviceIds) {
         Manager.cLog("NativeManager.connect called");
-        notifyInfo("NativeManager.connect called");
         if (!isBleEnabled()) {
             return -2;
         }
@@ -633,7 +668,6 @@ public class NativeManager {
                     return -3;
                 }
                 device.setConnecting(true);
-                notifyInfo("NativeManager: connecting device...");
                 device.setBluetoothGatt(bluetoothGatt);
             } else if (!gatt.connect()) {
                 return -3;
@@ -646,7 +680,6 @@ public class NativeManager {
 
     public int cancelConnectionRequests() {
         Manager.cLog("NativeManager.cancelConnectionRequests called");
-        notifyInfo("NativeManager.cancelConnectionRequests called");
         int result = _cancelConnectionRequests();
         if (result != 0) {
             return result;
@@ -657,7 +690,6 @@ public class NativeManager {
 
     public int _cancelConnectionRequests() {
         Manager.cLog("NativeManager._cancelConnectionRequests called");
-        notifyInfo("NativeManager._cancelConnectionRequests called");
         if (!isBleEnabled()) {
             return -2;
         }
@@ -680,7 +712,6 @@ public class NativeManager {
 
     public int disconnect(String id) {
         Manager.cLog("NativeManager.disconnect called");
-        notifyInfo("NativeManager.disconnect called");
         if (!isBleEnabled()) {
             return -2;
         }
@@ -712,7 +743,6 @@ public class NativeManager {
 
     public int read(String id, String serviceUUID, String charUUID) {
         Manager.cLog("NativeManager.read called");
-        notifyInfo("NativeManager.read called");
         if (!isBleEnabled()) {
             return -2;
         }
@@ -740,7 +770,6 @@ public class NativeManager {
 
     public int write(String id, String serviceUUID, String charUUID, byte[] data) {
         Manager.cLog("NativeManager.write called");
-        notifyInfo("NativeManager.write called");
         if (!isBleEnabled()) {
             return -2;
         }
@@ -770,7 +799,6 @@ public class NativeManager {
 
     public int setNotify(String id, String serviceUUID, String charUUID, boolean enabled) {
         Manager.cLog("NativeManager.setNotify called");
-        notifyInfo("NativeManager.setNotify called char: " + charUUID);
         if (!isBleEnabled()) {
             return -2;
         }

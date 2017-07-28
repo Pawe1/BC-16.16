@@ -15,47 +15,47 @@ public class AIRLogger {
         return g_enableReleaseLogging;
     }
 
-    public static int m364d(String str, String str2, Throwable th) {
+    public static int m377d(String str, String str2, Throwable th) {
         return g_enableReleaseLogging ? Log.d(str, str2, th) : 0;
     }
 
-    public static int m363d(String str, String str2) {
+    public static int m376d(String str, String str2) {
         return g_enableReleaseLogging ? Log.d(str, str2) : 0;
     }
 
-    public static int m365e(String str, String str2) {
+    public static int m378e(String str, String str2) {
         return g_enableReleaseLogging ? Log.e(str, str2) : 0;
     }
 
-    public static int m366e(String str, String str2, Throwable th) {
+    public static int m379e(String str, String str2, Throwable th) {
         return g_enableReleaseLogging ? Log.e(str, str2, th) : 0;
     }
 
-    public static int m368i(String str, String str2, Throwable th) {
+    public static int m381i(String str, String str2, Throwable th) {
         return g_enableReleaseLogging ? Log.i(str, str2, th) : 0;
     }
 
-    public static int m367i(String str, String str2) {
+    public static int m380i(String str, String str2) {
         return g_enableReleaseLogging ? Log.i(str, str2) : 0;
     }
 
-    public static int m370v(String str, String str2, Throwable th) {
+    public static int m383v(String str, String str2, Throwable th) {
         return g_enableReleaseLogging ? Log.v(str, str2, th) : 0;
     }
 
-    public static int m369v(String str, String str2) {
+    public static int m382v(String str, String str2) {
         return g_enableReleaseLogging ? Log.v(str, str2) : 0;
     }
 
-    public static int m371w(String str, String str2) {
+    public static int m384w(String str, String str2) {
         return g_enableReleaseLogging ? Log.w(str, str2) : 0;
     }
 
-    public static int m373w(String str, Throwable th) {
+    public static int m386w(String str, Throwable th) {
         return g_enableReleaseLogging ? Log.w(str, th) : 0;
     }
 
-    public static int m372w(String str, String str2, Throwable th) {
+    public static int m385w(String str, String str2, Throwable th) {
         return g_enableReleaseLogging ? Log.w(str, str2, th) : 0;
     }
 

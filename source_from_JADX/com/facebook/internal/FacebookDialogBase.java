@@ -1,20 +1,21 @@
 package com.facebook.internal;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookDialog;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.LoggingBehavior;
 import java.util.List;
-import p000c.p001m.p002x.p003a.gv.C0058n;
 
 public abstract class FacebookDialogBase<CONTENT, RESULT> implements FacebookDialog<CONTENT, RESULT> {
     protected static final Object BASE_AUTOMATIC_MODE = new Object();
     private static final String TAG = "FacebookDialog";
     private final Activity activity;
-    private final C0058n fragment;
+    private final FragmentWrapper fragmentWrapper;
     private List<ModeHandler> modeHandlers;
     private int requestCode;
 
@@ -22,7 +23,7 @@ public abstract class FacebookDialogBase<CONTENT, RESULT> implements FacebookDia
         protected ModeHandler() {
         }
 
-        public abstract boolean canShow(CONTENT content);
+        public abstract boolean canShow(CONTENT content, boolean z);
 
         public abstract AppCall createAppCall(CONTENT content);
 
@@ -34,16 +35,16 @@ public abstract class FacebookDialogBase<CONTENT, RESULT> implements FacebookDia
     protected FacebookDialogBase(Activity activity, int i) {
         Validate.notNull(activity, "activity");
         this.activity = activity;
-        this.fragment = null;
+        this.fragmentWrapper = null;
         this.requestCode = i;
     }
 
-    protected FacebookDialogBase(C0058n c0058n, int i) {
-        Validate.notNull(c0058n, "fragment");
-        this.fragment = c0058n;
+    protected FacebookDialogBase(FragmentWrapper fragmentWrapper, int i) {
+        Validate.notNull(fragmentWrapper, "fragmentWrapper");
+        this.fragmentWrapper = fragmentWrapper;
         this.activity = null;
         this.requestCode = i;
-        if (c0058n.getActivity() == null) {
+        if (fragmentWrapper.getActivity() == null) {
             throw new IllegalArgumentException("Cannot use a fragment that is not attached to an activity");
         }
     }
@@ -57,9 +58,9 @@ public abstract class FacebookDialogBase<CONTENT, RESULT> implements FacebookDia
 
     private AppCall createAppCallForMode(CONTENT content, Object obj) {
         AppCall createAppCall;
-        Object obj2 = obj == BASE_AUTOMATIC_MODE ? 1 : null;
+        boolean z = obj == BASE_AUTOMATIC_MODE;
         for (ModeHandler modeHandler : cachedModeHandlers()) {
-            if ((obj2 != null || Utility.areObjectsEqual(modeHandler.getMode(), obj)) && modeHandler.canShow(content)) {
+            if ((z || Utility.areObjectsEqual(modeHandler.getMode(), obj)) && modeHandler.canShow(content, true)) {
                 try {
                     createAppCall = modeHandler.createAppCall(content);
                     break;
@@ -85,7 +86,7 @@ public abstract class FacebookDialogBase<CONTENT, RESULT> implements FacebookDia
     protected boolean canShowImpl(CONTENT content, Object obj) {
         boolean z = obj == BASE_AUTOMATIC_MODE;
         for (ModeHandler modeHandler : cachedModeHandlers()) {
-            if ((z || Utility.areObjectsEqual(modeHandler.getMode(), obj)) && modeHandler.canShow(content)) {
+            if ((z || Utility.areObjectsEqual(modeHandler.getMode(), obj)) && modeHandler.canShow(content, false)) {
                 return true;
             }
         }
@@ -95,7 +96,7 @@ public abstract class FacebookDialogBase<CONTENT, RESULT> implements FacebookDia
     protected abstract AppCall createBaseAppCall();
 
     protected Activity getActivityContext() {
-        return this.activity != null ? this.activity : this.fragment != null ? this.fragment.getActivity() : null;
+        return this.activity != null ? this.activity : this.fragmentWrapper != null ? this.fragmentWrapper.getActivity() : null;
     }
 
     protected abstract List<ModeHandler> getOrderedModeHandlers();
@@ -138,10 +139,28 @@ public abstract class FacebookDialogBase<CONTENT, RESULT> implements FacebookDia
             if (FacebookSdk.isDebugEnabled()) {
                 throw new IllegalStateException(str);
             }
-        } else if (this.fragment != null) {
-            DialogPresenter.present(createAppCallForMode, this.fragment);
+        } else if (this.fragmentWrapper != null) {
+            DialogPresenter.present(createAppCallForMode, this.fragmentWrapper);
         } else {
             DialogPresenter.present(createAppCallForMode, this.activity);
+        }
+    }
+
+    protected void startActivityForResult(Intent intent, int i) {
+        String str = null;
+        if (this.activity != null) {
+            this.activity.startActivityForResult(intent, i);
+        } else if (this.fragmentWrapper == null) {
+            str = "Failed to find Activity or Fragment to startActivityForResult ";
+        } else if (this.fragmentWrapper.getNativeFragment() != null) {
+            this.fragmentWrapper.getNativeFragment().startActivityForResult(intent, i);
+        } else if (this.fragmentWrapper.getSupportFragment() != null) {
+            this.fragmentWrapper.getSupportFragment().startActivityForResult(intent, i);
+        } else {
+            str = "Failed to find Activity or Fragment to startActivityForResult ";
+        }
+        if (str != null) {
+            Logger.log(LoggingBehavior.DEVELOPER_ERRORS, 6, getClass().getName(), str);
         }
     }
 }

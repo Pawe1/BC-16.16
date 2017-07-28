@@ -1,22 +1,13 @@
 package p000c.p001m.p002x.p003a.gv;
 
-import android.graphics.Rect;
-import android.transition.Transition;
-import android.transition.Transition.EpicenterCallback;
-import p000c.p001m.p002x.p003a.gv.ah.C0009a;
+public abstract class ak {
+    public abstract int mo52a();
 
-final class ak extends EpicenterCallback {
-    final /* synthetic */ C0009a f26a;
-    private Rect f27b;
+    public abstract ak mo53a(int i, C0073r c0073r, String str);
 
-    ak(C0009a c0009a) {
-        this.f26a = c0009a;
-    }
+    public abstract ak mo54a(C0073r c0073r);
 
-    public final Rect onGetEpicenter(Transition transition) {
-        if (this.f27b == null && this.f26a.f17a != null) {
-            this.f27b = ah.m35b(this.f26a.f17a);
-        }
-        return this.f27b;
-    }
+    public abstract ak mo55a(C0073r c0073r, String str);
+
+    public abstract int mo56b();
 }

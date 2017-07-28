@@ -1,5 +1,5 @@
 !!brut.androlib.meta.MetaInfo
-apkFileName: SIGMA-LINK.1.1.0.apk
+apkFileName: SIGMALINK_1.3.0.apk
 compressionType: false
 doNotCompress:
 - assets/META-INF/AIR/extensions/de.pagecon.bleane/library.swf
@@ -27,5 +27,5 @@ usesFramework:
   tag: null
 version: 2.2.3
 versionInfo:
-  versionCode: '1001010'
-  versionName: 1.1.0
+  versionCode: '1003007'
+  versionName: 1.3.0

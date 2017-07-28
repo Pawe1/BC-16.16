@@ -2,6 +2,7 @@ package com.facebook.appevents;
 
 import android.os.Bundle;
 import com.facebook.LoggingBehavior;
+import com.facebook.appevents.AppEventsLogger.FlushBehavior;
 import com.facebook.internal.Logger;
 import java.io.Serializable;
 import java.util.Locale;
@@ -12,7 +13,7 @@ class FacebookTimeSpentData implements Serializable {
     private static final long[] INACTIVE_SECONDS_QUANTA = new long[]{APP_ACTIVATE_SUPPRESSION_PERIOD_IN_MILLISECONDS, 900000, 1800000, 3600000, 21600000, 43200000, 86400000, 172800000, 259200000, 604800000, 1209600000, 1814400000, 2419200000L, 5184000000L, 7776000000L, 10368000000L, 12960000000L, 15552000000L, 31536000000L};
     private static final long INTERRUPTION_THRESHOLD_MILLISECONDS = 1000;
     private static final long NUM_MILLISECONDS_IDLE_TO_BE_NEW_SESSION = 60000;
-    private static final String TAG = AppEventsLogger.class.getCanonicalName();
+    private static final String TAG = FacebookTimeSpentData.class.getCanonicalName();
     private static final long serialVersionUID = 1;
     private String firstOpenSourceApplication;
     private int interruptionCount;
@@ -130,6 +131,9 @@ class FacebookTimeSpentData implements Serializable {
             bundle.putString(AppEventsConstants.EVENT_PARAM_SOURCE_APPLICATION, str);
             appEventsLogger.logEvent(AppEventsConstants.EVENT_NAME_ACTIVATED_APP, bundle);
             this.lastActivateEventLoggedTime = j;
+            if (AppEventsLogger.getFlushBehavior() != FlushBehavior.EXPLICIT_ONLY) {
+                appEventsLogger.flush();
+            }
         }
         if (this.isAppActive) {
             Logger.log(LoggingBehavior.APP_EVENTS, TAG, "Resume for active app");

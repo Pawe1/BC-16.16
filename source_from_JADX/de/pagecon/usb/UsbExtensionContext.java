@@ -35,8 +35,8 @@ public class UsbExtensionContext extends FREContext implements ManagerListener {
     private Map<String, FREFunction> functionMap = new HashMap();
     private Manager manager = null;
 
-    class C04561 implements FREFunction {
-        C04561() {
+    class C04941 implements FREFunction {
+        C04941() {
         }
 
         public FREObject call(FREContext arg0, FREObject[] arg1) {
@@ -50,8 +50,8 @@ public class UsbExtensionContext extends FREContext implements ManagerListener {
         }
     }
 
-    class C04572 implements FREFunction {
-        C04572() {
+    class C04952 implements FREFunction {
+        C04952() {
         }
 
         public FREObject call(FREContext arg0, FREObject[] arg1) {
@@ -75,8 +75,8 @@ public class UsbExtensionContext extends FREContext implements ManagerListener {
         }
     }
 
-    class C04583 implements FREFunction {
-        C04583() {
+    class C04963 implements FREFunction {
+        C04963() {
         }
 
         public FREObject call(FREContext arg0, FREObject[] arg1) {
@@ -105,8 +105,8 @@ public class UsbExtensionContext extends FREContext implements ManagerListener {
         }
     }
 
-    class C04594 implements FREFunction {
-        C04594() {
+    class C04974 implements FREFunction {
+        C04974() {
         }
 
         public FREObject call(FREContext arg0, FREObject[] arg1) {
@@ -135,8 +135,8 @@ public class UsbExtensionContext extends FREContext implements ManagerListener {
         }
     }
 
-    class C04605 implements FREFunction {
-        C04605() {
+    class C04985 implements FREFunction {
+        C04985() {
         }
 
         public FREObject call(FREContext arg0, FREObject[] arg1) {
@@ -153,8 +153,8 @@ public class UsbExtensionContext extends FREContext implements ManagerListener {
         }
     }
 
-    class C04616 implements FREFunction {
-        C04616() {
+    class C04996 implements FREFunction {
+        C04996() {
         }
 
         public FREObject call(FREContext arg0, FREObject[] arg1) {
@@ -171,8 +171,8 @@ public class UsbExtensionContext extends FREContext implements ManagerListener {
         }
     }
 
-    class C04627 implements FREFunction {
-        C04627() {
+    class C05007 implements FREFunction {
+        C05007() {
         }
 
         public FREObject call(FREContext arg0, FREObject[] arg1) {
@@ -196,6 +196,22 @@ public class UsbExtensionContext extends FREContext implements ManagerListener {
         }
     }
 
+    class C05018 implements FREFunction {
+        C05018() {
+        }
+
+        public FREObject call(FREContext freContext, FREObject[] freObjects) {
+            try {
+                return FREObject.newObject(Boolean.valueOf(freContext.getActivity().getPackageManager().hasSystemFeature("android.hardware.usb.host")).booleanValue());
+            } catch (Exception e) {
+                Log.i(UsbExtensionContext.tag, "exception in isSupported(): " + e.getMessage());
+                UsbExtensionContext.this.debugInfo("exception in isSupported(): " + e.getMessage());
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
     private Manager getManager() {
         if (this.manager == null) {
             this.manager = Manager.createManager(getActivity(), this);
@@ -204,13 +220,14 @@ public class UsbExtensionContext extends FREContext implements ManagerListener {
     }
 
     public UsbExtensionContext() {
-        this.functionMap.put("setDebugMode", new C04561());
-        this.functionMap.put("setSupportedDevices", new C04572());
-        this.functionMap.put("getAttachedDevices", new C04583());
-        this.functionMap.put("getConnectedDevices", new C04594());
-        this.functionMap.put("connectDevice", new C04605());
-        this.functionMap.put("disconnectDevice", new C04616());
-        this.functionMap.put("sendData", new C04627());
+        this.functionMap.put("setDebugMode", new C04941());
+        this.functionMap.put("setSupportedDevices", new C04952());
+        this.functionMap.put("getAttachedDevices", new C04963());
+        this.functionMap.put("getConnectedDevices", new C04974());
+        this.functionMap.put("connectDevice", new C04985());
+        this.functionMap.put("disconnectDevice", new C04996());
+        this.functionMap.put("sendData", new C05007());
+        this.functionMap.put("isSupported", new C05018());
     }
 
     public void dispose() {

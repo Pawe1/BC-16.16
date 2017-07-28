@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.AsyncTask;
+import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -29,20 +31,32 @@ import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.facebook.AccessToken;
-import com.facebook.C0253R;
+import com.facebook.C0196R;
 import com.facebook.FacebookDialogException;
 import com.facebook.FacebookException;
+import com.facebook.FacebookGraphResponseException;
 import com.facebook.FacebookOperationCanceledException;
 import com.facebook.FacebookRequestError;
 import com.facebook.FacebookSdk;
 import com.facebook.FacebookServiceException;
+import com.facebook.GraphRequest.Callback;
+import com.facebook.GraphResponse;
+import com.facebook.share.internal.ShareConstants;
+import com.facebook.share.internal.ShareInternalUtility;
+import com.facebook.share.widget.ShareDialog;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CountDownLatch;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class WebDialog extends Dialog {
     private static final int API_EC_DIALOG_CANCEL = 4201;
     private static final int BACKGROUND_GRAY = -872415232;
     static final String CANCEL_URI = "fbconnect://cancel";
-    public static final int DEFAULT_THEME = 16973840;
     static final boolean DISABLE_SSL_CHECK_FOR_TESTING = false;
     private static final String DISPLAY_TOUCH = "touch";
     private static final String LOG_TAG = "FacebookSDK.WebDialog";
@@ -60,6 +74,7 @@ public class WebDialog extends Dialog {
     private boolean listenerCalled;
     private OnCompleteListener onCompleteListener;
     private ProgressDialog spinner;
+    private UploadStagingResourcesTask uploadTask;
     private String url;
     private WebView webView;
 
@@ -67,8 +82,8 @@ public class WebDialog extends Dialog {
         void onComplete(Bundle bundle, FacebookException facebookException);
     }
 
-    class C02211 implements OnCancelListener {
-        C02211() {
+    class C02561 implements OnCancelListener {
+        C02561() {
         }
 
         public void onCancel(DialogInterface dialogInterface) {
@@ -76,8 +91,8 @@ public class WebDialog extends Dialog {
         }
     }
 
-    class C02222 implements OnClickListener {
-        C02222() {
+    class C02572 implements OnClickListener {
+        C02572() {
         }
 
         public void onClick(View view) {
@@ -85,8 +100,8 @@ public class WebDialog extends Dialog {
         }
     }
 
-    class C02244 implements OnTouchListener {
-        C02244() {
+    class C02594 implements OnTouchListener {
+        C02594() {
         }
 
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -107,7 +122,6 @@ public class WebDialog extends Dialog {
         private int theme;
 
         public Builder(Context context, String str, Bundle bundle) {
-            this.theme = WebDialog.DEFAULT_THEME;
             this.accessToken = AccessToken.getCurrentAccessToken();
             if (this.accessToken == null) {
                 String metadataApplicationId = Utility.getMetadataApplicationId(context);
@@ -121,7 +135,6 @@ public class WebDialog extends Dialog {
         }
 
         public Builder(Context context, String str, String str2, Bundle bundle) {
-            this.theme = WebDialog.DEFAULT_THEME;
             if (str == null) {
                 str = Utility.getMetadataApplicationId(context);
             }
@@ -267,13 +280,110 @@ public class WebDialog extends Dialog {
         }
     }
 
+    private class UploadStagingResourcesTask extends AsyncTask<Void, Void, String[]> {
+        private String action;
+        private Exception[] exceptions;
+        private Bundle parameters;
+
+        UploadStagingResourcesTask(String str, Bundle bundle) {
+            this.action = str;
+            this.parameters = bundle;
+        }
+
+        protected String[] doInBackground(Void... voidArr) {
+            String[] stringArray = this.parameters.getStringArray(ShareConstants.WEB_DIALOG_PARAM_MEDIA);
+            final String[] strArr = new String[stringArray.length];
+            this.exceptions = new Exception[stringArray.length];
+            final CountDownLatch countDownLatch = new CountDownLatch(stringArray.length);
+            ConcurrentLinkedQueue concurrentLinkedQueue = new ConcurrentLinkedQueue();
+            AccessToken currentAccessToken = AccessToken.getCurrentAccessToken();
+            int i = 0;
+            while (i < stringArray.length) {
+                Iterator it;
+                try {
+                    if (isCancelled()) {
+                        it = concurrentLinkedQueue.iterator();
+                        while (it.hasNext()) {
+                            ((AsyncTask) it.next()).cancel(true);
+                        }
+                        return null;
+                    }
+                    Uri parse = Uri.parse(stringArray[i]);
+                    if (Utility.isWebUri(parse)) {
+                        strArr[i] = parse.toString();
+                        countDownLatch.countDown();
+                    } else {
+                        concurrentLinkedQueue.add(ShareInternalUtility.newUploadStagingResourceWithImageRequest(currentAccessToken, parse, new Callback() {
+                            public void onCompleted(GraphResponse graphResponse) {
+                                try {
+                                    FacebookRequestError error = graphResponse.getError();
+                                    String errorMessage;
+                                    if (error != null) {
+                                        errorMessage = error.getErrorMessage();
+                                        if (errorMessage == null) {
+                                            errorMessage = "Error staging photo.";
+                                        }
+                                        throw new FacebookGraphResponseException(graphResponse, errorMessage);
+                                    }
+                                    JSONObject jSONObject = graphResponse.getJSONObject();
+                                    if (jSONObject == null) {
+                                        throw new FacebookException("Error staging photo.");
+                                    }
+                                    errorMessage = jSONObject.optString(ShareConstants.MEDIA_URI);
+                                    if (errorMessage == null) {
+                                        throw new FacebookException("Error staging photo.");
+                                    }
+                                    strArr[i] = errorMessage;
+                                    countDownLatch.countDown();
+                                } catch (Exception e) {
+                                    UploadStagingResourcesTask.this.exceptions[i] = e;
+                                }
+                            }
+                        }).executeAsync());
+                    }
+                    i++;
+                } catch (Exception e) {
+                    it = concurrentLinkedQueue.iterator();
+                    while (it.hasNext()) {
+                        ((AsyncTask) it.next()).cancel(true);
+                    }
+                    return null;
+                }
+            }
+            countDownLatch.await();
+            return strArr;
+        }
+
+        protected void onPostExecute(String[] strArr) {
+            WebDialog.this.spinner.dismiss();
+            for (Throwable th : this.exceptions) {
+                if (th != null) {
+                    WebDialog.this.sendErrorToListener(th);
+                    return;
+                }
+            }
+            if (strArr == null) {
+                WebDialog.this.sendErrorToListener(new FacebookException("Failed to stage photos for web dialog"));
+                return;
+            }
+            Collection asList = Arrays.asList(strArr);
+            if (asList.contains(null)) {
+                WebDialog.this.sendErrorToListener(new FacebookException("Failed to stage photos for web dialog"));
+                return;
+            }
+            Utility.putJSONValueInBundle(this.parameters, ShareConstants.WEB_DIALOG_PARAM_MEDIA, new JSONArray(asList));
+            WebDialog.this.url = Utility.buildUri(ServerProtocol.getDialogAuthority(), FacebookSdk.getGraphApiVersion() + "/dialog/" + this.action, this.parameters).toString();
+            WebDialog.this.setUpWebView((WebDialog.this.crossImageView.getDrawable().getIntrinsicWidth() / 2) + 1);
+        }
+    }
+
     public WebDialog(Context context, String str) {
-        this(context, str, DEFAULT_THEME);
+        this(context, str, FacebookSdk.getWebDialogTheme());
     }
 
     public WebDialog(Context context, String str, int i) {
         if (i == 0) {
-            i = DEFAULT_THEME;
+            i = FacebookSdk.getWebDialogTheme();
         }
         super(context, i);
         this.expectedRedirectUrl = "fbconnect://success";
@@ -285,7 +395,7 @@ public class WebDialog extends Dialog {
 
     public WebDialog(Context context, String str, Bundle bundle, int i, OnCompleteListener onCompleteListener) {
         if (i == 0) {
-            i = DEFAULT_THEME;
+            i = FacebookSdk.getWebDialogTheme();
         }
         super(context, i);
         this.expectedRedirectUrl = "fbconnect://success";
@@ -298,14 +408,18 @@ public class WebDialog extends Dialog {
         bundle.putString(ServerProtocol.DIALOG_PARAM_REDIRECT_URI, "fbconnect://success");
         bundle.putString(ServerProtocol.DIALOG_PARAM_DISPLAY, "touch");
         bundle.putString(ServerProtocol.DIALOG_PARAM_SDK_VERSION, String.format(Locale.ROOT, "android-%s", new Object[]{FacebookSdk.getSdkVersion()}));
-        this.url = Utility.buildUri(ServerProtocol.getDialogAuthority(), ServerProtocol.getAPIVersion() + "/dialog/" + str, bundle).toString();
         this.onCompleteListener = onCompleteListener;
+        if (str.equals(ShareDialog.WEB_SHARE_DIALOG) && bundle.containsKey(ShareConstants.WEB_DIALOG_PARAM_MEDIA)) {
+            this.uploadTask = new UploadStagingResourcesTask(str, bundle);
+        } else {
+            this.url = Utility.buildUri(ServerProtocol.getDialogAuthority(), FacebookSdk.getGraphApiVersion() + "/dialog/" + str, bundle).toString();
+        }
     }
 
     private void createCrossImage() {
         this.crossImageView = new ImageView(getContext());
-        this.crossImageView.setOnClickListener(new C02222());
-        this.crossImageView.setImageDrawable(getContext().getResources().getDrawable(C0253R.drawable.com_facebook_close));
+        this.crossImageView.setOnClickListener(new C02572());
+        this.crossImageView.setImageDrawable(getContext().getResources().getDrawable(C0196R.drawable.com_facebook_close));
         this.crossImageView.setVisibility(4);
     }
 
@@ -342,7 +456,7 @@ public class WebDialog extends Dialog {
         this.webView.getSettings().setSaveFormData(false);
         this.webView.setFocusable(true);
         this.webView.setFocusableInTouchMode(true);
-        this.webView.setOnTouchListener(new C02244());
+        this.webView.setOnTouchListener(new C02594());
         linearLayout.setPadding(i, i, i, i);
         linearLayout.addView(this.webView);
         linearLayout.setBackgroundColor(BACKGROUND_GRAY);
@@ -390,15 +504,18 @@ public class WebDialog extends Dialog {
         super.onCreate(bundle);
         this.spinner = new ProgressDialog(getContext());
         this.spinner.requestWindowFeature(1);
-        this.spinner.setMessage(getContext().getString(C0253R.string.com_facebook_loading));
-        this.spinner.setOnCancelListener(new C02211());
+        this.spinner.setMessage(getContext().getString(C0196R.string.com_facebook_loading));
+        this.spinner.setCanceledOnTouchOutside(false);
+        this.spinner.setOnCancelListener(new C02561());
         requestWindowFeature(1);
         this.contentFrameLayout = new FrameLayout(getContext());
         resize();
         getWindow().setGravity(17);
         getWindow().setSoftInputMode(16);
         createCrossImage();
-        setUpWebView((this.crossImageView.getDrawable().getIntrinsicWidth() / 2) + 1);
+        if (this.url != null) {
+            setUpWebView((this.crossImageView.getDrawable().getIntrinsicWidth() / 2) + 1);
+        }
         this.contentFrameLayout.addView(this.crossImageView, new ViewGroup.LayoutParams(-2, -2));
         setContentView(this.contentFrameLayout);
     }
@@ -417,7 +534,20 @@ public class WebDialog extends Dialog {
 
     protected void onStart() {
         super.onStart();
-        resize();
+        if (this.uploadTask == null || this.uploadTask.getStatus() != Status.PENDING) {
+            resize();
+            return;
+        }
+        this.uploadTask.execute(new Void[0]);
+        this.spinner.show();
+    }
+
+    protected void onStop() {
+        if (this.uploadTask != null) {
+            this.uploadTask.cancel(true);
+            this.spinner.dismiss();
+        }
+        super.onStop();
     }
 
     protected Bundle parseResponseUri(String str) {

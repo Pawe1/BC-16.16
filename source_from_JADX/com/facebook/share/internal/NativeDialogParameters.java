@@ -5,7 +5,9 @@ import com.facebook.FacebookException;
 import com.facebook.internal.Utility;
 import com.facebook.internal.Validate;
 import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.ShareHashtag;
 import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.ShareMediaContent;
 import com.facebook.share.model.ShareOpenGraphContent;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.model.ShareVideoContent;
@@ -22,6 +24,13 @@ public class NativeDialogParameters {
         Utility.putNonEmptyString(createBaseParameters, ShareConstants.TITLE, shareLinkContent.getContentTitle());
         Utility.putNonEmptyString(createBaseParameters, ShareConstants.DESCRIPTION, shareLinkContent.getContentDescription());
         Utility.putUri(createBaseParameters, ShareConstants.IMAGE_URL, shareLinkContent.getImageUrl());
+        Utility.putNonEmptyString(createBaseParameters, ShareConstants.QUOTE, shareLinkContent.getQuote());
+        return createBaseParameters;
+    }
+
+    private static Bundle create(ShareMediaContent shareMediaContent, List<Bundle> list, boolean z) {
+        Bundle createBaseParameters = createBaseParameters(shareMediaContent, z);
+        createBaseParameters.putParcelableArrayList(ShareConstants.MEDIA, new ArrayList(list));
         return createBaseParameters;
     }
 
@@ -59,15 +68,18 @@ public class NativeDialogParameters {
         } else if (shareContent instanceof ShareVideoContent) {
             ShareVideoContent shareVideoContent = (ShareVideoContent) shareContent;
             return create(shareVideoContent, ShareInternalUtility.getVideoUrl(shareVideoContent, uuid), z);
-        } else if (!(shareContent instanceof ShareOpenGraphContent)) {
-            return null;
-        } else {
+        } else if (shareContent instanceof ShareOpenGraphContent) {
             ShareOpenGraphContent shareOpenGraphContent = (ShareOpenGraphContent) shareContent;
             try {
                 return create(shareOpenGraphContent, ShareInternalUtility.removeNamespacesFromOGJsonObject(ShareInternalUtility.toJSONObjectForCall(uuid, shareOpenGraphContent), false), z);
             } catch (JSONException e) {
                 throw new FacebookException("Unable to create a JSON Object from the provided ShareOpenGraphContent: " + e.getMessage());
             }
+        } else if (!(shareContent instanceof ShareMediaContent)) {
+            return null;
+        } else {
+            ShareMediaContent shareMediaContent = (ShareMediaContent) shareContent;
+            return create(shareMediaContent, ShareInternalUtility.getMediaInfos(shareMediaContent, uuid), z);
         }
     }
 
@@ -80,6 +92,10 @@ public class NativeDialogParameters {
         Collection peopleIds = shareContent.getPeopleIds();
         if (!Utility.isNullOrEmpty(peopleIds)) {
             bundle.putStringArrayList(ShareConstants.PEOPLE_IDS, new ArrayList(peopleIds));
+        }
+        ShareHashtag shareHashtag = shareContent.getShareHashtag();
+        if (shareHashtag != null) {
+            Utility.putNonEmptyString(bundle, ShareConstants.HASHTAG, shareHashtag.getHashtag());
         }
         return bundle;
     }

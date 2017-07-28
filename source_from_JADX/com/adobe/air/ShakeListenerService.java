@@ -20,8 +20,8 @@ public class ShakeListenerService extends Service {
 
     class BackgroundThread extends Thread {
 
-        class C01361 implements Listener {
-            C01361() {
+        class C01501 implements Listener {
+            C01501() {
             }
 
             public void onShake() {
@@ -44,7 +44,7 @@ public class ShakeListenerService extends Service {
         public void run() {
             try {
                 ShakeListenerService.this.mShakeListener = new ShakeListener(ShakeListenerService.this.mcontext);
-                ShakeListenerService.this.mShakeListener.registerListener(new C01361());
+                ShakeListenerService.this.mShakeListener.registerListener(new C01501());
             } catch (Exception e) {
             }
         }

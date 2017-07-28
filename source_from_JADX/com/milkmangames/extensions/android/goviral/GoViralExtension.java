@@ -10,7 +10,7 @@ public class GoViralExtension implements FREExtension {
 
     public FREContext createContext(String str) {
         Log.i("[GVExtension]", "try create context");
-        return new C0351a();
+        return new C0403a();
     }
 
     public void dispose() {

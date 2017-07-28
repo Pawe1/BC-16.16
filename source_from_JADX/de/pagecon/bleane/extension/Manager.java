@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import de.pagecon.bleane.cc2540.DongleManager;
 import de.pagecon.bleane.cc2540.DongleManagerListener;
 import de.pagecon.bleane.nativ.NativeManager;
@@ -13,14 +14,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class Manager {
-    private static final boolean DEBUG_MODE = false;
+    private static final boolean DEBUG_MODE = true;
     public static final int DONGLE_BLE_HW_ENABLED = 2;
     public static final int DONGLE_BLE_HW_SELECTED = 2;
     public static final int ERROR_BLE_ALREADY_ENABLED = -13;
     public static final int ERROR_BLE_CONNECT_FAILED = -7;
     public static final int ERROR_BLE_DEVICE_ALREADY_CONNECTED = -5;
     public static final int ERROR_BLE_DEVICE_NOT_CONNECTED = -6;
-    public static final int f399x9af1bb7 = -14;
+    public static final int f413x9af1bb7 = -14;
     public static final int ERROR_BLE_DEVICE_UNKNOWN = -17;
     public static final int ERROR_BLE_DISCONNECT_FAILED = -8;
     public static final int ERROR_BLE_INVALID_CHARACTERISTIC_UUID = -16;
@@ -65,6 +66,14 @@ public class Manager {
 
         public void deviceConnected(String id, String primaryServiceUUID) {
             Manager.this.notifyDeviceConnected(id, primaryServiceUUID);
+        }
+
+        public void devicePaired(String id, String primaryServiceUUID) {
+            Manager.this.notifyDevicePaired(id, primaryServiceUUID);
+        }
+
+        public void deviceNotPaired(String id, String primaryServiceUUID) {
+            Manager.this.notifyDeviceNotPaired(id, primaryServiceUUID);
         }
 
         public void deviceDiscovered(String id, String primaryServiceUUID, String name) {
@@ -121,6 +130,14 @@ public class Manager {
             Manager.this.notifyDeviceConnected(id, primaryServiceUUID);
         }
 
+        public void devicePaired(String id, String primaryServiceUUID) {
+            Manager.this.notifyDevicePaired(id, primaryServiceUUID);
+        }
+
+        public void deviceNotPaired(String id, String primaryServiceUUID) {
+            Manager.this.notifyDeviceNotPaired(id, primaryServiceUUID);
+        }
+
         public void deviceDiscovered(String id, String primaryServiceUUID, String name) {
             Manager.this.notifyDeviceDiscovered(id, primaryServiceUUID, name);
         }
@@ -160,6 +177,7 @@ public class Manager {
     }
 
     public static final void cLog(String msg) {
+        Log.i(TAG, msg);
     }
 
     private void notifyDataReceived(String id, String serviceUUID, String charUUID, byte[] data) {
@@ -186,6 +204,22 @@ public class Manager {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             public void run() {
                 Manager.this.managerListener.deviceConnected(id, primaryServiceUUID);
+            }
+        });
+    }
+
+    private void notifyDevicePaired(final String id, final String primaryServiceUUID) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            public void run() {
+                Manager.this.managerListener.devicePaired(id, primaryServiceUUID);
+            }
+        });
+    }
+
+    private void notifyDeviceNotPaired(final String id, final String primaryServiceUUID) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            public void run() {
+                Manager.this.managerListener.deviceNotPaired(id, primaryServiceUUID);
             }
         });
     }
@@ -227,7 +261,12 @@ public class Manager {
         });
     }
 
-    public void notifyInfo(String info) {
+    public void notifyInfo(final String info) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            public void run() {
+                Manager.this.managerListener.info(info);
+            }
+        });
     }
 
     private void notifyBleEnabledStateChanged(final int enabled) {

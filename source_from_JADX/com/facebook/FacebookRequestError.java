@@ -1,15 +1,20 @@
 package com.facebook;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.facebook.internal.FacebookRequestErrorClassification;
+import com.facebook.internal.FetchedAppSettings;
+import com.facebook.internal.FetchedAppSettingsManager;
 import com.facebook.internal.Utility;
-import com.facebook.internal.Utility.FetchedAppSettings;
 import java.net.HttpURLConnection;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public final class FacebookRequestError {
+public final class FacebookRequestError implements Parcelable {
     private static final String BODY_KEY = "body";
     private static final String CODE_KEY = "code";
+    public static final Creator<FacebookRequestError> CREATOR = new C01791();
     private static final String ERROR_CODE_FIELD_KEY = "code";
     private static final String ERROR_CODE_KEY = "error_code";
     private static final String ERROR_IS_TRANSIENT_KEY = "is_transient";
@@ -38,6 +43,19 @@ public final class FacebookRequestError {
     private final JSONObject requestResultBody;
     private final int requestStatusCode;
     private final int subErrorCode;
+
+    final class C01791 implements Creator<FacebookRequestError> {
+        C01791() {
+        }
+
+        public final FacebookRequestError createFromParcel(Parcel parcel) {
+            return new FacebookRequestError(parcel);
+        }
+
+        public final FacebookRequestError[] newArray(int i) {
+            return new FacebookRequestError[i];
+        }
+    }
 
     public enum Category {
         LOGIN_RECOVERABLE,
@@ -87,6 +105,10 @@ public final class FacebookRequestError {
         this(-1, i, -1, str, str2, null, null, false, null, null, null, null, null);
     }
 
+    private FacebookRequestError(Parcel parcel) {
+        this(parcel.readInt(), parcel.readInt(), parcel.readInt(), parcel.readString(), parcel.readString(), parcel.readString(), parcel.readString(), false, null, null, null, null, null);
+    }
+
     FacebookRequestError(HttpURLConnection httpURLConnection, Exception exception) {
         this(-1, -1, -1, null, null, null, null, false, null, null, null, httpURLConnection, exception instanceof FacebookException ? (FacebookException) exception : new FacebookException((Throwable) exception));
     }
@@ -108,7 +130,7 @@ public final class FacebookRequestError {
                     Object obj2 = null;
                     if (jSONObject2.has("error")) {
                         JSONObject jSONObject3 = (JSONObject) Utility.getStringPropertyAsJSON(jSONObject2, "error", null);
-                        str = jSONObject3.optString(ERROR_TYPE_FIELD_KEY, null);
+                        str = jSONObject3.optString("type", null);
                         str2 = jSONObject3.optString("message", null);
                         i2 = jSONObject3.optInt("code", -1);
                         i3 = jSONObject3.optInt("error_subcode", -1);
@@ -139,10 +161,14 @@ public final class FacebookRequestError {
     static synchronized FacebookRequestErrorClassification getErrorClassification() {
         FacebookRequestErrorClassification defaultErrorClassification;
         synchronized (FacebookRequestError.class) {
-            FetchedAppSettings appSettingsWithoutQuery = Utility.getAppSettingsWithoutQuery(FacebookSdk.getApplicationId());
+            FetchedAppSettings appSettingsWithoutQuery = FetchedAppSettingsManager.getAppSettingsWithoutQuery(FacebookSdk.getApplicationId());
             defaultErrorClassification = appSettingsWithoutQuery == null ? FacebookRequestErrorClassification.getDefaultErrorClassification() : appSettingsWithoutQuery.getErrorClassification();
         }
         return defaultErrorClassification;
+    }
+
+    public final int describeContents() {
+        return 0;
     }
 
     public final Object getBatchRequestResult() {
@@ -203,5 +229,15 @@ public final class FacebookRequestError {
 
     public final String toString() {
         return "{HttpStatus: " + this.requestStatusCode + ", errorCode: " + this.errorCode + ", errorType: " + this.errorType + ", errorMessage: " + getErrorMessage() + "}";
+    }
+
+    public final void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(this.requestStatusCode);
+        parcel.writeInt(this.errorCode);
+        parcel.writeInt(this.subErrorCode);
+        parcel.writeString(this.errorType);
+        parcel.writeString(this.errorMessage);
+        parcel.writeString(this.errorUserTitle);
+        parcel.writeString(this.errorUserMessage);
     }
 }

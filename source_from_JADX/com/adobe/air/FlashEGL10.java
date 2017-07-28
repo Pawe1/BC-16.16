@@ -164,7 +164,6 @@ public class FlashEGL10 implements FlashEGL {
         int[] iArr3 = new int[1];
         this.mEglConfigList = new EGLConfig[this.mEglConfigCount];
         checkEglError("Before eglChooseConfig");
-        cfgAttrs[1] = 5;
         ChooseConfig(this.mEglDisplay, cfgAttrs, this.mEglConfigList, this.mEglConfigCount, iArr2);
         checkEglError("After eglChooseConfig");
         cfgAttrs[1] = -1;

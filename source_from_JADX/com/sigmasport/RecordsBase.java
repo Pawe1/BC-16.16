@@ -18,7 +18,6 @@ public class RecordsBase {
     public int startAddr = 0;
 
     public RecordsBase(int startAddr, int endAddr) {
-        Manager.cLog("new RecordsBase(" + startAddr + ", " + endAddr + ")");
         this.startAddr = startAddr;
         this.endAddr = endAddr;
     }
@@ -50,7 +49,6 @@ public class RecordsBase {
             String hexValue = Integer.toHexString(Integer.valueOf(valueOf).intValue());
             hexByteString = new StringBuilder(String.valueOf(hexByteString)).append(" ").append(new StringBuilder(String.valueOf(leadingZeros)).append(hexValue).toString().substring(hexValue.length()).toUpperCase()).toString();
         }
-        Manager.cLog("convertIntToHexByteString: " + hexByteString);
         return hexByteString.trim();
     }
 
@@ -60,8 +58,8 @@ public class RecordsBase {
             json.put(FIELD_START_ADDR, this.startAddr);
             json.put(FIELD_END_ADDR, this.endAddr);
             json.put(FIELD_BYTESTRING, this.byteString.trim());
-            json.put("errorMessage", this.errorMessage.trim());
-            json.put("errorCode", this.errorCode);
+            json.put(FIELD_ERRORMESSAGE, this.errorMessage.trim());
+            json.put(FIELD_ERRORCODE, this.errorCode);
         } catch (JSONException e) {
             Manager.cLog("EepromRecords.toJson() Error: " + e.getMessage());
             e.printStackTrace();

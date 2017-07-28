@@ -745,4 +745,11 @@ public class AppEntry extends Activity {
         } catch (Exception e) {
         }
     }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        try {
+            InvokeMethod(sAndroidActivityWrapperClass.getMethod("onRequestPermissionsResult", new Class[]{Integer.TYPE, String[].class, int[].class}), Integer.valueOf(requestCode), permissions, grantResults);
+        } catch (Exception e) {
+        }
+    }
 }

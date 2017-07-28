@@ -9,15 +9,15 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.internal.WebDialog.Builder;
 import com.facebook.internal.WebDialog.OnCompleteListener;
-import p000c.p001m.p002x.p003a.gv.C0059m;
-import p000c.p001m.p002x.p003a.gv.C0068q;
+import p000c.p001m.p002x.p003a.gv.C0074q;
+import p000c.p001m.p002x.p003a.gv.C0083u;
 
-public class FacebookDialogFragment extends C0059m {
+public class FacebookDialogFragment extends C0074q {
     public static final String TAG = "FacebookDialogFragment";
     private Dialog dialog;
 
-    class C02021 implements OnCompleteListener {
-        C02021() {
+    class C02361 implements OnCompleteListener {
+        C02361() {
         }
 
         public void onComplete(Bundle bundle, FacebookException facebookException) {
@@ -25,8 +25,8 @@ public class FacebookDialogFragment extends C0059m {
         }
     }
 
-    class C02032 implements OnCompleteListener {
-        C02032() {
+    class C02372 implements OnCompleteListener {
+        C02372() {
         }
 
         public void onComplete(Bundle bundle, FacebookException facebookException) {
@@ -35,13 +35,13 @@ public class FacebookDialogFragment extends C0059m {
     }
 
     private void onCompleteWebDialog(Bundle bundle, FacebookException facebookException) {
-        C0068q activity = getActivity();
+        C0083u activity = getActivity();
         activity.setResult(facebookException == null ? -1 : 0, NativeProtocol.createProtocolResultIntent(activity.getIntent(), bundle, facebookException));
         activity.finish();
     }
 
     private void onCompleteWebFallbackDialog(Bundle bundle) {
-        C0068q activity = getActivity();
+        C0083u activity = getActivity();
         Intent intent = new Intent();
         if (bundle == null) {
             bundle = new Bundle();
@@ -53,7 +53,7 @@ public class FacebookDialogFragment extends C0059m {
 
     public void onConfigurationChanged(Configuration configuration) {
         super.onConfigurationChanged(configuration);
-        if (this.dialog instanceof WebDialog) {
+        if ((this.dialog instanceof WebDialog) && isResumed()) {
             ((WebDialog) this.dialog).resize();
         }
     }
@@ -73,7 +73,7 @@ public class FacebookDialogFragment extends C0059m {
                     return;
                 }
                 facebookWebFallbackDialog = new FacebookWebFallbackDialog(activity, string, String.format("fb%s://bridge/", new Object[]{FacebookSdk.getApplicationId()}));
-                facebookWebFallbackDialog.setOnCompleteListener(new C02032());
+                facebookWebFallbackDialog.setOnCompleteListener(new C02372());
             } else {
                 string = methodArgumentsFromIntent.getString(NativeProtocol.WEB_DIALOG_ACTION);
                 methodArgumentsFromIntent = methodArgumentsFromIntent.getBundle(NativeProtocol.WEB_DIALOG_PARAMS);
@@ -82,7 +82,7 @@ public class FacebookDialogFragment extends C0059m {
                     activity.finish();
                     return;
                 }
-                facebookWebFallbackDialog = new Builder(activity, string, methodArgumentsFromIntent).setOnCompleteListener(new C02021()).build();
+                facebookWebFallbackDialog = new Builder(activity, string, methodArgumentsFromIntent).setOnCompleteListener(new C02361()).build();
             }
             this.dialog = facebookWebFallbackDialog;
         }
@@ -101,6 +101,13 @@ public class FacebookDialogFragment extends C0059m {
             getDialog().setDismissMessage(null);
         }
         super.onDestroyView();
+    }
+
+    public void onResume() {
+        super.onResume();
+        if (this.dialog instanceof WebDialog) {
+            ((WebDialog) this.dialog).resize();
+        }
     }
 
     public void setDialog(Dialog dialog) {

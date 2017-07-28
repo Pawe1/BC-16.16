@@ -11,7 +11,10 @@ import android.util.Base64;
 import android.util.Log;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.internal.BoltsMeasurementEventListener;
+import com.facebook.internal.FetchedAppSettingsManager;
+import com.facebook.internal.LockOnGetVariable;
 import com.facebook.internal.NativeProtocol;
+import com.facebook.internal.ServerProtocol;
 import com.facebook.internal.Utility;
 import com.facebook.internal.Validate;
 import java.io.File;
@@ -28,8 +31,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -37,13 +38,17 @@ public final class FacebookSdk {
     public static final String APPLICATION_ID_PROPERTY = "com.facebook.sdk.ApplicationId";
     public static final String APPLICATION_NAME_PROPERTY = "com.facebook.sdk.ApplicationName";
     private static final String ATTRIBUTION_PREFERENCES = "com.facebook.sdk.attributionTracking";
-    static final String CALLBACK_OFFSET_CHANGED_AFTER_INIT = "The callback request code offset can't be updated once the SDK is initialized.";
+    public static final String AUTO_LOG_APP_EVENTS_ENABLED_PROPERTY = "com.facebook.sdk.AutoLogAppEventsEnabled";
+    static final String CALLBACK_OFFSET_CHANGED_AFTER_INIT = "The callback request code offset can't be updated once the SDK is initialized. Call FacebookSdk.setCallbackRequestCodeOffset inside your Application.onCreate method";
     static final String CALLBACK_OFFSET_NEGATIVE = "The callback request code offset can't be negative.";
+    public static final String CALLBACK_OFFSET_PROPERTY = "com.facebook.sdk.CallbackOffset";
     public static final String CLIENT_TOKEN_PROPERTY = "com.facebook.sdk.ClientToken";
+    private static final int DEFAULT_CALLBACK_REQUEST_CODE_OFFSET = 64206;
     private static final int DEFAULT_CORE_POOL_SIZE = 5;
     private static final int DEFAULT_KEEP_ALIVE = 1;
     private static final int DEFAULT_MAXIMUM_POOL_SIZE = 128;
-    private static final ThreadFactory DEFAULT_THREAD_FACTORY = new C01811();
+    private static final int DEFAULT_THEME = C0196R.style.com_facebook_activity_theme;
+    private static final ThreadFactory DEFAULT_THREAD_FACTORY = new C01801();
     private static final BlockingQueue<Runnable> DEFAULT_WORK_QUEUE = new LinkedBlockingQueue(10);
     private static final String FACEBOOK_COM = "facebook.com";
     private static final Object LOCK = new Object();
@@ -55,10 +60,12 @@ public final class FacebookSdk {
     private static Context applicationContext;
     private static volatile String applicationId;
     private static volatile String applicationName;
-    private static File cacheDir;
-    private static int callbackRequestCodeOffset = 64206;
+    private static volatile Boolean autoLogAppEventsEnabled;
+    private static LockOnGetVariable<File> cacheDir;
+    private static int callbackRequestCodeOffset = DEFAULT_CALLBACK_REQUEST_CODE_OFFSET;
     private static volatile Executor executor;
     private static volatile String facebookDomain = FACEBOOK_COM;
+    private static String graphApiVersion = ServerProtocol.getDefaultAPIVersion();
     private static volatile boolean isDebugEnabled = false;
     private static boolean isLegacyTokenUpgradeSupported = false;
     private static final HashSet<LoggingBehavior> loggingBehaviors = new HashSet(Arrays.asList(new LoggingBehavior[]{LoggingBehavior.DEVELOPER_ERRORS}));
@@ -66,10 +73,10 @@ public final class FacebookSdk {
     private static Boolean sdkInitialized = Boolean.valueOf(false);
     private static volatile int webDialogTheme;
 
-    final class C01811 implements ThreadFactory {
+    final class C01801 implements ThreadFactory {
         private final AtomicInteger counter = new AtomicInteger(0);
 
-        C01811() {
+        C01801() {
         }
 
         public final Thread newThread(Runnable runnable) {
@@ -77,11 +84,22 @@ public final class FacebookSdk {
         }
     }
 
-    final class C01822 implements Callable<Void> {
+    final class C01812 implements Callable<File> {
+        C01812() {
+        }
+
+        public final File call() {
+            return FacebookSdk.applicationContext.getCacheDir();
+        }
+    }
+
+    final class C01823 implements Callable<Void> {
+        final /* synthetic */ Context val$applicationContext;
         final /* synthetic */ InitializeCallback val$callback;
 
-        C01822(InitializeCallback initializeCallback) {
+        C01823(InitializeCallback initializeCallback, Context context) {
             this.val$callback = initializeCallback;
+            this.val$applicationContext = context;
         }
 
         public final Void call() {
@@ -93,15 +111,16 @@ public final class FacebookSdk {
             if (this.val$callback != null) {
                 this.val$callback.onInitialized();
             }
+            AppEventsLogger.newLogger(this.val$applicationContext.getApplicationContext()).flush();
             return null;
         }
     }
 
-    final class C01833 implements Runnable {
+    final class C01834 implements Runnable {
         final /* synthetic */ Context val$applicationContext;
         final /* synthetic */ String val$applicationId;
 
-        C01833(Context context, String str) {
+        C01834(Context context, String str) {
             this.val$applicationContext = context;
             this.val$applicationId = str;
         }
@@ -171,22 +190,14 @@ public final class FacebookSdk {
         }
     }
 
-    private static Executor getAsyncTaskExecutor() {
-        try {
-            try {
-                Object obj = AsyncTask.class.getField("THREAD_POOL_EXECUTOR").get(null);
-                return obj == null ? null : !(obj instanceof Executor) ? null : (Executor) obj;
-            } catch (IllegalAccessException e) {
-                return null;
-            }
-        } catch (NoSuchFieldException e2) {
-            return null;
-        }
+    public static boolean getAutoLogAppEventsEnabled() {
+        Validate.sdkInitialized();
+        return autoLogAppEventsEnabled.booleanValue();
     }
 
     public static File getCacheDir() {
         Validate.sdkInitialized();
-        return cacheDir;
+        return (File) cacheDir.getValue();
     }
 
     public static int getCallbackRequestCodeOffset() {
@@ -202,11 +213,7 @@ public final class FacebookSdk {
     public static Executor getExecutor() {
         synchronized (LOCK) {
             if (executor == null) {
-                Executor asyncTaskExecutor = getAsyncTaskExecutor();
-                if (asyncTaskExecutor == null) {
-                    asyncTaskExecutor = new ThreadPoolExecutor(5, DEFAULT_MAXIMUM_POOL_SIZE, 1, TimeUnit.SECONDS, DEFAULT_WORK_QUEUE, DEFAULT_THREAD_FACTORY);
-                }
-                executor = asyncTaskExecutor;
+                executor = AsyncTask.THREAD_POOL_EXECUTOR;
             }
         }
         return executor;
@@ -214,6 +221,10 @@ public final class FacebookSdk {
 
     public static String getFacebookDomain() {
         return facebookDomain;
+    }
+
+    public static String getGraphApiVersion() {
+        return graphApiVersion;
     }
 
     public static boolean getLimitEventAndDataUsage(Context context) {
@@ -285,9 +296,8 @@ public final class FacebookSdk {
                             } else {
                                 applicationId = str;
                             }
-                            applicationId = (String) obj;
                         } else if (obj instanceof Integer) {
-                            throw new FacebookException("App Ids cannot be directly placed in the manfiest.They mut be prexied by 'fb' or be placed in the string resource file.");
+                            throw new FacebookException("App Ids cannot be directly placed in the manifest.They must be prefixed by 'fb' or be placed in the string resource file.");
                         }
                     }
                     if (applicationName == null) {
@@ -297,7 +307,13 @@ public final class FacebookSdk {
                         appClientToken = applicationInfo.metaData.getString(CLIENT_TOKEN_PROPERTY);
                     }
                     if (webDialogTheme == 0) {
-                        webDialogTheme = applicationInfo.metaData.getInt(WEB_DIALOG_THEME);
+                        setWebDialogTheme(applicationInfo.metaData.getInt(WEB_DIALOG_THEME));
+                    }
+                    if (callbackRequestCodeOffset == DEFAULT_CALLBACK_REQUEST_CODE_OFFSET) {
+                        callbackRequestCodeOffset = applicationInfo.metaData.getInt(CALLBACK_OFFSET_PROPERTY, DEFAULT_CALLBACK_REQUEST_CODE_OFFSET);
+                    }
+                    if (autoLogAppEventsEnabled == null) {
+                        autoLogAppEventsEnabled = Boolean.valueOf(applicationInfo.metaData.getBoolean(AUTO_LOG_APP_EVENTS_ENABLED_PROPERTY, true));
                     }
                 }
             } catch (NameNotFoundException e) {
@@ -442,7 +458,7 @@ Error: jadx.core.utils.exceptions.JadxRuntimeException: Exception block dominato
     }
 
     public static void publishInstallAsync(Context context, String str) {
-        getExecutor().execute(new C01833(context.getApplicationContext(), str));
+        getExecutor().execute(new C01834(context.getApplicationContext(), str));
     }
 
     public static void removeLoggingBehavior(LoggingBehavior loggingBehavior) {
@@ -451,18 +467,21 @@ Error: jadx.core.utils.exceptions.JadxRuntimeException: Exception block dominato
         }
     }
 
+    @Deprecated
     public static synchronized void sdkInitialize(Context context) {
         synchronized (FacebookSdk.class) {
             sdkInitialize(context, null);
         }
     }
 
+    @Deprecated
     public static synchronized void sdkInitialize(Context context, int i) {
         synchronized (FacebookSdk.class) {
             sdkInitialize(context, i, null);
         }
     }
 
+    @Deprecated
     public static synchronized void sdkInitialize(Context context, int i, InitializeCallback initializeCallback) {
         synchronized (FacebookSdk.class) {
             if (sdkInitialized.booleanValue() && i != callbackRequestCodeOffset) {
@@ -471,11 +490,12 @@ Error: jadx.core.utils.exceptions.JadxRuntimeException: Exception block dominato
                 throw new FacebookException(CALLBACK_OFFSET_NEGATIVE);
             } else {
                 callbackRequestCodeOffset = i;
-                sdkInitialize(context);
+                sdkInitialize(context, initializeCallback);
             }
         }
     }
 
+    @Deprecated
     public static synchronized void sdkInitialize(Context context, InitializeCallback initializeCallback) {
         synchronized (FacebookSdk.class) {
             if (!sdkInitialized.booleanValue()) {
@@ -485,12 +505,15 @@ Error: jadx.core.utils.exceptions.JadxRuntimeException: Exception block dominato
                 Context applicationContext = context.getApplicationContext();
                 applicationContext = applicationContext;
                 loadDefaultsFromMetadata(applicationContext);
-                Utility.loadAppSettingsAsync(applicationContext, applicationId);
+                if (Utility.isNullOrEmpty(applicationId)) {
+                    throw new FacebookException("A valid Facebook app id must be set in the AndroidManifest.xml or set by calling FacebookSdk.setApplicationId before initializing the sdk.");
+                }
+                sdkInitialized = Boolean.valueOf(true);
+                FetchedAppSettingsManager.loadAppSettingsAsync();
                 NativeProtocol.updateAllAvailableProtocolVersionsAsync();
                 BoltsMeasurementEventListener.getInstance(applicationContext);
-                cacheDir = applicationContext.getCacheDir();
-                getExecutor().execute(new FutureTask(new C01822(initializeCallback)));
-                sdkInitialized = Boolean.valueOf(true);
+                cacheDir = new LockOnGetVariable(new C01812());
+                getExecutor().execute(new FutureTask(new C01823(initializeCallback, context)));
             } else if (initializeCallback != null) {
                 initializeCallback.onInitialized();
             }
@@ -505,8 +528,12 @@ Error: jadx.core.utils.exceptions.JadxRuntimeException: Exception block dominato
         applicationName = str;
     }
 
+    public static void setAutoLogAppEventsEnabled(boolean z) {
+        autoLogAppEventsEnabled = Boolean.valueOf(z);
+    }
+
     public static void setCacheDir(File file) {
-        cacheDir = file;
+        cacheDir = new LockOnGetVariable((Object) file);
     }
 
     public static void setClientToken(String str) {
@@ -523,6 +550,12 @@ Error: jadx.core.utils.exceptions.JadxRuntimeException: Exception block dominato
     public static void setFacebookDomain(String str) {
         Log.w(TAG, "WARNING: Calling setFacebookDomain from non-DEBUG code.");
         facebookDomain = str;
+    }
+
+    public static void setGraphApiVersion(String str) {
+        if (!Utility.isNullOrEmpty(str) && !graphApiVersion.equals(str)) {
+            graphApiVersion = str;
+        }
     }
 
     public static void setIsDebugEnabled(boolean z) {
@@ -542,6 +575,9 @@ Error: jadx.core.utils.exceptions.JadxRuntimeException: Exception block dominato
     }
 
     public static void setWebDialogTheme(int i) {
+        if (i == 0) {
+            i = DEFAULT_THEME;
+        }
         webDialogTheme = i;
     }
 

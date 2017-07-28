@@ -21,8 +21,8 @@ public class VideoView extends SurfaceView {
     private int mYmax = 16;
     private int mYmin = 0;
 
-    class C01581 implements Callback {
-        C01581() {
+    class C01671 implements Callback {
+        C01671() {
         }
 
         public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
@@ -50,8 +50,8 @@ public class VideoView extends SurfaceView {
         }
     }
 
-    class C01592 implements Runnable {
-        C01592() {
+    class C01682 implements Runnable {
+        C01682() {
         }
 
         public void run() {
@@ -68,7 +68,7 @@ public class VideoView extends SurfaceView {
         if (useOverlay()) {
             getHolder().setFormat(842094169);
         }
-        getHolder().addCallback(new C01581());
+        getHolder().addCallback(new C01671());
     }
 
     public void VideoPlaybackRestarted() {
@@ -93,7 +93,7 @@ public class VideoView extends SurfaceView {
         this.mXmax = i3;
         this.mYmax = i4;
         this.mPlanePositionSet = true;
-        getHandler().post(new C01592());
+        getHandler().post(new C01682());
     }
 
     protected boolean useOverlay() {

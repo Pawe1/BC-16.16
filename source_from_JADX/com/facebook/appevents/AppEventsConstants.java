@@ -10,6 +10,7 @@ public class AppEventsConstants {
     public static final String EVENT_NAME_COMPLETED_TUTORIAL = "fb_mobile_tutorial_completion";
     public static final String EVENT_NAME_DEACTIVATED_APP = "fb_mobile_deactivate_app";
     public static final String EVENT_NAME_INITIATED_CHECKOUT = "fb_mobile_initiated_checkout";
+    @Deprecated
     public static final String EVENT_NAME_PURCHASED = "fb_mobile_purchase";
     public static final String EVENT_NAME_RATED = "fb_mobile_rate";
     public static final String EVENT_NAME_SEARCHED = "fb_mobile_search";

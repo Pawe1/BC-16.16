@@ -1,15 +1,13 @@
 package p000c.p001m.p002x.p003a.gv;
 
-import p000c.p001m.p002x.p003a.gv.C0074w.C0072a;
-
 final class ab implements Runnable {
-    final /* synthetic */ C0072a f2a;
+    final /* synthetic */ aa f40a;
 
-    ab(C0072a c0072a) {
-        this.f2a = c0072a;
+    ab(aa aaVar) {
+        this.f40a = aaVar;
     }
 
     public final void run() {
-        bh.m141a(this.f2a.f267b, 0);
+        this.f40a.m52c();
     }
 }

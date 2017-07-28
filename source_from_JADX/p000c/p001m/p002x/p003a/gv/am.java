@@ -1,12 +1,17 @@
 package p000c.p001m.p002x.p003a.gv;
 
-public abstract class am {
+import android.graphics.Rect;
+import android.transition.Transition;
+import android.transition.Transition.EpicenterCallback;
 
-    public interface C0011a<D> {
-        as<D> m38a();
+final class am extends EpicenterCallback {
+    final /* synthetic */ Rect f63a;
+
+    am(Rect rect) {
+        this.f63a = rect;
     }
 
-    public boolean mo7a() {
-        return false;
+    public final Rect onGetEpicenter(Transition transition) {
+        return this.f63a;
     }
 }

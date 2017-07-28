@@ -35,7 +35,7 @@ class DeviceProfiling {
             insertTrustConfigEntry();
             return true;
         }
-        AIRLogger.m363d(LOG_TAG, "Preload SWF/debughost resource does not exist inside the APK" + resExists + " " + resExists2);
+        AIRLogger.m376d(LOG_TAG, "Preload SWF/debughost resource does not exist inside the APK" + resExists + " " + resExists2);
         return false;
     }
 
@@ -45,7 +45,7 @@ class DeviceProfiling {
         try {
             mResManager.extractResource(mResManager.lookupResId("raw.profileragent"), file);
         } catch (Exception e) {
-            AIRLogger.m363d(LOG_TAG, " Exception while writing/closing preloadSWF File " + e.getMessage());
+            AIRLogger.m376d(LOG_TAG, " Exception while writing/closing preloadSWF File " + e.getMessage());
         }
     }
 
@@ -55,12 +55,12 @@ class DeviceProfiling {
         try {
             Utils.copyTo(new File(Utils.GetExternalStorageDirectory() + File.separator + FLASH_TRUST_DIR), file);
         } catch (Exception e) {
-            AIRLogger.m363d(LOG_TAG, "Recursive Copy for FlashPlayerTrust folder failed." + e.getMessage());
+            AIRLogger.m376d(LOG_TAG, "Recursive Copy for FlashPlayerTrust folder failed." + e.getMessage());
         }
         try {
             Utils.writeStringToFile(ApplicationFileManager.getAppRoot() + File.separator + META_INF, new File(ApplicationFileManager.getAppRoot() + File.separator + META_INF + File.separator + FLASH_TRUST_DIR + File.separator + PROFILE_CONFIG_FILENAME));
         } catch (Exception e2) {
-            AIRLogger.m363d(LOG_TAG, " Write to FlashPlayerTrust Failed" + e2.getMessage());
+            AIRLogger.m376d(LOG_TAG, " Write to FlashPlayerTrust Failed" + e2.getMessage());
         }
     }
 
@@ -73,13 +73,13 @@ class DeviceProfiling {
         try {
             mResManager.extractResource(mResManager.lookupResId("raw.debugger"), file3);
         } catch (Exception e) {
-            AIRLogger.m363d(LOG_TAG, " Extracting Resource debugInfo failed " + e.getMessage());
+            AIRLogger.m376d(LOG_TAG, " Extracting Resource debugInfo failed " + e.getMessage());
         }
         HashMap hashMap = new HashMap();
         try {
             hashMap = Utils.parseKeyValuePairFile(file3, new String(DELIM_STRING));
         } catch (Exception e2) {
-            AIRLogger.m363d(LOG_TAG, " Parsing for key-value pairs failed/mm.cfg not found " + e2.getMessage());
+            AIRLogger.m376d(LOG_TAG, " Parsing for key-value pairs failed/mm.cfg not found " + e2.getMessage());
         }
         String concat2 = new String("PreloadSwf=").concat(str).concat("?");
         StringBuffer stringBuffer = new StringBuffer();
@@ -108,7 +108,7 @@ class DeviceProfiling {
                 }
                 bufferedReader.close();
             } catch (Exception e3) {
-                AIRLogger.m363d(LOG_TAG, "Reading from Configuration file with path" + file.getAbsolutePath() + " failed." + e3.getMessage());
+                AIRLogger.m376d(LOG_TAG, "Reading from Configuration file with path" + file.getAbsolutePath() + " failed." + e3.getMessage());
             }
         } else {
             stringBuffer.append(concat2).append("\n");
@@ -116,7 +116,7 @@ class DeviceProfiling {
         try {
             Utils.writeBufferToFile(stringBuffer, file2);
         } catch (Exception e32) {
-            AIRLogger.m363d(LOG_TAG, " Writing string buffer to file failed " + e32.getMessage());
+            AIRLogger.m376d(LOG_TAG, " Writing string buffer to file failed " + e32.getMessage());
         }
     }
 }

@@ -33,8 +33,8 @@ public class SigmaUsbDevice {
     private List<WriterTask> writeOperations = new ArrayList();
     private Boolean writerStopped = Boolean.valueOf(false);
 
-    class C03991 implements Runnable {
-        C03991() {
+    class C04501 implements Runnable {
+        C04501() {
         }
 
         public void run() {
@@ -57,8 +57,8 @@ public class SigmaUsbDevice {
     private class ReaderThread extends Thread {
         public boolean mStopReader;
 
-        class C04001 implements Runnable {
-            C04001() {
+        class C04511 implements Runnable {
+            C04511() {
             }
 
             public void run() {
@@ -144,8 +144,8 @@ public class SigmaUsbDevice {
     private class WriterTask extends AsyncTask<Void, Void, Boolean> {
         private byte[] data;
 
-        class C04031 implements Runnable {
-            C04031() {
+        class C04541 implements Runnable {
+            C04541() {
             }
 
             public void run() {
@@ -153,8 +153,8 @@ public class SigmaUsbDevice {
             }
         }
 
-        class C04042 implements Runnable {
-            C04042() {
+        class C04552 implements Runnable {
+            C04552() {
             }
 
             public void run() {
@@ -168,10 +168,10 @@ public class SigmaUsbDevice {
 
         protected Boolean doInBackground(Void... params) {
             Manager.cLog("attempting to write Data");
-            new Handler(Looper.getMainLooper()).post(new C04031());
+            new Handler(Looper.getMainLooper()).post(new C04541());
             if (SigmaUsbDevice.this.mDeviceConnection == null || SigmaUsbDevice.this.mEndpointOut == null) {
                 Manager.cLog("Sending data not possible as there is no Connection or no Endpoint");
-                new Handler(Looper.getMainLooper()).post(new C04042());
+                new Handler(Looper.getMainLooper()).post(new C04552());
                 return Boolean.valueOf(false);
             } else if (this.data == null) {
                 try {
@@ -350,7 +350,7 @@ public class SigmaUsbDevice {
 
     private void checkDisconnection() {
         if (!this.disconnected.booleanValue() && this.writerStopped.booleanValue()) {
-            new Handler(Looper.getMainLooper()).post(new C03991());
+            new Handler(Looper.getMainLooper()).post(new C04501());
         }
     }
 
