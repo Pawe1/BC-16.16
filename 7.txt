@@ -1,0 +1,388 @@
+TagInfo scan: NXP Semiconductors NTAG I2C Plus 1K (NT3H2111) tag as Type 2 Tag
+** TagInfo scan (version 4.23) 2017-07-27 21:38:57 **
+Report Type: External
+
+-- IC INFO ------------------------------
+
+# IC manufacturer:
+NXP Semiconductors
+
+# IC type:
+NTAG I2C Plus 1K (NT3H2111)
+
+# NFC Forum NDEF-compliant tag:
+Type 2 Tag
+
+-- NDEF ------------------------------
+
+# NFC data set information:
+NDEF message containing 1 record
+Current message size: 31 bytes
+Maximum message size: 31 bytes
+NFC data set access: Read-Only
+
+# Record #1: URI record:
+Type Name Format: NFC Forum well-known type
+Short Record
+type: "U"
+protocol field: http://
+URI field: nfc.sigmasport.com/bc1616/
+Payload length: 27 bytes
+Payload data:
+
+[00] 03 6E 66 63 2E 73 69 67 6D 61 73 70 6F 72 74 2E |.nfc.sigmasport.|
+[10] 63 6F 6D 2F 62 63 31 36 31 36 2F                |com/bc1616/     |
+
+# NDEF message:
+[00] D1 01 1B 55 03 6E 66 63 2E 73 69 67 6D 61 73 70 |...U.nfc.sigmasp|
+[10] 6F 72 74 2E 63 6F 6D 2F 62 63 31 36 31 36 2F    |ort.com/bc1616/ |
+
+# NDEF Capability Container (CC):
+Mapping version: 1.0
+Maximum NDEF data size: 872 bytes
+NDEF access: Read & Write
+ E1 10 6D 00                                     |..m.            |
+
+-- EXTRA ------------------------------
+
+# Memory size:
+888 bytes user memory
+* 222 pages, with 4 bytes per page
+64 bytes SRAM buffer for fast data transfer to I2C
+
+# IC detailed information:
+Full product name: NTAG I2C Plus 1K(NT3H2111)
+Capacitance: 50 pF
+RF field detection
+Supported interfaces:
+* ISO/IEC 14443 (contactless)
+* I2C slave interface, supporting:
+	- Standard mode (100 kHz)
+	- Fast mode (up to 400 kHz)
+
+# Version information:
+Vendor ID: NXP
+Type: NTAG
+Subtype: 50 pF, FDP, I2C
+Major version: 2
+Minor version: V2
+Storage size: 888 bytes
+Protocol: ISO/IEC 14443-3
+
+# Start-up configuration:
+Last NDEF message page address:
+* Sector 0, page 0x00
+	- ERROR: invalid last NDEF message page address
+
+Field detection pin configuration:
+* Signal down on field presence
+* Signal up on field switched off
+
+SRAM buffer configuration:
+* Mirroring disabled
+
+I2C configuration: 
+* Soft reset through repeated start disabled
+* Clock stretching enabled
+* Watchdog time-out: 20,00 ms
+
+Configuration changeable from I2C
+Configuration changeable from RF
+
+[E8]  01 00 F8 48
+[E9]  08 01 00 00
+
+# Session configuration:
+Last NDEF message page address:
+* Sector 0, page 0x00
+	- ERROR: invalid last NDEF message page address
+
+Field detection pin configuration:
+* Signal down on field presence
+* Signal up on field switched off
+
+SRAM buffer configuration:
+* Mirroring disabled
+* Pass-through mode disabled
+* No data ready in SRAM
+
+I2C configuration: 
+* Soft reset through repeated start disabled
+* Clock stretching enabled
+* Watchdog time-out: 20,00 ms
+
+Memory access:
+* Memory access not locked
+* EEPROM write cycle is possible
+
+RF field detected
+
+[EC]  01 00 F8 48
+[ED]  08 01 01 00
+
+-- FULL SCAN ------------------------------
+
+# Technologies supported:
+ISO/IEC 14443-3 (Type A) compatible
+ISO/IEC 14443-2 (Type A) compatible
+
+# Android technology information:
+Tag description:
+* TAG: Tech [android.nfc.tech.NfcA, android.nfc.tech.MifareUltralight, android.nfc.tech.Ndef]
+* Maximum transceive length: 253 bytes
+* Default maximum transceive time-out: 618 ms
+
+
+# Detailed protocol information:
+ID: 04:A6:66:5A:44:50:80
+ATQA: 0x4400
+SAK: 0x00
+
+# Memory content:
+[000] * 04:A6:66 5A (UID0-UID2)
+[001] * 44:50:80:00 (UID3-UID6)
+[002] x 44 00 10 00 (CFG0-CFG1, LOCK0-LOCK1)
+[003] . E1:10:6D:00 (CC0-CC3)
+[004] x 03 1F D1 01 |....|
+[005] . 1B 55 03 6E |.U.n|
+[006] . 66 63 2E 73 |fc.s|
+[007] . 69 67 6D 61 |igma|
+[008] . 73 70 6F 72 |spor|
+[009] . 74 2E 63 6F |t.co|
+[00A] . 6D 2F 62 63 |m/bc|
+[00B] . 31 36 31 36 |1616|
+[00C] . 2F 00 00 00 |/...|
+[00D] . 00 00 00 00 |....|
+[00E] . 00 00 00 00 |....|
+[00F] . 00 00 00 00 |....|
+[010] . 26 24 00 01 |&$..|
+[011] . 4C 00 00 00 |L...|
+[012] . 00 00 00 00 |....|
+[013] . 00 00 00 00 |....|
+[014] . 00 00 00 01 |....|
+[015] . 00 00 00 00 |....|
+[016] . 00 00 00 00 |....|
+[017] . 00 00 00 00 |....|
+[018] . 00 00 00 00 |....|
+[019] . 00 00 00 00 |....|
+[01A] . 00 00 00 00 |....|
+[01B] . 00 00 00 00 |....|
+[01C] . 00 00 00 00 |....|
+[01D] . 00 00 00 00 |....|
+[01E] . 00 00 00 00 |....|
+[01F] . 00 00 00 00 |....|
+[020] . 00 00 00 00 |....|
+[021] . 00 00 00 00 |....|
+[022] . 00 00 00 00 |....|
+[023] . 00 00 00 00 |....|
+[024] . 00 00 00 00 |....|
+[025] . 00 00 00 00 |....|
+[026] . 00 00 00 00 |....|
+[027] . 00 00 00 00 |....|
+[028] . 00 00 00 00 |....|
+[029] . 00 00 00 00 |....|
+[02A] . 00 00 00 00 |....|
+[02B] . 00 00 00 00 |....|
+[02C] . 00 00 00 00 |....|
+[02D] . 00 00 00 00 |....|
+[02E] . 00 00 00 00 |....|
+[02F] . 00 00 00 00 |....|
+[030] . 00 00 00 00 |....|
+[031] . 00 00 00 00 |....|
+[032] . 00 00 00 00 |....|
+[033] . 00 00 00 00 |....|
+[034] . 00 00 00 00 |....|
+[035] . 00 00 00 00 |....|
+[036] . 00 00 00 00 |....|
+[037] . 00 00 00 00 |....|
+[038] . D5 EE 02 74 |...t|
+[039] . 36 42 B8 E5 |6B..|
+[03A] . 04 91 07 1B |....|
+[03B] . 00 00 00 00 |....|
+[03C] . 06 00 00 00 |....|
+[03D] . 00 00 00 00 |....|
+[03E] . 00 00 00 00 |....|
+[03F] . 00 00 00 00 |....|
+[040] . D7 7C 0E 01 |.|..|
+[041] . E0 03 AA C0 |....|
+[042] . 00 00 00 00 |....|
+[043] . 00 00 00 00 |....|
+[044] . 00 00 00 00 |....|
+[045] . B0 00 00 00 |....|
+[046] . 00 00 00 00 |....|
+[047] . 00 00 00 00 |....|
+[048] . 00 00 00 00 |....|
+[049] . DC 37 00 42 |.7.B|
+[04A] . 43 20 31 36 |C 16|
+[04B] . 2E 31 36 00 |.16.|
+[04C] . 92 00 06 00 |....|
+[04D] . 3C 30 B9 00 |<0..|
+[04E] . 00 00 00 00 |....|
+[04F] . 00 00 00 00 |....|
+[050] . 00 00 00 00 |....|
+[051] . 00 00 B1 05 |....|
+[052] . 00 00 00 00 |....|
+[053] . B7 00 00 00 |....|
+[054] . 00 00 00 00 |....|
+[055] . 00 00 00 00 |....|
+[056] . 00 00 00 00 |....|
+[057] . 00 00 00 00 |....|
+[058] . 00 00 00 00 |....|
+[059] . 00 00 00 00 |....|
+[05A] . 00 00 00 00 |....|
+[05B] . 00 00 00 00 |....|
+[05C] . 00 00 00 00 |....|
+[05D] . 00 00 00 00 |....|
+[05E] . 00 00 00 00 |....|
+[05F] . 00 00 00 00 |....|
+[060] . 1D 00 00 0D |....|
+[061] . 53 2B 01 00 |S+..|
+[062] . AA 00 00 00 |....|
+[063] . 00 00 00 00 |....|
+[064] . 71 00 00 72 |q..r|
+[065] . 00 00 00 00 |....|
+[066] . 00 00 00 00 |....|
+[067] . 00 00 00 00 |....|
+[068] . 00 00 00 00 |....|
+[069] . 00 D8 11 18 |....|
+[06A] . 00 00 00 00 |....|
+[06B] . 00 00 70 00 |..p.|
+[06C] . 00 00 00 00 |....|
+[06D] . 00 A8 00 00 |....|
+[06E] . 00 00 00 35 |...5|
+[06F] . 4F 00 00 00 |O...|
+[070] . 11 00 00 00 |....|
+[071] . 13 BF 03 AA |....|
+[072] . C0 00 ED 05 |....|
+[073] . 00 0A 70 BD |..p.|
+[074] . 11 00 00 00 |....|
+[075] . 00 00 00 00 |....|
+[076] . 00 00 00 00 |....|
+[077] . 00 00 60 72 |..`r|
+[078] . 11 00 00 00 |....|
+[079] . 00 00 00 00 |....|
+[07A] . 00 00 00 00 |....|
+[07B] . 00 00 50 62 |..Pb|
+[07C] . 11 00 00 00 |....|
+[07D] . 00 00 00 00 |....|
+[07E] . 00 00 00 00 |....|
+[07F] . 00 00 40 52 |..@R|
+[080] . 11 00 00 00 |....|
+[081] . 00 00 00 00 |....|
+[082] . 00 00 00 00 |....|
+[083] . 00 00 30 42 |..0B|
+[084] . 11 00 00 00 |....|
+[085] . 00 00 00 00 |....|
+[086] . 00 00 00 00 |....|
+[087] . 00 00 20 32 |.. 2|
+[088] . 11 00 00 00 |....|
+[089] . 00 00 00 00 |....|
+[08A] . 00 00 00 00 |....|
+[08B] . 00 00 10 22 |..."|
+[08C] . 10 00 00 00 |....|
+[08D] . 00 00 00 00 |....|
+[08E] . 00 00 00 00 |....|
+[08F] . 00 00 C0 D1 |....|
+[090] . 10 00 00 00 |....|
+[091] . 00 00 00 00 |....|
+[092] . 00 00 00 00 |....|
+[093] . 00 00 B0 C1 |....|
+[094] . 10 00 00 00 |....|
+[095] . 00 00 00 00 |....|
+[096] . 00 00 00 00 |....|
+[097] . 00 00 A0 B1 |....|
+[098] . 10 00 00 00 |....|
+[099] . 00 00 00 00 |....|
+[09A] . 00 00 00 00 |....|
+[09B] . 00 00 90 A1 |....|
+[09C] . 10 00 00 00 |....|
+[09D] . 00 00 00 00 |....|
+[09E] . 00 00 00 00 |....|
+[09F] . 00 00 80 91 |....|
+[0A0] . 00 00 00 00 |....|
+[0A1] . 00 00 00 00 |....|
+[0A2] . 00 00 00 00 |....|
+[0A3] . 00 00 00 00 |....|
+[0A4] . 00 00 00 00 |....|
+[0A5] . 00 00 00 00 |....|
+[0A6] . 00 00 00 00 |....|
+[0A7] . 00 00 00 00 |....|
+[0A8] . 00 00 00 00 |....|
+[0A9] . 00 00 00 00 |....|
+[0AA] . 00 00 00 00 |....|
+[0AB] . 00 00 00 00 |....|
+[0AC] . 00 00 00 00 |....|
+[0AD] . 00 00 00 00 |....|
+[0AE] . 00 00 00 00 |....|
+[0AF] . 00 00 00 00 |....|
+[0B0] . 00 00 00 00 |....|
+[0B1] . 00 00 00 00 |....|
+[0B2] . 00 00 00 00 |....|
+[0B3] . 00 00 00 00 |....|
+[0B4] . 00 00 00 00 |....|
+[0B5] . 00 00 00 00 |....|
+[0B6] . 00 00 00 00 |....|
+[0B7] . 00 00 00 00 |....|
+[0B8] . 00 00 00 00 |....|
+[0B9] . 00 00 00 00 |....|
+[0BA] . 00 00 00 00 |....|
+[0BB] . 00 00 00 00 |....|
+[0BC] . 00 00 00 00 |....|
+[0BD] . 00 00 00 00 |....|
+[0BE] . 00 00 00 00 |....|
+[0BF] . 00 00 00 00 |....|
+[0C0] . 00 00 00 00 |....|
+[0C1] . 00 00 00 00 |....|
+[0C2] . 00 00 00 00 |....|
+[0C3] . 00 00 00 00 |....|
+[0C4] . 00 00 00 00 |....|
+[0C5] . 00 00 00 00 |....|
+[0C6] . 00 00 00 00 |....|
+[0C7] . 00 00 00 00 |....|
+[0C8] . 00 00 00 00 |....|
+[0C9] . 00 00 00 00 |....|
+[0CA] . 00 00 00 00 |....|
+[0CB] . 00 00 00 00 |....|
+[0CC] . 00 00 00 00 |....|
+[0CD] . 00 00 00 00 |....|
+[0CE] . 00 00 00 00 |....|
+[0CF] . 00 00 00 00 |....|
+[0D0] . 00 00 00 00 |....|
+[0D1] . 00 00 00 00 |....|
+[0D2] . 00 00 00 00 |....|
+[0D3] . 00 00 00 00 |....|
+[0D4] . 00 00 00 00 |....|
+[0D5] . 00 00 00 00 |....|
+[0D6] . 00 00 00 00 |....|
+[0D7] . 00 00 00 00 |....|
+[0D8] . 00 00 00 00 |....|
+[0D9] . 00 00 00 00 |....|
+[0DA] . 00 00 00 00 |....|
+[0DB] . 00 00 00 00 |....|
+[0DC] . 00 00 00 00 |....|
+[0DD] . 00 00 00 00 |....|
+[0DE] . 00 00 00 00 |....|
+[0DF] . 00 00 00 00 |....|
+[0E0] . 00 00 00 00 |....|
+[0E1] . 00 00 00 00 |....|
+[0E2] . 00 00 00 00 (LOCK2-LOCK4, CHK)
+[0E3] . 00 00 00 E2 (RFU-RFU, AUTH0)
+[0E4] . 00 00 00 00 (ACCESS, RFU-RFU)
+[0E5] . 00 00 00 00 (PWD)
+[0E6] . 00 00 00 00 (PACK,PACK,RFU,RFU)
+[0E7] . 00 00 00 00 (PT_I2C, RFU-RFU)
+
+Configuration registers:
+[0E8] w 01 00 F8 48 (NC, LD, SM, WDT0)
+[0E9] w 08 01 00 -- (WDT1, CLK, LOCK)
+
+Session registers:
+[0EC] r 01 00 F8 48 (NC, LD, SM, WDT0)
+[0ED] r 08 01 01 -- (WDT1, CLK, NS)
+
+  *:locked & blocked, x:locked,
+  +:blocked, .:un(b)locked
+  w:readable & writable  r:readable (write-protected)
+
+--------------------------------------
+
