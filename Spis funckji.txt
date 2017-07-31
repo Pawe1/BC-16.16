@@ -1,0 +1,197 @@
+14.16
+
+Bike functions
+Separate trip section counter with manual stop/start
+Actual Speed
+Comparison of cur. / avg. Speed
+Clock (12/24h)
+Ride Time / Training time
+Temperature
+Total distance for several bikes
+Total distance
+Day trip
+Total ride time for several bikes
+Total Ride Time / Overall training time
+Automatic start/stop
+Maximum speed
+Average speed
+
+Altitude functions
+Total altitude uphill
+Current altitude
+Maximum altitude
+Total altitude uphill for several bikes
+Current incline/downward slope (in %)
+Altitude graph
+Altitude uphill
+Adjustable start altitude
+
+Features
+My Screen function
+Programmable based on tire selection
+Energy-saving mode
+My Name function
+LINK APP Connecttion via NFC (Android)
+Backlight
+Device Settings adjustable via DATA CENTER
+Service interval adjustable via UFSB
+Computer battery warning
+12 months of workout statistics
+Data communication via TOPLINE 2016 docking station
+Device Settings adjustable via LINK App
+Watertight in accordance with IPX8
+UFSB 2016 compatible
+Tool-free mounting
+Contrast adjustable
+Back-up function via memory chip (Totals and Settings)
+Barometric altitude measurement
+Available languages: 7
+
+
+
+16.16
+
+Bike functions
+Dist. to destination*
+Ride Time / Training time
+Day trip
+Time to destination*
+Daily fuel savings
+Total distance
+Estimated time of arrival (ETA)
+Maximum speed
+Total fuel savings
+Total Ride Time / Overall training time
+Total ride time for several bikes
+Actual Speed
+Temperature
+Comparison of cur. / avg. Speed
+Automatic start/stop
+Clock (12/24h)
+Total distance for several bikes
+Average speed
+
+Features
+Device Settings adjustable via DATA CENTER
+Device Settings adjustable via LINK App
+Data communication via TOPLINE 2016 docking station
+Energy-saving mode
+Backlight
+Service interval adjustable via UFSB
+Back-up function via memory chip (Totals and Settings)
+12 months of workout statistics
+Watertight in accordance with IPX8
+LINK APP Connecttion via NFC (Android)
+My Name function
+Computer battery warning
+Tool-free mounting
+UFSB 2016 compatible
+Contrast adjustable
+Programmable based on tire selection
+Available languages: 7
+My Screen function
+
+
+23.16
+
+Bike functions
+Ride Time / Training time
+Day trip
+Total calories for several bikes
+Temperature
+Comparison of cur. / avg. Speed
+Total calories*
+Total distance
+Total ride time for several bikes
+Actual Speed
+Maximum speed
+Total distance for several bikes
+Total Ride Time / Overall training time
+Clock (12/24h)
+Average speed
+Calories (HR based)
+Automatic start/stop
+
+Altitude functions
+Current incline/downward slope (in %)
+Total altitude downhill
+Current altitude
+Total distance downhill
+Current rate of ascent / descent
+Distance downhill
+Total altitude uphill for several bikes
+Total altitude uphill
+Total altitude downhill for several bikes
+Distance uphill
+Total distance uphill
+Adjustable start altitude
+Maximum altitude
+Altitude uphill
+Altitude graph
+Altitude downhill
+
+Heart rate functions
+Intensity zones (graph)
+% HR max.
+Maximum heart rate
+Target zone bars
+Zone alarm ON / OFF
+Current heart rate
+Heart rate graph
+Average heart rate
+4 Intensity zones
+
+Cadence functions
+Current cadence
+Maximum cadence
+Average cadence
+
+Power functions
+Average power
+Current Power (calculated)
+
+Lap functions
+Elevation gain in lap
+Distance in lap
+Calories in lap
+Maximum cadence in lap
+Maximum heart rate in lap
+Time in lap
+Number of laps
+Maximum speed in lap
+Average speed in lap
+Elevation loss in lap
+Average cadence in lap
+Average heart rate in lap
+
+Features
+Display zoom function
+UFSB 2016 compatible
+Watertight in accordance with IPX8
+Tool-free mounting
+Transmitter battery warning
+Energy-saving mode
+Programmable based on tire selection
+STS transmission
+Service interval adjustable via UFSB
+Ghost Race
+Log Interval adjustable
+Log capacity
+Graphic data evaluation in the DATA CENTER
+Data communication via TOPLINE 2016 docking station
+Data Logging
+My Screen function
+My Name function
+Logging data (activities) retrievable
+Computer battery warning
+LINK APP Connecttion via NFC (Android)
+Contrast adjustable
+12 months of workout statistics
+Device Settings adjustable via LINK App
+Device Settings adjustable via DATA CENTER
+Automatic pairing
+Automatic bike recognition (Bike 1 / Bike 2)
+Back-up function via memory chip (Totals and Settings)
+Available languages: 7
+Barometric altitude measurement
+Backlight
