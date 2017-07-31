@@ -1,0 +1,47 @@
+
+    protected void onNewIntent(Intent intent){    
+        getTagInfo(intent)
+         }
+    private void getTagInfo(Intent intent) {
+    Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+    String[] techList = tag.getTechList();
+   for (int i = 0; i < techList.length; i++) {
+    if (techList[i].equals(MifareClassic.class.getName())) {
+
+        MifareClassic mifareClassicTag = MifareClassic.get(tag);
+        switch (mifareClassicTag.getType()) {
+        case MifareClassic.TYPE_CLASSIC:
+            //Type Clssic
+            break;
+        case MifareClassic.TYPE_PLUS:
+            //Type Plus
+            break;
+        case MifareClassic.TYPE_PRO:
+            //Type Pro
+            break;
+        }
+    } else if (techList[i].equals(MifareUltralight.class.getName())) {
+    //For Mifare Ultralight
+        MifareUltralight mifareUlTag = MifareUltralight.get(tag);
+        switch (mifareUlTag.getType()) {
+        case MifareUltralight.TYPE_ULTRALIGHT:
+            break;
+        case MifareUltralight.TYPE_ULTRALIGHT_C:
+
+            break;
+        }
+    } else if (techList[i].equals(IsoDep.class.getName())) {
+        // info[1] = "IsoDep";
+        IsoDep isoDepTag = IsoDep.get(tag);
+
+    } else if (techList[i].equals(Ndef.class.getName())) {
+        Ndef.get(tag);
+
+    } else if (techList[i].equals(NdefFormatable.class.getName())) {
+
+        NdefFormatable ndefFormatableTag = NdefFormatable.get(tag);
+
+    }
+    }
+    }
+    }
