@@ -20,70 +20,24 @@ unit Androidapi.JNI.NFC.Tech;
 
 interface
 
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag,
-//  android.nfc.NdefMessage;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag,
-//  android.nfc.NdefMessage;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag;
+uses
+  Androidapi.JNI.JavaTypes,
+  Androidapi.JNI.NFC,
+  Androidapi.JNIBridge;
 
 type
   JBasicTagTechnology = interface;
+  JIsoDep = interface;
+  JMifareClassic = interface;
+  JMifareUltralight = interface;
+  JNdef = interface;
+  JNdefFormatable = interface;
+  JNfcA = interface;
+  JNfcB = interface;
+  JNfcBarcode = interface;
+  JNfcF = interface;
+  JNfcV = interface;
+  JTagTechnology = interface;
 
   JBasicTagTechnologyClass = interface(JObjectClass)
     ['{FA946A5E-1A9E-494B-8B47-FAB567E0B837}']
@@ -104,9 +58,6 @@ type
 
   TJBasicTagTechnology = class(TJavaGenericImport<JBasicTagTechnologyClass, JBasicTagTechnology>)
   end;
-
-type
-  JIsoDep = interface;
 
   JIsoDepClass = interface(JObjectClass)
     ['{332E2C73-D68D-4487-A7EF-752D1CB11ADB}']
@@ -134,9 +85,6 @@ type
 
   TJIsoDep = class(TJavaGenericImport<JIsoDepClass, JIsoDep>)
   end;
-
-type
-  JMifareClassic = interface;
 
   JMifareClassicClass = interface(JObjectClass)
     ['{33299AAA-C7A3-432B-BDE7-4A984D902275}']
@@ -213,20 +161,6 @@ type
   TJMifareClassic = class(TJavaGenericImport<JMifareClassicClass, JMifareClassic>)
   end;
 
-const
-  TJMifareClassicBLOCK_SIZE = 16;
-  TJMifareClassicSIZE_1K = 1024;
-  TJMifareClassicSIZE_2K = 2048;
-  TJMifareClassicSIZE_4K = 4096;
-  TJMifareClassicSIZE_MINI = 320;
-  TJMifareClassicTYPE_CLASSIC = 0;
-  TJMifareClassicTYPE_PLUS = 1;
-  TJMifareClassicTYPE_PRO = 2;
-  TJMifareClassicTYPE_UNKNOWN = -1;
-
-type
-  JMifareUltralight = interface;
-
   JMifareUltralightClass = interface(JObjectClass)
     ['{75CBE28C-FB17-46D7-8F40-94CE100687A2}']
     function _GetPAGE_SIZE : Integer; cdecl;                                    //  A: $19
@@ -261,15 +195,6 @@ type
 
   TJMifareUltralight = class(TJavaGenericImport<JMifareUltralightClass, JMifareUltralight>)
   end;
-
-const
-  TJMifareUltralightPAGE_SIZE = 4;
-  TJMifareUltralightTYPE_ULTRALIGHT = 1;
-  TJMifareUltralightTYPE_ULTRALIGHT_C = 2;
-  TJMifareUltralightTYPE_UNKNOWN = -1;
-
-type
-  JNdef = interface;
 
   JNdefClass = interface(JObjectClass)
     ['{0C14382A-559B-4886-8A53-E15C17CD4C76}']
@@ -310,16 +235,6 @@ type
   TJNdef = class(TJavaGenericImport<JNdefClass, JNdef>)
   end;
 
-const
-  TJNdefMIFARE_CLASSIC = 'com.nxp.ndef.mifareclassic';
-  TJNdefNFC_FORUM_TYPE_1 = 'org.nfcforum.ndef.type1';
-  TJNdefNFC_FORUM_TYPE_2 = 'org.nfcforum.ndef.type2';
-  TJNdefNFC_FORUM_TYPE_3 = 'org.nfcforum.ndef.type3';
-  TJNdefNFC_FORUM_TYPE_4 = 'org.nfcforum.ndef.type4';
-
-type
-  JNdefFormatable = interface;
-
   JNdefFormatableClass = interface(JObjectClass)
     ['{3CB4EF04-EF36-48F8-983B-9312BB8ADB0F}']
     function get(tag : JTag) : JNdefFormatable; cdecl;                          // (Landroid/nfc/Tag;)Landroid/nfc/tech/NdefFormatable; A: $9
@@ -336,9 +251,6 @@ type
 
   TJNdefFormatable = class(TJavaGenericImport<JNdefFormatableClass, JNdefFormatable>)
   end;
-
-type
-  JNfcA = interface;
 
   JNfcAClass = interface(JObjectClass)
     ['{F0BC0FD5-7425-491F-9F41-136D4B0EBB14}']
@@ -365,9 +277,6 @@ type
   TJNfcA = class(TJavaGenericImport<JNfcAClass, JNfcA>)
   end;
 
-type
-  JNfcB = interface;
-
   JNfcBClass = interface(JObjectClass)
     ['{CE3FD978-CF6C-4DDD-9C15-6272CC33201F}']
     function get(tag : JTag) : JNfcB; cdecl;                                    // (Landroid/nfc/Tag;)Landroid/nfc/tech/NfcB; A: $9
@@ -389,11 +298,6 @@ type
   TJNfcB = class(TJavaGenericImport<JNfcBClass, JNfcB>)
   end;
 
-implementation
-
-type
-  JNfcBarcode = interface;
-
   JNfcBarcodeClass = interface(JObjectClass)
     ['{6C4C2BA6-B3DC-4D6F-B156-FBA56956D54E}']
     function _GetTYPE_KOVIO : Integer; cdecl;                                   //  A: $19
@@ -414,13 +318,6 @@ type
 
   TJNfcBarcode = class(TJavaGenericImport<JNfcBarcodeClass, JNfcBarcode>)
   end;
-
-const
-  TJNfcBarcodeTYPE_KOVIO = 1;
-  TJNfcBarcodeTYPE_UNKNOWN = -1;
-
-type
-  JNfcF = interface;
 
   JNfcFClass = interface(JObjectClass)
     ['{0FF1FC55-192E-43E7-BE5C-45C8AC068C61}']
@@ -447,9 +344,6 @@ type
   TJNfcF = class(TJavaGenericImport<JNfcFClass, JNfcF>)
   end;
 
-type
-  JNfcV = interface;
-
   JNfcVClass = interface(JObjectClass)
     ['{57BB218E-5320-4417-872D-496D83085687}']
     function get(tag : JTag) : JNfcV; cdecl;                                    // (Landroid/nfc/Tag;)Landroid/nfc/tech/NfcV; A: $9
@@ -471,9 +365,6 @@ type
   TJNfcV = class(TJavaGenericImport<JNfcVClass, JNfcV>)
   end;
 
-type
-  JTagTechnology = interface;
-
   JTagTechnologyClass = interface(JObjectClass)
     ['{79887123-9103-4F45-B75A-71BABD8250C7}']
     function getTag : JTag; cdecl;                                              // ()Landroid/nfc/Tag; A: $401
@@ -493,5 +384,32 @@ type
 
   TJTagTechnology = class(TJavaGenericImport<JTagTechnologyClass, JTagTechnology>)
   end;
+
+const
+  TJMifareClassicBLOCK_SIZE = 16;
+  TJMifareClassicSIZE_1K = 1024;
+  TJMifareClassicSIZE_2K = 2048;
+  TJMifareClassicSIZE_4K = 4096;
+  TJMifareClassicSIZE_MINI = 320;
+  TJMifareClassicTYPE_CLASSIC = 0;
+  TJMifareClassicTYPE_PLUS = 1;
+  TJMifareClassicTYPE_PRO = 2;
+  TJMifareClassicTYPE_UNKNOWN = -1;
+
+  TJMifareUltralightPAGE_SIZE = 4;
+  TJMifareUltralightTYPE_ULTRALIGHT = 1;
+  TJMifareUltralightTYPE_ULTRALIGHT_C = 2;
+  TJMifareUltralightTYPE_UNKNOWN = -1;
+
+  TJNdefMIFARE_CLASSIC = 'com.nxp.ndef.mifareclassic';
+  TJNdefNFC_FORUM_TYPE_1 = 'org.nfcforum.ndef.type1';
+  TJNdefNFC_FORUM_TYPE_2 = 'org.nfcforum.ndef.type2';
+  TJNdefNFC_FORUM_TYPE_3 = 'org.nfcforum.ndef.type3';
+  TJNdefNFC_FORUM_TYPE_4 = 'org.nfcforum.ndef.type4';
+
+  TJNfcBarcodeTYPE_KOVIO = 1;
+  TJNfcBarcodeTYPE_UNKNOWN = -1;
+
+implementation
 
 end.

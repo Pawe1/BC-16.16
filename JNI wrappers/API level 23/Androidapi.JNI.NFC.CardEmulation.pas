@@ -11,27 +11,18 @@ unit Androidapi.JNI.NFC.CardEmulation;
 
 interface
 
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.NfcAdapter,
-//  android.content.ComponentName,
-//  android.app.Activity;
-//
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  Androidapi.JNI.os,
-//  android.content.ClipData;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  Androidapi.JNI.os,
-//  android.content.ClipData;
+uses
+  Androidapi.JNI.JavaTypes,
+  Androidapi.JNI.GraphicsContentViewText,
+  Androidapi.JNI.NFC,
+  Androidapi.JNI.App,
+  Androidapi.JNIBridge,
+  Androidapi.JNI.Os;
 
 type
   JCardEmulation = interface;
+  JHostApduService = interface;
+  JOffHostApduService = interface;
 
   JCardEmulationClass = interface(JObjectClass)
     ['{5AFA3C6F-2427-4560-8945-D33D1327A8CC}']
@@ -82,19 +73,6 @@ type
   TJCardEmulation = class(TJavaGenericImport<JCardEmulationClass, JCardEmulation>)
   end;
 
-const
-  TJCardEmulationACTION_CHANGE_DEFAULT = 'android.nfc.cardemulation.action.ACTION_CHANGE_DEFAULT';
-  TJCardEmulationCATEGORY_OTHER = 'other';
-  TJCardEmulationCATEGORY_PAYMENT = 'payment';
-  TJCardEmulationEXTRA_CATEGORY = 'category';
-  TJCardEmulationEXTRA_SERVICE_COMPONENT = 'component';
-  TJCardEmulationSELECTION_MODE_ALWAYS_ASK = 1;
-  TJCardEmulationSELECTION_MODE_ASK_IF_CONFLICT = 2;
-  TJCardEmulationSELECTION_MODE_PREFER_DEFAULT = 0;
-
-type
-  JHostApduService = interface;
-
   JHostApduServiceClass = interface(JObjectClass)
     ['{02652582-648B-46C3-8AE3-B13F0AEE1EF0}']
     function _GetDEACTIVATION_DESELECTED : Integer; cdecl;                      //  A: $19
@@ -123,15 +101,6 @@ type
   TJHostApduService = class(TJavaGenericImport<JHostApduServiceClass, JHostApduService>)
   end;
 
-const
-  TJHostApduServiceDEACTIVATION_DESELECTED = 1;
-  TJHostApduServiceDEACTIVATION_LINK_LOSS = 0;
-  TJHostApduServiceSERVICE_INTERFACE = 'android.nfc.cardemulation.action.HOST_APDU_SERVICE';
-  TJHostApduServiceSERVICE_META_DATA = 'android.nfc.cardemulation.host_apdu_service';
-
-type
-  JOffHostApduService = interface;
-
   JOffHostApduServiceClass = interface(JObjectClass)
     ['{A82879CE-CC77-491E-A584-EEA6E914C8AD}']
     function _GetSERVICE_INTERFACE : JString; cdecl;                            //  A: $19
@@ -152,6 +121,20 @@ type
   end;
 
 const
+  TJCardEmulationACTION_CHANGE_DEFAULT = 'android.nfc.cardemulation.action.ACTION_CHANGE_DEFAULT';
+  TJCardEmulationCATEGORY_OTHER = 'other';
+  TJCardEmulationCATEGORY_PAYMENT = 'payment';
+  TJCardEmulationEXTRA_CATEGORY = 'category';
+  TJCardEmulationEXTRA_SERVICE_COMPONENT = 'component';
+  TJCardEmulationSELECTION_MODE_ALWAYS_ASK = 1;
+  TJCardEmulationSELECTION_MODE_ASK_IF_CONFLICT = 2;
+  TJCardEmulationSELECTION_MODE_PREFER_DEFAULT = 0;
+
+  TJHostApduServiceDEACTIVATION_DESELECTED = 1;
+  TJHostApduServiceDEACTIVATION_LINK_LOSS = 0;
+  TJHostApduServiceSERVICE_INTERFACE = 'android.nfc.cardemulation.action.HOST_APDU_SERVICE';
+  TJHostApduServiceSERVICE_META_DATA = 'android.nfc.cardemulation.host_apdu_service';
+
   TJOffHostApduServiceSERVICE_INTERFACE = 'android.nfc.cardemulation.action.OFF_HOST_APDU_SERVICE';
   TJOffHostApduServiceSERVICE_META_DATA = 'android.nfc.cardemulation.off_host_apdu_service';
 

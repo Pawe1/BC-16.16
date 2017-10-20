@@ -20,80 +20,27 @@ unit Androidapi.JNI.NFC;
 
 interface
 
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes;
-//
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  Androidapi.JNI.os,
-//  android.nfc.NdefRecord;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  Androidapi.JNI.os,
-//  android.net.Uri;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  Androidapi.JNI.GraphicsContentViewText,
-//  android.net.Uri,
-//  android.app.Activity,
-//  android.nfc.NfcAdapter_CreateBeamUrisCallback,
-//  android.nfc.NdefMessage,
-//  android.nfc.NfcAdapter_CreateNdefMessageCallback,
-//  android.nfc.NfcAdapter_OnNdefPushCompleteCallback,
-//  android.app.PendingIntent,
-//  android.content.IntentFilter,
-//  android.nfc.NfcAdapter_ReaderCallback,
-//  Androidapi.JNI.os;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.net.Uri,
-//  android.nfc.NfcEvent;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.NdefMessage,
-//  android.nfc.NfcEvent;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.NfcEvent;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.Tag;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.NfcAdapter;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  android.nfc.NfcAdapter;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes,
-//  Androidapi.JNI.os;
-
-//uses
-//  AndroidAPI.JNIBridge,
-//  Androidapi.JNI.JavaTypes;
+uses
+  Androidapi.JNI.JavaTypes,
+  Androidapi.JNIBridge,
+  Androidapi.JNI.Os,
+  Androidapi.JNI.Java.Net,
+  Androidapi.JNI.GraphicsContentViewText,
+  Androidapi.JNI.App;
 
 type
   JFormatException = interface;
+  JNdefMessage = interface;
+  JNdefRecord = interface;
+  JNfcAdapter = interface;
+  JNfcAdapter_CreateBeamUrisCallback = interface;
+  JNfcAdapter_ReaderCallback = interface;
+  JNfcAdapter_CreateNdefMessageCallback = interface;
+  JNfcAdapter_OnNdefPushCompleteCallback = interface;
+  JNfcEvent = interface;
+  JNfcManager = interface;
+  JTag = interface;
+  JTagLostException = interface;
 
   JFormatExceptionClass = interface(JObjectClass)
     ['{141A1C24-0F0B-4A60-B21B-0D407B6148B7}']
@@ -109,9 +56,6 @@ type
 
   TJFormatException = class(TJavaGenericImport<JFormatExceptionClass, JFormatException>)
   end;
-
-type
-  JNdefMessage = interface;
 
   JNdefMessageClass = interface(JObjectClass)
     ['{8B98E7C3-166E-4DA5-9CB8-70EED4EB5BE9}']
@@ -145,9 +89,6 @@ type
 
   TJNdefMessage = class(TJavaGenericImport<JNdefMessageClass, JNdefMessage>)
   end;
-
-type
-  JNdefRecord = interface;
 
   JNdefRecordClass = interface(JObjectClass)
     ['{B4F33378-161F-4713-89D7-769B759E5C95}']
@@ -222,18 +163,6 @@ type
 
   TJNdefRecord = class(TJavaGenericImport<JNdefRecordClass, JNdefRecord>)
   end;
-
-const
-  TJNdefRecordTNF_ABSOLUTE_URI = 3;
-  TJNdefRecordTNF_EMPTY = 0;
-  TJNdefRecordTNF_EXTERNAL_TYPE = 4;
-  TJNdefRecordTNF_MIME_MEDIA = 2;
-  TJNdefRecordTNF_UNCHANGED = 6;
-  TJNdefRecordTNF_UNKNOWN = 5;
-  TJNdefRecordTNF_WELL_KNOWN = 1;
-
-type
-  JNfcAdapter = interface;
 
   JNfcAdapterClass = interface(JObjectClass)
     ['{5CA35943-4847-4F15-9239-21DAE17DFE66}']
@@ -313,31 +242,6 @@ type
   TJNfcAdapter = class(TJavaGenericImport<JNfcAdapterClass, JNfcAdapter>)
   end;
 
-const
-  TJNfcAdapterACTION_ADAPTER_STATE_CHANGED = 'android.nfc.action.ADAPTER_STATE_CHANGED';
-  TJNfcAdapterACTION_NDEF_DISCOVERED = 'android.nfc.action.NDEF_DISCOVERED';
-  TJNfcAdapterACTION_TAG_DISCOVERED = 'android.nfc.action.TAG_DISCOVERED';
-  TJNfcAdapterACTION_TECH_DISCOVERED = 'android.nfc.action.TECH_DISCOVERED';
-  TJNfcAdapterEXTRA_ADAPTER_STATE = 'android.nfc.extra.ADAPTER_STATE';
-  TJNfcAdapterEXTRA_ID = 'android.nfc.extra.ID';
-  TJNfcAdapterEXTRA_NDEF_MESSAGES = 'android.nfc.extra.NDEF_MESSAGES';
-  TJNfcAdapterEXTRA_READER_PRESENCE_CHECK_DELAY = 'presence';
-  TJNfcAdapterEXTRA_TAG = 'android.nfc.extra.TAG';
-  TJNfcAdapterFLAG_READER_NFC_A = 1;
-  TJNfcAdapterFLAG_READER_NFC_B = 2;
-  TJNfcAdapterFLAG_READER_NFC_BARCODE = 16;
-  TJNfcAdapterFLAG_READER_NFC_F = 4;
-  TJNfcAdapterFLAG_READER_NFC_V = 8;
-  TJNfcAdapterFLAG_READER_NO_PLATFORM_SOUNDS = 256;
-  TJNfcAdapterFLAG_READER_SKIP_NDEF_CHECK = 128;
-  TJNfcAdapterSTATE_OFF = 1;
-  TJNfcAdapterSTATE_ON = 3;
-  TJNfcAdapterSTATE_TURNING_OFF = 4;
-  TJNfcAdapterSTATE_TURNING_ON = 2;
-
-type
-  JNfcAdapter_CreateBeamUrisCallback = interface;
-
   JNfcAdapter_CreateBeamUrisCallbackClass = interface(JObjectClass)
     ['{AED2638C-F721-4C44-907F-E99577E22996}']
     function createBeamUris(JNfcEventparam0 : JNfcEvent) : TJavaArray<JUri>; cdecl;// (Landroid/nfc/NfcEvent;)[Landroid/net/Uri; A: $401
@@ -351,9 +255,6 @@ type
 
   TJNfcAdapter_CreateBeamUrisCallback = class(TJavaGenericImport<JNfcAdapter_CreateBeamUrisCallbackClass, JNfcAdapter_CreateBeamUrisCallback>)
   end;
-
-type
-  JNfcAdapter_CreateNdefMessageCallback = interface;
 
   JNfcAdapter_CreateNdefMessageCallbackClass = interface(JObjectClass)
     ['{1A42A036-0F62-4FB0-B6CB-7D0671242E99}']
@@ -369,9 +270,6 @@ type
   TJNfcAdapter_CreateNdefMessageCallback = class(TJavaGenericImport<JNfcAdapter_CreateNdefMessageCallbackClass, JNfcAdapter_CreateNdefMessageCallback>)
   end;
 
-type
-  JNfcAdapter_OnNdefPushCompleteCallback = interface;
-
   JNfcAdapter_OnNdefPushCompleteCallbackClass = interface(JObjectClass)
     ['{E914AC66-5293-4F10-901D-4B6E63FA85D7}']
     procedure onNdefPushComplete(JNfcEventparam0 : JNfcEvent) ; cdecl;          // (Landroid/nfc/NfcEvent;)V A: $401
@@ -386,9 +284,6 @@ type
   TJNfcAdapter_OnNdefPushCompleteCallback = class(TJavaGenericImport<JNfcAdapter_OnNdefPushCompleteCallbackClass, JNfcAdapter_OnNdefPushCompleteCallback>)
   end;
 
-type
-  JNfcAdapter_ReaderCallback = interface;
-
   JNfcAdapter_ReaderCallbackClass = interface(JObjectClass)
     ['{54F517AB-6BE6-47F3-BFBE-5E9C8BA038FF}']
     procedure onTagDiscovered(JTagparam0 : JTag) ; cdecl;                       // (Landroid/nfc/Tag;)V A: $401
@@ -402,9 +297,6 @@ type
 
   TJNfcAdapter_ReaderCallback = class(TJavaGenericImport<JNfcAdapter_ReaderCallbackClass, JNfcAdapter_ReaderCallback>)
   end;
-
-type
-  JNfcEvent = interface;
 
   JNfcEventClass = interface(JObjectClass)
     ['{4CCA539C-CEC5-40D3-9E5D-1D369CB45691}']
@@ -424,9 +316,6 @@ type
   TJNfcEvent = class(TJavaGenericImport<JNfcEventClass, JNfcEvent>)
   end;
 
-type
-  JNfcManager = interface;
-
   JNfcManagerClass = interface(JObjectClass)
     ['{37A1F1FC-CA14-4711-9310-526F7ED55240}']
     function getDefaultAdapter : JNfcAdapter; cdecl;                            // ()Landroid/nfc/NfcAdapter; A: $1
@@ -440,9 +329,6 @@ type
 
   TJNfcManager = class(TJavaGenericImport<JNfcManagerClass, JNfcManager>)
   end;
-
-type
-  JTag = interface;
 
   JTagClass = interface(JObjectClass)
     ['{D605F14B-003B-420B-AFA7-6A4F3C187E37}']
@@ -468,9 +354,6 @@ type
   TJTag = class(TJavaGenericImport<JTagClass, JTag>)
   end;
 
-type
-  JTagLostException = interface;
-
   JTagLostExceptionClass = interface(JObjectClass)
     ['{086540DA-C9A4-45B5-809D-FE29D608552F}']
     function init : JTagLostException; cdecl; overload;                         // ()V A: $1
@@ -484,6 +367,36 @@ type
 
   TJTagLostException = class(TJavaGenericImport<JTagLostExceptionClass, JTagLostException>)
   end;
+
+const
+  TJNdefRecordTNF_ABSOLUTE_URI = 3;
+  TJNdefRecordTNF_EMPTY = 0;
+  TJNdefRecordTNF_EXTERNAL_TYPE = 4;
+  TJNdefRecordTNF_MIME_MEDIA = 2;
+  TJNdefRecordTNF_UNCHANGED = 6;
+  TJNdefRecordTNF_UNKNOWN = 5;
+  TJNdefRecordTNF_WELL_KNOWN = 1;
+
+  TJNfcAdapterACTION_ADAPTER_STATE_CHANGED = 'android.nfc.action.ADAPTER_STATE_CHANGED';
+  TJNfcAdapterACTION_NDEF_DISCOVERED = 'android.nfc.action.NDEF_DISCOVERED';
+  TJNfcAdapterACTION_TAG_DISCOVERED = 'android.nfc.action.TAG_DISCOVERED';
+  TJNfcAdapterACTION_TECH_DISCOVERED = 'android.nfc.action.TECH_DISCOVERED';
+  TJNfcAdapterEXTRA_ADAPTER_STATE = 'android.nfc.extra.ADAPTER_STATE';
+  TJNfcAdapterEXTRA_ID = 'android.nfc.extra.ID';
+  TJNfcAdapterEXTRA_NDEF_MESSAGES = 'android.nfc.extra.NDEF_MESSAGES';
+  TJNfcAdapterEXTRA_READER_PRESENCE_CHECK_DELAY = 'presence';
+  TJNfcAdapterEXTRA_TAG = 'android.nfc.extra.TAG';
+  TJNfcAdapterFLAG_READER_NFC_A = 1;
+  TJNfcAdapterFLAG_READER_NFC_B = 2;
+  TJNfcAdapterFLAG_READER_NFC_BARCODE = 16;
+  TJNfcAdapterFLAG_READER_NFC_F = 4;
+  TJNfcAdapterFLAG_READER_NFC_V = 8;
+  TJNfcAdapterFLAG_READER_NO_PLATFORM_SOUNDS = 256;
+  TJNfcAdapterFLAG_READER_SKIP_NDEF_CHECK = 128;
+  TJNfcAdapterSTATE_OFF = 1;
+  TJNfcAdapterSTATE_ON = 3;
+  TJNfcAdapterSTATE_TURNING_OFF = 4;
+  TJNfcAdapterSTATE_TURNING_ON = 2;
 
 implementation
 
