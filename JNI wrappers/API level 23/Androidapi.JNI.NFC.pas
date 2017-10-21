@@ -193,7 +193,9 @@ type
     procedure disableForegroundDispatch(activity : JActivity) ; cdecl;          // (Landroid/app/Activity;)V A: $1
     procedure disableForegroundNdefPush(activity : JActivity) ; deprecated; cdecl;// (Landroid/app/Activity;)V A: $1
     procedure disableReaderMode(activity : JActivity) ; cdecl;                  // (Landroid/app/Activity;)V A: $1
-    procedure enableForegroundDispatch(activity : JActivity; intent : JPendingIntent; filters : TJavaArray<JIntentFilter>; techLists : TJavaArray<TJavaArray<JString>>) ; cdecl;// (Landroid/app/Activity;Landroid/app/PendingIntent;[Landroid/content/IntentFilter;[[Ljava/lang/String;)V A: $1
+    // This method remains undeclared as parameter 4 is a 2D string
+    // array, and the JNI Bridge doesn't support 2D arrays
+    // procedure enableForegroundDispatch(activity : JActivity; intent : JPendingIntent; filters : TJavaArray<JIntentFilter>; techLists : TJavaArray<TJavaArray<JString>>) ; cdecl;// (Landroid/app/Activity;Landroid/app/PendingIntent;[Landroid/content/IntentFilter;[[Ljava/lang/String;)V A: $1
     procedure enableForegroundNdefPush(activity : JActivity; &message : JNdefMessage) ; deprecated; cdecl;// (Landroid/app/Activity;Landroid/nfc/NdefMessage;)V A: $1
     procedure enableReaderMode(activity : JActivity; callback : JNfcAdapter_ReaderCallback; flags : Integer; extras : JBundle) ; cdecl;// (Landroid/app/Activity;Landroid/nfc/NfcAdapter$ReaderCallback;ILandroid/os/Bundle;)V A: $1
     procedure setBeamPushUris(uris : TJavaArray<JUri>; activity : JActivity) ; cdecl;// ([Landroid/net/Uri;Landroid/app/Activity;)V A: $1
@@ -223,7 +225,7 @@ type
     property STATE_TURNING_ON : Integer read _GetSTATE_TURNING_ON;              // I A: $19
   end;
 
-  [JavaSignature('android/nfc/NfcAdapter$CreateBeamUrisCallback')]
+  [JavaSignature('android/nfc/NfcAdapter')]
   JNfcAdapter = interface(JObject)
     ['{E4939C68-137C-4E0A-AD67-1E809D9C7F2C}']
     function invokeBeam(activity : JActivity) : boolean; cdecl;                 // (Landroid/app/Activity;)Z A: $1
@@ -232,7 +234,9 @@ type
     procedure disableForegroundDispatch(activity : JActivity) ; cdecl;          // (Landroid/app/Activity;)V A: $1
     procedure disableForegroundNdefPush(activity : JActivity) ; deprecated; cdecl;// (Landroid/app/Activity;)V A: $1
     procedure disableReaderMode(activity : JActivity) ; cdecl;                  // (Landroid/app/Activity;)V A: $1
-    procedure enableForegroundDispatch(activity : JActivity; intent : JPendingIntent; filters : TJavaArray<JIntentFilter>; techLists : TJavaArray<TJavaArray<JString>>) ; cdecl;// (Landroid/app/Activity;Landroid/app/PendingIntent;[Landroid/content/IntentFilter;[[Ljava/lang/String;)V A: $1
+    // This method remains undeclared as parameter 4 is a 2D string
+    // array, and the JNI Bridge doesn't support 2D arrays
+    // procedure enableForegroundDispatch(activity : JActivity; intent : JPendingIntent; filters : TJavaArray<JIntentFilter>; techLists : TJavaArray<TJavaArray<JString>>) ; cdecl;// (Landroid/app/Activity;Landroid/app/PendingIntent;[Landroid/content/IntentFilter;[[Ljava/lang/String;)V A: $1
     procedure enableForegroundNdefPush(activity : JActivity; &message : JNdefMessage) ; deprecated; cdecl;// (Landroid/app/Activity;Landroid/nfc/NdefMessage;)V A: $1
     procedure enableReaderMode(activity : JActivity; callback : JNfcAdapter_ReaderCallback; flags : Integer; extras : JBundle) ; cdecl;// (Landroid/app/Activity;Landroid/nfc/NfcAdapter$ReaderCallback;ILandroid/os/Bundle;)V A: $1
     procedure setBeamPushUris(uris : TJavaArray<JUri>; activity : JActivity) ; cdecl;// ([Landroid/net/Uri;Landroid/app/Activity;)V A: $1
